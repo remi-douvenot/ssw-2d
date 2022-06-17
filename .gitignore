@@ -13,3 +13,5 @@ propagation/src/DSSF/__pycache__/dmft.cpython-38.pyc
 propagation/src/DSSF/__pycache__/dssf_one_step.cpython-38.pyc
 propagation/src/DSSF/__pycache__/propa_discrete_spectral_domain.cpython-38.pyc
 *.pyc
+source/outputs/E_field.csv
+source/outputs/E_field.npy
