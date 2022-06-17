@@ -1,0 +1,15 @@
+
+post_processing/outputs/final_field.png
+post_processing/outputs/total_field.png
+post_processing/src/classes_and_files/__pycache__/classes.cpython-38.pyc
+post_processing/src/classes_and_files/__pycache__/read_files.cpython-38.pyc
+post_processing/src/plots/__pycache__/plot_field.cpython-38.pyc
+propagation/outputs/E_field.npy
+propagation/outputs/wv_total.npy
+propagation/src/atmosphere/__pycache__/genere_n_profile.cpython-38.pyc
+propagation/src/classes_and_files/__pycache__/classes.cpython-38.pyc
+propagation/src/classes_and_files/__pycache__/read_files.cpython-38.pyc
+propagation/src/DSSF/__pycache__/dmft.cpython-38.pyc
+propagation/src/DSSF/__pycache__/dssf_one_step.cpython-38.pyc
+propagation/src/DSSF/__pycache__/propa_discrete_spectral_domain.cpython-38.pyc
+*.pyc
