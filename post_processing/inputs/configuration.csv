@@ -1,0 +1,5 @@
+Property,value,comment and/or unit
+Data type,F,E (field) or F (propagation factor) or S (Poynting vector)
+Final field,Y
+Total field,Y
+Dynamic,20,dB
