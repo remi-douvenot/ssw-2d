@@ -13,6 +13,7 @@ import scipy.constants as cst
 import pywt
 import matplotlib.pyplot as plt
 import matplotlib
+from scipy.sparse import coo_matrix
 
 
 # put relief below the field (upward shift of the field)
@@ -210,7 +211,8 @@ def plot_field(config, config_plot):
     if config_plot.wavelets == 'Y':
         # plot_field_cut(config, 57800, u_x, ii_x, n_apo_z)
         ii_x = int(np.round(config_plot.cut/config.x_step))
-        plot_wavelet_cut(config, config_plot.cut, wv_total[ii_x], n_apo_z, n_im, z_max, dynamic)
+        title = 'Wavelets at x = ' + str(config_plot.cut/1000) + ' km'
+        plot_wavelet_cut(config, config_plot.cut, wv_total[ii_x], z_max, dynamic, title)
         # plot_field_cut(config, 58600, u_x, ii_x, n_apo_z)
         # plot_wavelet_cut(config, 35000 - config.x_step, wv_total[ii_x], n_apo_z, n_im, z_max)
         # plot_wavelet_cut(config, 50000 - config.x_step, wv_total[ii_x], n_apo_z, n_im, z_max)
@@ -218,12 +220,31 @@ def plot_field(config, config_plot):
     plt.show()
 
 
+##
+# @package plot_wavelet_cut
+# @author R. Douvenot
+# @date 27/06/2022
+# @version V1
+#
+# @brief Plots the (vertical) wavelet decomposition of the field for a given distance
+#
+# @param[in] config         Class that contains the propagation parameters (see Classes)
+# @param[in] x_cut          Distance at which the cut is chosen
+# @param[in] wv_x           The wavelet decomposition (a list of coo matrices)
+# @param[in] z_max          Max altitude
+# @param[in] dynamic        The dynamic (difference min - max)
+# @param[in] title          Title of the figure
+#
+# @param[out] None          Plots are displayed and saved in the "outputs" directory
+##
+
 # Plot the WAVELET COEFFICIENTS on the desired cut
-def plot_wavelet_cut(config, x_cut, wv_x, n_apo_z, n_im, z_max, dynamic):
+def plot_wavelet_cut(config, x_cut, wv_x, z_max, dynamic, title):
     print('ii_x = ', int(np.round(x_cut/config.x_step)))
 
     # PLOT THE WAVELETS
     n_z = config.N_z
+    n_im = int(config.image_layer*n_z)
 
     # total coeffs
     coeffs_for_show = np.zeros([config.wv_L + 1, n_z + n_im])
@@ -251,7 +272,7 @@ def plot_wavelet_cut(config, x_cut, wv_x, n_apo_z, n_im, z_max, dynamic):
 
     # fig = plt.figure(figsize=(3, 6))
     fig = plt.figure(tight_layout=True)
-    plt.title('Wavelets at x = ' + str(x_cut/1000) + ' km')
+    plt.title(title)
     # ax = fig.add_subplot(1, 1, 1)
     # ax.tick_params(labelsize=12)
     v_max = np.max(coeffs_for_show2)
@@ -285,10 +306,10 @@ def plot_wavelet_cut(config, x_cut, wv_x, n_apo_z, n_im, z_max, dynamic):
     for tick in im.axes.xaxis.get_major_ticks():
         # tick.tick1line.set_markersize(0)
         tick.label1.set_horizontalalignment('center')
-    print('Compression rate = ', (1-n_wavelets/config.N_z)*100, ' \%')
+    print('Compression rate = ', (1-n_wavelets/config.N_z)*100, ' %')
 
     # # Horizontal lines
-    # for ii in np.arange(0, config.N_z, 2**config.wv_L):
+    # for ii in np.arange(0, z_max/config.z_step, 2**config.wv_L):
     #     plt.hlines(ii*config.z_step, -0.5, config.wv_L + 1, linestyles='--', linewidth=1)
 
     # Vertical lines
@@ -300,8 +321,47 @@ def plot_wavelet_cut(config, x_cut, wv_x, n_apo_z, n_im, z_max, dynamic):
     return 0
 
 
-# # Plot the WAVELET LIBRARY
-# def plot_library(config, config_plot):
+##
+# @package plot_dictionary
+# @author R. Douvenot
+# @date 27/06/2022
+# @version V1
 #
+# @brief Plots each wavelet decomposition of the propagation dictionary
 #
-#     return 0
+# @param[in] config         Class that contains the propagation parameters (see Classes)
+# @param[in] config_plot    Class that contains the plot parameters (see Classes)
+#
+# @param[out] None          Plots are displayed and saved in the "outputs" directory
+##
+
+# Plot the WAVELET LIBRARY
+def plot_dictionary(config, config_plot):
+
+    # download dictionary
+    dictionary = np.load('../propagation/outputs/dictionary.npy', allow_pickle=True)
+    # max level of decomposition
+    ll = len(dictionary) - 1
+    # max altitude = number of fastest wavelet coefficients * 2 * Delta z
+    z_max = len(dictionary[0][0][-1])*2*config.z_step
+    # no image layer
+    config.image_layer = 0
+    # make it sparse
+
+    # on each level
+    for ii in np.arange(0, ll+1):
+
+        for ii_q in np.arange(0, len(dictionary[ii])):
+            # fill the wavelet levels
+            dictionary_coo = [[] for _ in range(0, ll+1)]
+            for ii_lvl in np.arange(0, ll + 1):
+
+                dictionary_coo[ii_lvl] = coo_matrix(dictionary[ii][ii_q][ii_lvl])
+
+            if ii == 0:
+                title = 'Scaling function Psi' + str(ll)
+            else:
+                title = 'Wavelet Phi' + str(ll-ii+1) + ', number ' + str(ii_q+1) + '/' + str(2**(ii-1))
+            plot_wavelet_cut(config, 0, dictionary_coo, z_max, config_plot.dynamic, title)
+
+    return 0

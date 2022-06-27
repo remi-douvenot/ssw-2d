@@ -244,8 +244,8 @@ def read_config_plot(file_config_plot):
         # Distance of the vertical cut (wavelet representation)
         elif row[0] == 'Cut':
             Config_plot.cut = np.float(row[1])  #
-        # Plot the library of wavelet propagators?
-        elif row[0] == 'Library':
+        # Plot the dictionary of wavelet propagators?
+        elif row[0] == 'Dictionary':
             Config_plot.library = row[1]  #
         elif row[0] == 'Property':
             pass  # first line

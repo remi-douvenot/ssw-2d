@@ -50,7 +50,7 @@ import multiprocessing as mp
 import pywt
 import time
 from src.wavelets.thresholding import thresholding
-from src.propagators.library_generation import q_max_calculation
+from src.propagators.dictionary_generation import q_max_calculation
 from scipy.sparse import coo_matrix  # for sparsify
 # from src.maths import convolution  # for add_propagator_at_once
 from scipy.signal import convolve

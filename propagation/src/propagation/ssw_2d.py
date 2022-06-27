@@ -37,7 +37,7 @@
 import numpy as np
 import time
 import scipy.constants as cst
-from src.propagators.library_generation import library_generation
+from src.propagators.dictionary_generation import dictionary_generation
 from src.propagation.ssw_2d_one_step import ssw_2d_one_step
 from src.propagation.apodisation import apply_apodisation, apodisation_window
 from src.DSSF.dmft import dmft_parameters, u2w, w2u, surface_wave_propagation
@@ -72,15 +72,17 @@ def ssw_2d(u_0, config, n_refraction, ii_vect_relief):
     apo_window_z = apodisation_window(config.apo_window, n_apo_z)
     # ------------------------------------------ #
 
-    # Compute the library of unit operators. Those operators correspond to the wavelet-to-wavelet propagation of
+    # Compute the dictionary of unit operators. Those operators correspond to the wavelet-to-wavelet propagation of
     # each basis wavelet.
-    print('--- Creation of the library of the free-space operators ---')
-    t_library_s = time.process_time()
-    library = library_generation(config)
-    t_library_f = time.process_time()
-    print('--- END Creation of the library of the free-space operators ---')
-    print('--- Dedicated time (s) ---', np.round(t_library_f - t_library_s, decimals=2))
+    print('--- Creation of the dictionary of the free-space operators ---')
+    t_dictionary_s = time.process_time()
+    dictionary = dictionary_generation(config)
+    t_dictionary_f = time.process_time()
+    print('--- END Creation of the dictionary of the free-space operators ---')
+    print('--- Dedicated time (s) ---', np.round(t_dictionary_f - t_dictionary_s, decimals=2))
     print(' ')
+    # save the final electric field
+    np.save('./outputs/dictionary', dictionary)
     # --- Sizes of the apodisation and image layers --- #
     if config.ground == 'PEC' or config.ground == 'Dielectric':
         n_im = np.int(np.round(config.N_z * config.image_layer))
@@ -141,7 +143,7 @@ def ssw_2d(u_0, config, n_refraction, ii_vect_relief):
             w_x = compute_image_field(w_x, n_im)
 
             # Propagate using SSW
-            w_x_dx, wavelets_x_dx = ssw_2d_one_step(w_x, library, config)
+            w_x_dx, wavelets_x_dx = ssw_2d_one_step(w_x, dictionary, config)
 
             # Pop image field: remove the image points
             w_x_dx = w_x_dx[n_im:n_im + config.N_z]
@@ -169,9 +171,9 @@ def ssw_2d(u_0, config, n_refraction, ii_vect_relief):
             if config.polar == 'TE':
                 u_x = compute_image_field(u_x, n_im)
             elif config.polar == 'TM':
-                u_x = compute_image_field_TM_PEC(u_x, n_im)
+                u_x = compute_image_field_tm_pec(u_x, n_im)
             # Propagate using SSW
-            u_x_dx, wavelets_x_dx = ssw_2d_one_step(u_x, library, config)
+            u_x_dx, wavelets_x_dx = ssw_2d_one_step(u_x, dictionary, config)
 
             # Pop image field: remove the image points
             u_x_dx = u_x_dx[n_im:n_im + config.N_z]
@@ -187,7 +189,7 @@ def ssw_2d(u_0, config, n_refraction, ii_vect_relief):
             # print('No ground')
 
             # Propagate using SSW
-            u_x_dx, wavelets_x_dx = ssw_2d_one_step(u_x, library, config)
+            u_x_dx, wavelets_x_dx = ssw_2d_one_step(u_x, dictionary, config)
 
         else:
             raise ValueError(['Ground condition should be dielectric, PEC, or None'])
@@ -261,7 +263,7 @@ def compute_image_field(u_x, n_im):
 ##
 
 
-def compute_image_field_TM_PEC(u_x, n_im):
+def compute_image_field_tm_pec(u_x, n_im):
 
     # compute the image field on N_im point for the image theorem
     # print('compute the image field on N_im point for the image theorem')

@@ -1,15 +1,15 @@
 Property,Value,Unit
-N_x,1400,Unnamed: 2
-N_z,6000,
-x_step,50.0,m
-z_step,0.1,m
-frequency,2000.0,MHz
+N_x,700,Unnamed: 2
+N_z,1496,
+x_step,100.0,m
+z_step,0.40106951871657753,m
+frequency,500.0,MHz
 polarisation,TE,
-Max compression error,-20.0,dB
+Max compression error,0.0,dB
 wavelet level,3,
 wavelet family,sym6,
 apodisation window,Hanning,
-apodisation size,0.2,% of N_z
+apodisation size,0.25,% of N_z
 image size,0.15,% of N_z
 ground,PEC,
 epsr,15.0,
@@ -21,4 +21,4 @@ zb,200.0,m
 c2,-0.8,M-unit/m
 zt,200.0,m
 atm filename,toto.atm,
-dynamic,60,dB
+dynamic,30,dB

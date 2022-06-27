@@ -10,15 +10,15 @@
 
 
 ##
-# @file library_generation.py
+# @file dictionary_generation.py
 #
-# @package library_generation
+# @package dictionary_generation
 # @author Remi Douvenot
 # @date 20/07/2021
-# @brief Calculates the library of the wavelet propagators
+# @brief Calculates the dictionary of the wavelet propagators
 # @param[in] config Class with all the simulation parameters
-# @param[out] library Library containing all the propagators
-# @details Calculates the library of the wavelet propagators for 2D propagation
+# @param[out] dictionary Dictionary containing all the propagators
+# @details Calculates the dictionary of the wavelet propagators for 2D propagation
 ##
 
 import numpy as np
@@ -31,17 +31,17 @@ import scipy
 import matplotlib.pyplot as plt
 
 
-def library_generation(config):
+def dictionary_generation(config):
     # Maximum level of the wavelet decomposition
     ll = config.wv_L
 
     # 1/ calculate the wavelets to propagate
     # they already have the proper size for the DSSF propagation
-    u_wavelets = wavelet_fun_library(config)
+    u_wavelets = wavelet_fun_dictionary(config)
 
     # 2/ the set of propagators is the IFWT of each wavelet with the appropriate translations
     # Initialisation: Creation of an empty list with the proper size
-    library = init_library(ll)
+    dictionary = init_dictionary(ll)
     # number of translations at each level
     q_max_list = q_max_calculation(ll)
 
@@ -71,18 +71,18 @@ def library_generation(config):
             # t_end = time.process_time()
             # print('transform time', t_end-t_start)
             # Save the sparse vector of (l,n,q_y,q_z)-wavelet at the position [ii_lvl][ii_or][q_y][q_z]
-            library[ii_lvl][q_z] = propagator_il_in_q
+            dictionary[ii_lvl][q_z] = propagator_il_in_q
         # t_end = time.process_time()
         # print('Time to do every translation', t_end - t_start)
-    return library
+    return dictionary
 
     # --------------------- END -------------------- #
     # --- Main loop. Fill each level recursively --- #
     # ---------------------------------------------- #
 
 ##
-# @package waveletfun_library
-# @brief generate the 1D wavelet library of wavelets to propagate
+# @package waveletfun_dictionary
+# @brief generate the 1D wavelet dictionary of wavelets to propagate
 # @author Remi Douvenot
 # @date 26/04/2020
 # @param[in] config Class that contains all the SSW configuration
@@ -90,7 +90,7 @@ def library_generation(config):
 ##
 
 
-def wavelet_fun_library(config):
+def wavelet_fun_dictionary(config):
 
     # max wavelet decomposition level
     ll = config.wv_L
@@ -149,9 +149,9 @@ def create_dssf_wavelet(n_u_top, n_u_bottom, family, ii_lvl, ll):
     ii_one = np.int(n_u_bottom / 2 ** (ll - ii_lvl + 1))
     wv_dec[ii_lvl][ii_one] = 1
     # tests to print the sizes of the wavelets
-    '''print('In library_generation.py: level =', np.str(ii_lvl))
-    print('In library_generation.py: size signal top = ', np.str(N_u_top), 'size signal bottom = ', np.str(N_u_bottom), 'size signal = ', np.str(N_u_top+N_u_bottom))
-    print('In library_generation.py: size wavelet = ', np.str(wv_dec[ii_lvl].size), ' position = ', ii_one)'''
+    '''print('In dictionary_generation.py: level =', np.str(ii_lvl))
+    print('In dictionary_generation.py: size signal top = ', np.str(N_u_top), 'size signal bottom = ', np.str(N_u_bottom), 'size signal = ', np.str(N_u_top+N_u_bottom))
+    print('In dictionary_generation.py: size wavelet = ', np.str(wv_dec[ii_lvl].size), ' position = ', ii_one)'''
 
     # 3/ wavelet signal = IFWT of this wavelet decomposition
     u_wavelet_out = pywt.waverec(wv_dec, family, mode='per')
@@ -162,7 +162,7 @@ def create_dssf_wavelet(n_u_top, n_u_bottom, family, ii_lvl, ll):
 # @brief Put the wavelet on its appropriate size
 # @author Remi Douvenot
 # @date 04/05/2021
-# @brief Calculate a scaling function for library
+# @brief Calculate a scaling function for dictionary
 # @warning Should be removed by using create_DSSF_wavelet only
 ##
 
@@ -185,9 +185,9 @@ def create_dssf_scaling_fct(n_u_top, n_u_bottom, family, ii_lvl, ll):
     wv_dec[0][ii_one] = 1
 
     # tests to print the sizes of the wavelets
-    '''print('In library_generation.py: level =', np.str(ii_lvl))
-    print('In library_generation.py: size signal top = ', np.str(N_u_top), 'size signal bottom = ', np.str(N_u_bottom), 'size signal = ', np.str(N_u_top+N_u_bottom))
-    print('In library_generation.py: size wavelet = ', np.str(wv_dec[0].size), ' position = ', ii_one)'''
+    '''print('In dictionary_generation.py: level =', np.str(ii_lvl))
+    print('In dictionary_generation.py: size signal top = ', np.str(N_u_top), 'size signal bottom = ', np.str(N_u_bottom), 'size signal = ', np.str(N_u_top+N_u_bottom))
+    print('In dictionary_generation.py: size wavelet = ', np.str(wv_dec[0].size), ' position = ', ii_one)'''
 
     # 3/ wavelet signal = IFWT of this wavelet decomposition
     u_wavelet_out = pywt.waverec(wv_dec, family, mode='per')
@@ -331,34 +331,34 @@ def plot_2D_wavelet(wavelet_2D):
 
 
 ##
-# @package init_library
-# @brief Initialisation of an empty library of propagators
+# @package init_dictionary
+# @brief Initialisation of an empty dictionary of propagators
 # @author Thomas Bonnafont
 # @date 08/06/2021
 # @version V1
 # @param[in] ll: max level of decomposition
-# @param[out] library: empty library of propagators
-# @details The library of propagators has a very specific shape: 1 scaling function and L wavelets with 3 orientations
+# @param[out] dictionary: empty dictionary of propagators
+# @details The dictionary of propagators has a very specific shape: 1 scaling function and L wavelets with 3 orientations
 # for each (start space). For each of them, 1 scaling function and L wavelets with 3 orientations for each.
 ##
 
-def init_library(ll):
+def init_dictionary(ll):
 
     # number of translations at each level
     q_max_list = q_max_calculation(ll)
 
     # an empty list at each level
-    library = [[] for _ in np.arange(ll+1)]
+    dictionary = [[] for _ in np.arange(ll+1)]
     # fill each list with the correct number of propagators
     for ii_lvl in np.arange(0, ll+1):
         # number of translations needed in 1D direction at each level
         q_max = q_max_list[ii_lvl]
         # compute the total number of propagators needed in 2D
         # number of translations at each level
-        library[ii_lvl] = [[] for _ in np.arange(q_max)]
+        dictionary[ii_lvl] = [[] for _ in np.arange(q_max)]
 
-    # empty library with the correct number of lists and sub-lists and sub-sub-lists and so on...
-    return library
+    # empty dictionary with the correct number of lists and sub-lists and sub-sub-lists and so on...
+    return dictionary
 
 
 ##
