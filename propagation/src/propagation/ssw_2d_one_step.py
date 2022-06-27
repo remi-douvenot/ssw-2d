@@ -237,7 +237,6 @@ def sparsify(wv_x):
     # fill the wavelet levels
     for ii_lvl in np.arange(0, ll+1):
         wv_x_sparse[ii_lvl] = coo_matrix(wv_x[ii_lvl])
-
     return wv_x_sparse
 
 ##

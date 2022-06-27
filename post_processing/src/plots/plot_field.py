@@ -12,6 +12,7 @@ import numpy as np
 import scipy.constants as cst
 import pywt
 import matplotlib.pyplot as plt
+import matplotlib
 
 
 # put relief below the field (upward shift of the field)
@@ -58,6 +59,7 @@ def plot_field(config, config_plot):
     freq = config.freq
     k0 = 2 * cst.pi * freq / cst.c
     z_apo = int(config.apo_z * z_max)  # altitude of apodisation
+    n_apo_z = int(np.round(n_z*config.apo_z))
 
     # --- Initialise field --- #
     u_field_total = np.zeros((n_x, n_z), dtype='complex64')
@@ -96,7 +98,7 @@ def plot_field(config, config_plot):
                 ii_relief = int(z_relief[ii_x] / z_step)
             u_field_total[ii_x, :] = shift_relief(u_field_total[ii_x, :], ii_relief)
         x_current = x_s + (ii_x + 1) * x_step
-        print('x_current', x_current)
+        # print('x_current', x_current)
 
         e_field_total[ii_x, :] = u_field_total[ii_x, :] / np.sqrt(k0 * x_current) * np.exp(-1j * k0 * x_current)
     # -------------------------------- #
@@ -204,5 +206,102 @@ def plot_field(config, config_plot):
         # save
         fig.savefig('./outputs/final_field.png')
 
+    # Plot field and the wavelet coefficients wrt vertical at the desired horizontal distance
+    if config_plot.wavelets == 'Y':
+        # plot_field_cut(config, 57800, u_x, ii_x, n_apo_z)
+        ii_x = int(np.round(config_plot.cut/config.x_step))
+        plot_wavelet_cut(config, config_plot.cut, wv_total[ii_x], n_apo_z, n_im, z_max, dynamic)
+        # plot_field_cut(config, 58600, u_x, ii_x, n_apo_z)
+        # plot_wavelet_cut(config, 35000 - config.x_step, wv_total[ii_x], n_apo_z, n_im, z_max)
+        # plot_wavelet_cut(config, 50000 - config.x_step, wv_total[ii_x], n_apo_z, n_im, z_max)
+
     plt.show()
 
+
+# Plot the WAVELET COEFFICIENTS on the desired cut
+def plot_wavelet_cut(config, x_cut, wv_x, n_apo_z, n_im, z_max, dynamic):
+    print('ii_x = ', int(np.round(x_cut/config.x_step)))
+
+    # PLOT THE WAVELETS
+    n_z = config.N_z
+
+    # total coeffs
+    coeffs_for_show = np.zeros([config.wv_L + 1, n_z + n_im])
+    # coefs that will be plotted (without apodisation & image layer)
+    coeffs_for_show2 = np.zeros([config.wv_L + 1, n_z])
+
+    # Scaling function
+    ll_level = 0  # phi: scaling function
+    for ii in range(0, wv_x[ll_level].nnz):
+        ii_2 = wv_x[ll_level].col[ii] * 2 ** config.wv_L
+        value = abs(wv_x[ll_level].data[ii])
+        coeffs_for_show[ll_level, ii_2:ii_2 + 2 ** config.wv_L] = value
+    # remove image layer and apodisation
+    coeffs_for_show2[ll_level, :] = 20 * np.log10(np.abs(coeffs_for_show[ll_level, n_im:]))
+    n_wavelets = wv_x[ll_level].nnz
+    # Wavelet levels
+    for ll_level in range(1, config.wv_L + 1):
+        for ii in range(0, wv_x[ll_level].nnz):
+            ii_2 = wv_x[ll_level].col[ii] * 2 ** (config.wv_L + 1 - ll_level)
+            value = abs(wv_x[ll_level].data[ii])
+            coeffs_for_show[ll_level, ii_2:ii_2 + 2 ** (config.wv_L + 1 - ll_level)] = value
+        # remove image layer and apodisation
+        coeffs_for_show2[ll_level, :] = 20 * np.log10(np.abs(coeffs_for_show[ll_level, n_im:]))
+        n_wavelets += wv_x[ll_level].nnz
+
+    # fig = plt.figure(figsize=(3, 6))
+    fig = plt.figure(tight_layout=True)
+    plt.title('Wavelets at x = ' + str(x_cut/1000) + ' km')
+    # ax = fig.add_subplot(1, 1, 1)
+    # ax.tick_params(labelsize=12)
+    v_max = np.max(coeffs_for_show2)
+    # v_min = 0
+    my_cmap = matplotlib.cm.get_cmap('jet').copy()
+    # my_cmap.set_under('w')
+    z_min_plot = 0  # choose min altitude to display
+    z_max_plot = z_max  # choose max altitude to display
+    l_index = int(z_min_plot / config.z_step)
+    r_index = int(z_max_plot / config.z_step)
+    # print(l_index, r_index)
+    # print('v_max', np.max((coeffs_for_show2[:, l_index:r_index])))
+
+    im = plt.imshow(coeffs_for_show2[:, r_index:l_index:-1].transpose(),
+                    extent=[-0.5, config.wv_L + 1, z_min_plot, z_max_plot], cmap=my_cmap,
+                    interpolation='none', aspect='auto', vmax=v_max, vmin=v_max - dynamic)
+    cb = plt.colorbar(im)
+    cb.set_label(label='Coef \n magn (dB)', labelpad=-20, y=-0.05, rotation=0, fontsize=12)
+    # cb.ax.tick_params(labelsize=10)
+    col_labels = ['Psi' + str(config.wv_L)]
+    for ii in np.arange(0, config.wv_L):
+        col_labels.append('Phi' + str(config.wv_L-ii))
+    # col_labels = [0, 1, 2, 3, 4]
+    im.axes.set_xticks(np.arange(coeffs_for_show2.shape[0] + 1) - .5)
+    plt.xticks(np.arange(0, config.wv_L+1, 9/8))
+    im.axes.set_xticklabels(col_labels)
+    # tick.label1.set_horizontalalignment('center')
+    plt.xlabel("Decomposition level", fontsize=12)
+    plt.ylabel("Altitude (m)", fontsize=12)
+    # im.axes.xaxis.label_position = 'center'
+    for tick in im.axes.xaxis.get_major_ticks():
+        # tick.tick1line.set_markersize(0)
+        tick.label1.set_horizontalalignment('center')
+    print('Compression rate = ', (1-n_wavelets/config.N_z)*100, ' \%')
+
+    # # Horizontal lines
+    # for ii in np.arange(0, config.N_z, 2**config.wv_L):
+    #     plt.hlines(ii*config.z_step, -0.5, config.wv_L + 1, linestyles='--', linewidth=1)
+
+    # Vertical lines
+    for ii in np.arange(0, config.wv_L+1, 9/8)+10/16:
+        plt.vlines(ii, 0, z_max, linestyles='--', linewidth=1, colors='k')
+
+    plt.show()
+
+    return 0
+
+
+# # Plot the WAVELET LIBRARY
+# def plot_library(config, config_plot):
+#
+#
+#     return 0

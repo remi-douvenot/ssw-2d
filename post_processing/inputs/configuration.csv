@@ -1,5 +1,8 @@
 Property,value,comment and/or unit
 Data type,F,E (field) or F (propagation factor) or S (Poynting vector)
-Final field,Y
-Total field,Y
-Dynamic,20,dB
+Final field,N
+Total field,N
+Wavelet decomposition,Y
+Cut,35000,m
+Library,Y
+Dynamic,60,dB

@@ -216,14 +216,14 @@ def read_relief(config, file_relief_config, file_relief):
 ##
 
 
-def read_config_plot(file_Config_plot):
+def read_config_plot(file_config_plot):
 
     # --------------------------- #
     # --- Reading plot config --- #
     # --------------------------- #
 
     # --- Configuration first --- #
-    f_plot_config = open(file_Config_plot, newline='')
+    f_plot_config = open(file_config_plot, newline='')
     file_tmp = csv.reader(f_plot_config)
     for row in file_tmp:
         # data type to plot. E, F, or S (field, propag factor or Poynting vector)
@@ -238,6 +238,15 @@ def read_config_plot(file_Config_plot):
         # dynamic (difference between min and max plotted)
         elif row[0] == 'Dynamic':
             Config_plot.dynamic = np.float(row[1])  #
+        # plot a wavelet representation (Y or N)
+        elif row[0] == 'Wavelet decomposition':
+            Config_plot.wavelets = row[1]  #
+        # Distance of the vertical cut (wavelet representation)
+        elif row[0] == 'Cut':
+            Config_plot.cut = np.float(row[1])  #
+        # Plot the library of wavelet propagators?
+        elif row[0] == 'Library':
+            Config_plot.library = row[1]  #
         elif row[0] == 'Property':
             pass  # first line
         else:

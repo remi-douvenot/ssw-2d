@@ -30,7 +30,8 @@
 #                   2D field are stored in the outputs directory. \n
 #
 #                   OR, alternatively \n
-#                   1/ run the GUI module. This package is launched when pressing "run simulation"
+#                   1/ run the GUI module. TiE4qvsBc3qnlVp
+#                   his package is launched when pressing "run simulation"
 #
 ##
 

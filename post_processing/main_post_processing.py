@@ -58,7 +58,7 @@ import matplotlib.pyplot as plt
 from scipy.sparse import coo_matrix
 import pywt
 import sys
-from src.plots.plot_field import plot_field
+from src.plots.plot_field import plot_field  # plot_library
 # where config is defined
 from src.classes_and_files.read_files import read_config, read_config_plot
 
@@ -78,3 +78,7 @@ config_plot = read_config_plot(file_config_plot)
 
 # plot the final field -- Vertical cut
 plot_field(config, config_plot)
+
+# # plot the library
+# if config_plot.library == 'Y':
+#     plot_library(config, config_plot)
