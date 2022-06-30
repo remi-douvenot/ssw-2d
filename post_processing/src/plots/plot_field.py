@@ -292,9 +292,9 @@ def plot_wavelet_cut(config, x_cut, wv_x, z_max, dynamic, title):
     cb = plt.colorbar(im)
     cb.set_label(label='Coef \n magn (dB)', labelpad=-20, y=-0.05, rotation=0, fontsize=12)
     # cb.ax.tick_params(labelsize=10)
-    col_labels = ['Psi' + str(config.wv_L)]
+    col_labels = ['phi' + str(config.wv_L)]
     for ii in np.arange(0, config.wv_L):
-        col_labels.append('Phi' + str(config.wv_L-ii))
+        col_labels.append('psi' + str(config.wv_L-ii))
     # col_labels = [0, 1, 2, 3, 4]
     im.axes.set_xticks(np.arange(coeffs_for_show2.shape[0] + 1) - .5)
     plt.xticks(np.arange(0, config.wv_L+1, 9/8))
@@ -359,9 +359,9 @@ def plot_dictionary(config, config_plot):
                 dictionary_coo[ii_lvl] = coo_matrix(dictionary[ii][ii_q][ii_lvl])
 
             if ii == 0:
-                title = 'Scaling function Psi' + str(ll)
+                title = 'Scaling function phi' + str(ll)
             else:
-                title = 'Wavelet Phi' + str(ll-ii+1) + ', number ' + str(ii_q+1) + '/' + str(2**(ii-1))
+                title = 'Wavelet psi' + str(ll-ii+1) + ', number ' + str(ii_q+1) + '/' + str(2**(ii-1))
             plot_wavelet_cut(config, 0, dictionary_coo, z_max, config_plot.dynamic, title)
 
     return 0

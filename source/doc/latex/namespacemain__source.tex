@@ -1,0 +1,114 @@
+\hypertarget{namespacemain__source}{}\doxysection{main\+\_\+source Namespace Reference}
+\label{namespacemain__source}\index{main\_source@{main\_source}}
+
+
+Computes the initial field for the 3D S\+SW software.  
+
+
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classmain__source_1_1_config_source}{Config\+Source}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{namespacemain__source_ac04cfa93a7b870f03b46d3bc49eb9152}\label{namespacemain__source_ac04cfa93a7b870f03b46d3bc49eb9152}} 
+string {\bfseries file\+\_\+source} = \textquotesingle{}inputs/configuration.\+csv\textquotesingle{}
+\item 
+\mbox{\Hypertarget{namespacemain__source_add4dd6ddff8d9eaebde44c34d0a87bac}\label{namespacemain__source_add4dd6ddff8d9eaebde44c34d0a87bac}} 
+{\bfseries f\+\_\+source} = open(file\+\_\+source, newline=\textquotesingle{}\textquotesingle{})
+\item 
+\mbox{\Hypertarget{namespacemain__source_a48250186ac720b2f8c16b230737b4eb1}\label{namespacemain__source_a48250186ac720b2f8c16b230737b4eb1}} 
+{\bfseries source\+\_\+tmp} = csv.\+reader(f\+\_\+source)
+\item 
+\mbox{\Hypertarget{namespacemain__source_a55264bc31953d9dba1c57d021fbe6507}\label{namespacemain__source_a55264bc31953d9dba1c57d021fbe6507}} 
+{\bfseries n\+\_\+z}
+\item 
+\mbox{\Hypertarget{namespacemain__source_a844908c27d4aaaa03013770e16fcc57a}\label{namespacemain__source_a844908c27d4aaaa03013770e16fcc57a}} 
+{\bfseries z\+\_\+step}
+\item 
+\mbox{\Hypertarget{namespacemain__source_a3304001e1b68d7665901c5d1b95592a3}\label{namespacemain__source_a3304001e1b68d7665901c5d1b95592a3}} 
+{\bfseries x\+\_\+s}
+\item 
+\mbox{\Hypertarget{namespacemain__source_a0f26fc5314f5bf28622943214d37356c}\label{namespacemain__source_a0f26fc5314f5bf28622943214d37356c}} 
+{\bfseries source\+\_\+type} = row\mbox{[}1\mbox{]}
+\item 
+\mbox{\Hypertarget{namespacemain__source_a6846aeb888df3ba38ce1aeb93c52e8d9}\label{namespacemain__source_a6846aeb888df3ba38ce1aeb93c52e8d9}} 
+int {\bfseries freq} = np.\+float64(row\mbox{[}1\mbox{]})$\ast$1e6
+\item 
+\mbox{\Hypertarget{namespacemain__source_ac2518e4f6adad5bd51341e16932ac093}\label{namespacemain__source_ac2518e4f6adad5bd51341e16932ac093}} 
+{\bfseries P\+\_\+\+Tx}
+\item 
+\mbox{\Hypertarget{namespacemain__source_adb1046ef4350f6da38d8d772ed7a01e2}\label{namespacemain__source_adb1046ef4350f6da38d8d772ed7a01e2}} 
+{\bfseries G\+\_\+\+Tx}
+\item 
+\mbox{\Hypertarget{namespacemain__source_a46c3f9679eca466cee26686fbf9a19f6}\label{namespacemain__source_a46c3f9679eca466cee26686fbf9a19f6}} 
+{\bfseries W0}
+\item 
+\mbox{\Hypertarget{namespacemain__source_af44c7288dab8eee2864d1ee08f788b03}\label{namespacemain__source_af44c7288dab8eee2864d1ee08f788b03}} 
+{\bfseries z\+\_\+s}
+\item 
+\mbox{\Hypertarget{namespacemain__source_a813fc7dde819c8e9798026e9364f7696}\label{namespacemain__source_a813fc7dde819c8e9798026e9364f7696}} 
+{\bfseries k0}
+\item 
+\mbox{\Hypertarget{namespacemain__source_af10ea98938a3a0b89408dae7c2c49e6d}\label{namespacemain__source_af10ea98938a3a0b89408dae7c2c49e6d}} 
+{\bfseries e\+\_\+field} = complex\+\_\+source\+\_\+point(\mbox{\hyperlink{classmain__source_1_1_config_source}{Config\+Source}})
+\item 
+list {\bfseries rows}
+\item 
+\mbox{\Hypertarget{namespacemain__source_a5059423252f73f61f848985a7140d61e}\label{namespacemain__source_a5059423252f73f61f848985a7140d61e}} 
+{\bfseries newline}
+\item 
+\mbox{\Hypertarget{namespacemain__source_a66f70d28764fcbc0f6fff8701e39c651}\label{namespacemain__source_a66f70d28764fcbc0f6fff8701e39c651}} 
+{\bfseries write} = csv.\+writer(f)
+\item 
+\mbox{\Hypertarget{namespacemain__source_a8e9bbcb54f4002ba1f6c3f3cb8d495cf}\label{namespacemain__source_a8e9bbcb54f4002ba1f6c3f3cb8d495cf}} 
+{\bfseries delimiter}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Computes the initial field for the 3D S\+SW software. 
+
+\begin{DoxyAuthor}{Author}
+R. Douvenot 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+07/04/2021 (created) 
+\end{DoxyDate}
+\begin{DoxyVersion}{Version}
+1.\+0
+\end{DoxyVersion}
+\begin{DoxyWarning}{Warning}
+only complex source point for now
+\end{DoxyWarning}
+
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em Inputs} & are defined in the files in the \char`\"{}inputs\char`\"{} directory
+\begin{DoxyItemize}
+\item configuration.\+csv that contains ~\newline
+ -- frequency frequency, in M\+Hz -- type\+: source type (available\+: C\+SP) -- N\+\_\+z\+: number of vertical points -- z\+\_\+step vertical step -- x\+\_\+s horizontal position opf the source (negative) -- P\+\_\+\+Tx input power (W) -- G\+\_\+\+Tx antenna maximal gain (d\+Bi) -- z\+\_\+s altitude of the source (in m) -- W0 width of the aperture (for C\+SP source type) 
+\end{DoxyItemize}\\
+\hline
+\mbox{\texttt{ out}}  & {\em u\+\_\+field} & (N\+\_\+y,N\+\_\+z)-\/array. Contains the initial field for 3D-\/\+S\+SW \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{namespacemain__source_a9aca7136389344f35cf17afbc6ec147b}\label{namespacemain__source_a9aca7136389344f35cf17afbc6ec147b}} 
+\index{main\_source@{main\_source}!rows@{rows}}
+\index{rows@{rows}!main\_source@{main\_source}}
+\doxysubsubsection{\texorpdfstring{rows}{rows}}
+{\footnotesize\ttfamily list main\+\_\+source.\+rows}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 =  [[\textcolor{stringliteral}{'frequency'}, str(freq*1e-\/6), \textcolor{stringliteral}{'MHz'}],}
+\DoxyCodeLine{2         [\textcolor{stringliteral}{'N\_z'}, str(ConfigSource.n\_z)],}
+\DoxyCodeLine{3         [\textcolor{stringliteral}{'z\_step'}, str(ConfigSource.z\_step), \textcolor{stringliteral}{'m'}],}
+\DoxyCodeLine{4         [\textcolor{stringliteral}{'x\_s'}, str(ConfigSource.x\_s), \textcolor{stringliteral}{'m'}],}
+\DoxyCodeLine{5         [\textcolor{stringliteral}{'z\_s'}, str(ConfigSource.z\_s), \textcolor{stringliteral}{'m'}]]}
+
+\end{DoxyCode}

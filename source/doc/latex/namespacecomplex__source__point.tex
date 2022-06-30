@@ -1,0 +1,47 @@
+\hypertarget{namespacecomplex__source__point}{}\doxysection{complex\+\_\+source\+\_\+point Namespace Reference}
+\label{namespacecomplex__source__point}\index{complex\_source\_point@{complex\_source\_point}}
+
+
+Function that calculates the field radiated from a complex source point.  
+
+
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{namespacecomplex__source__point_a8f9d52c9b8f20c98ed797dd1f1d02920}\label{namespacecomplex__source__point_a8f9d52c9b8f20c98ed797dd1f1d02920}} 
+def {\bfseries complex\+\_\+source\+\_\+point} (config\+\_\+source)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Function that calculates the field radiated from a complex source point. 
+
+\begin{DoxyAuthor}{Author}
+T. Bonnafont 
+
+R. Douvenot 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+1.\+0 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+19/07/21 (created)/ last modif \+: 07/04/21
+\end{DoxyDate}
+Computes the field radiated from a complex source point in 2D. Normalised by inputted radiated power and max gain. ~\newline
+ Source\+: G.\+A. Deschamps, Gaussian beam as a bundle of complex rays, Electron. Lett. 7 (1971) 684–685, \href{https://doi.org/10.1049/el:19710467}{\texttt{ https\+://doi.\+org/10.\+1049/el\+:19710467}}. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em Geom} & Structure that contains ~\newline
+ .Nz = nb of points along z (vertical) ~\newline
+ .z\+\_\+step = computation step along z (vertical) \\
+\hline
+\mbox{\texttt{ in}}  & {\em csp} & Structure that contains ~\newline
+ .k0 = wavenumber in rad/m (real) ~\newline
+ .x\+\_\+s = position of the csp along x (real $<$0) supposedly placed before x=0. ~\newline
+ .z\+\_\+s = position of the csp along z (real) ~\newline
+ .W0 = width of the complex source point (real) ~\newline
+ .P\+\_\+\+Tx = radiated power in W (real) ~\newline
+ .G\+\_\+\+Tx = max gain in d\+Bi (real) \\
+\hline
+\mbox{\texttt{ out}}  & {\em e\+\_\+field} & (n\+\_\+z)-\/complex array. Contains the field radiated by the csp. Max norm = corresponds to the inputted power and max gain. \\
+\hline
+\end{DoxyParams}

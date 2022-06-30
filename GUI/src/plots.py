@@ -162,7 +162,7 @@ class Plots(object):
                     ii_relief = int(z_relief[ii_x] / z_step)
                 u_field_total[ii_x, :] = shift_relief(u_field_total[ii_x, :], ii_relief)
             x_current = -x_s + (ii_x + 1) * x_step
-            print('x_current',x_current)
+            # print('x_current',x_current)
             e_field_total[ii_x, :] = u_field_total[ii_x, :] / np.sqrt(k0 * x_current) * np.exp(-1j * k0 * x_current)
         # -------------------------------- #
 
@@ -243,6 +243,9 @@ class Plots(object):
             ax.hlines(z_max-z_apo, 0, x_max, colors='k', linestyles='dotted')
         elif ground_type == 'None':
             ax.hlines([z_apo, z_max - z_apo], 0, x_max, colors='k', linestyles='dotted')
+
+        # ax.vlines(35, 0, z_max, colors='k', linestyles='dotted')
+        # ax.vlines(35.2, 0, z_max, colors='k', linestyles='dotted')
 
         # --- Final field plot --- #
         ax = ax_final

@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['plot_5ffield_4',['plot_field',['../namespaceplot__field.html',1,'']]]
+  ['plot_5fdictionary_4',['plot_dictionary',['../namespaceplot__dictionary.html',1,'']]],
+  ['plot_5ffield_5',['plot_field',['../namespaceplot__field.html',1,'']]],
+  ['plot_5fwavelet_5fcut_6',['plot_wavelet_cut',['../namespaceplot__wavelet__cut.html',1,'']]]
 ];
