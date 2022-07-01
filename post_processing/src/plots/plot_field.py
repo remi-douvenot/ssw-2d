@@ -316,6 +316,9 @@ def plot_wavelet_cut(config, x_cut, wv_x, z_max, dynamic, title):
     for ii in np.arange(0, config.wv_L+1, 9/8)+10/16:
         plt.vlines(ii, 0, z_max, linestyles='--', linewidth=1, colors='k')
 
+    # save figure
+    fig.savefig('./outputs/'+title+'png')
+
     plt.show()
 
     return 0
@@ -361,7 +364,7 @@ def plot_dictionary(config, config_plot):
             if ii == 0:
                 title = 'Scaling function Psi' + str(ll)
             else:
-                title = 'Wavelet Phi' + str(ll-ii+1) + ', number ' + str(ii_q+1) + '/' + str(2**(ii-1))
+                title = 'Wavelet Phi' + str(ll-ii+1) + ', number ' + str(ii_q+1) + ' out of ' + str(2**(ii-1))
             plot_wavelet_cut(config, 0, dictionary_coo, z_max, config_plot.dynamic, title)
 
     return 0
