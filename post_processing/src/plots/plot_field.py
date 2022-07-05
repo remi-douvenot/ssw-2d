@@ -271,7 +271,7 @@ def plot_wavelet_cut(config, x_cut, wv_x, z_max, dynamic, title):
         n_wavelets += wv_x[ll_level].nnz
 
     # fig = plt.figure(figsize=(3, 6))
-    fig = plt.figure(tight_layout=True)
+    fig = plt.figure(figsize=(4.0, 5.0), tight_layout=True)
     plt.title(title)
     # ax = fig.add_subplot(1, 1, 1)
     # ax.tick_params(labelsize=12)
@@ -292,9 +292,9 @@ def plot_wavelet_cut(config, x_cut, wv_x, z_max, dynamic, title):
     cb = plt.colorbar(im)
     cb.set_label(label='Coef \n magn (dB)', labelpad=-20, y=-0.05, rotation=0, fontsize=12)
     # cb.ax.tick_params(labelsize=10)
-    col_labels = ['Psi' + str(config.wv_L)]
+    col_labels = ['phi' + str(config.wv_L)]
     for ii in np.arange(0, config.wv_L):
-        col_labels.append('Phi' + str(config.wv_L-ii))
+        col_labels.append('psi' + str(config.wv_L-ii))
     # col_labels = [0, 1, 2, 3, 4]
     im.axes.set_xticks(np.arange(coeffs_for_show2.shape[0] + 1) - .5)
     plt.xticks(np.arange(0, config.wv_L+1, 9/8))
@@ -362,9 +362,23 @@ def plot_dictionary(config, config_plot):
                 dictionary_coo[ii_lvl] = coo_matrix(dictionary[ii][ii_q][ii_lvl])
 
             if ii == 0:
-                title = 'Scaling function Psi' + str(ll)
+                title = 'Scaling function phi' + str(ll)
             else:
-                title = 'Wavelet Phi' + str(ll-ii+1) + ', number ' + str(ii_q+1) + ' out of ' + str(2**(ii-1))
+                title = 'Wavelet psi' + str(ll-ii+1) + ', number ' + str(ii_q+1) + ' out of ' + str(2**(ii-1))
             plot_wavelet_cut(config, 0, dictionary_coo, z_max, config_plot.dynamic, title)
+
+            # plot the equivalent electric field
+            wavelet_field = pywt.waverec(dictionary[ii][ii_q], config.wv_family, mode='per')
+            # geometry
+            fig = plt.figure(figsize=(3.0, 5.0), )
+            n_z = wavelet_field.size
+            z_vect = np.linspace(0, config.z_step * n_z, n_z, endpoint=False)
+            wavelet_dB = 20 * np.log(np.abs(wavelet_field))
+            plt.plot(wavelet_dB, z_vect)
+            plt.xlim(wavelet_dB.max()-config_plot.dynamic, wavelet_dB.max())
+            plt.grid('on')
+            plt.ylabel('Altitude (m)', fontsize=12)
+            plt.xlabel('E (dBV/m)', fontsize=12)
+            plt.tight_layout()# pad=0.4, w_pad=0.5, h_pad=1.0)
 
     return 0

@@ -1,11 +1,11 @@
 Property,Value,Unit
-N_x,700,Unnamed: 2
+N_x,352,Unnamed: 2
 N_z,1496,
 x_step,100.0,m
 z_step,0.40106951871657753,m
 frequency,500.0,MHz
 polarisation,TE,
-Max compression error,0.0,dB
+Max compression error,-10.0,dB
 wavelet level,3,
 wavelet family,sym6,
 apodisation window,Hanning,
