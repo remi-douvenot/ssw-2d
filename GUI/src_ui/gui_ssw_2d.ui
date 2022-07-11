@@ -836,7 +836,7 @@
          <string>file name</string>
         </property>
        </widget>
-       <widget class="QLabel" name="c0Label_2">
+       <widget class="QLabel" name="turbuLabel">
         <property name="geometry">
          <rect>
           <x>160</x>
@@ -849,7 +849,7 @@
          <string>turbulence</string>
         </property>
        </widget>
-       <widget class="QComboBox" name="comboBox">
+       <widget class="QComboBox" name="turbuComboBox">
         <property name="geometry">
          <rect>
           <x>230</x>
@@ -869,7 +869,7 @@
          </property>
         </item>
        </widget>
-       <widget class="QDoubleSpinBox" name="deltaDoubleSpinBox_2">
+       <widget class="QDoubleSpinBox" name="Cn2DoubleSpinBox">
         <property name="geometry">
          <rect>
           <x>200</x>
@@ -894,7 +894,7 @@
          <double>0.000000000000000</double>
         </property>
        </widget>
-       <widget class="QLabel" name="deltaLabel_2">
+       <widget class="QLabel" name="Cn2Label">
         <property name="geometry">
          <rect>
           <x>160</x>
@@ -907,7 +907,7 @@
          <string>Cn2</string>
         </property>
        </widget>
-       <widget class="QDoubleSpinBox" name="deltaDoubleSpinBox_3">
+       <widget class="QDoubleSpinBox" name="L0DoubleSpinBox">
         <property name="geometry">
          <rect>
           <x>200</x>
@@ -929,7 +929,7 @@
          <double>10000.000000000000000</double>
         </property>
        </widget>
-       <widget class="QLabel" name="deltaLabel_3">
+       <widget class="QLabel" name="L0Label">
         <property name="geometry">
          <rect>
           <x>160</x>
