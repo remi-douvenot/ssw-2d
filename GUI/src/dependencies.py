@@ -284,8 +284,8 @@ class Dependencies(object):
         else:
             self.Cn2DoubleSpinBox.setEnabled(True)
             self.L0DoubleSpinBox.setEnabled(True)
-       update_file('turbulence', turbu_type 'propa')
-       self.plot_environment_in()
+        update_file('turbulence', turbu_type 'propa')
+        self.plot_environment_in()
 
     # --- Cn2 (exponent) --- #
     def Cn2_clicked(self):
