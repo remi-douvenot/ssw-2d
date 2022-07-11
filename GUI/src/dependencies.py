@@ -298,7 +298,7 @@ class Dependencies(object):
     # --- L0 --- #
     def L0_clicked(self):
         # --- update L0 --- #
-        Cn2 = self.Cn2DoubleSpinBox.value()  # L0 in m
+        L0 = self.Cn2DoubleSpinBox.value()  # L0 in m
         # write the L0
         update_file('L0', L0, 'propa')
         self.plot_environment_in()
