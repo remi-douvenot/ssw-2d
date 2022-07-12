@@ -73,6 +73,12 @@ def read_config(file_configuration):
             Config.zt = np.float(row[1])  # thickness of a trilinear duct
         elif row[0] == 'atm filename':
             Config.atm_filename = row[1]  # file for a hand-generated atmospheric profile
+        elif row[0] == 'turbulence':
+            Config.turbulence = row[1]
+        elif row[0] == 'Cn2':
+            Config.Cn2 = np.float(row[1])
+        elif row[0] == 'L0':
+            Config.L0 = np.float(row[1])
         elif row[0] == 'Property':
             pass  # first line
         elif row[0] == 'dynamic':  # only used for HMI plots

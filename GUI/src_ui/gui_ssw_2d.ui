@@ -261,7 +261,7 @@
        </size>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="tab_3">
        <attribute name="title">
@@ -638,7 +638,7 @@
        <widget class="QLabel" name="zbLabel">
         <property name="geometry">
          <rect>
-          <x>40</x>
+          <x>10</x>
           <y>100</y>
           <width>61</width>
           <height>26</height>
@@ -651,9 +651,9 @@
        <widget class="QDoubleSpinBox" name="c2DoubleSpinBox">
         <property name="geometry">
          <rect>
-          <x>140</x>
+          <x>90</x>
           <y>130</y>
-          <width>101</width>
+          <width>61</width>
           <height>26</height>
          </rect>
         </property>
@@ -676,7 +676,7 @@
        <widget class="QLabel" name="ztLabel">
         <property name="geometry">
          <rect>
-          <x>40</x>
+          <x>10</x>
           <y>160</y>
           <width>71</width>
           <height>26</height>
@@ -689,9 +689,9 @@
        <widget class="QDoubleSpinBox" name="deltaDoubleSpinBox">
         <property name="geometry">
          <rect>
-          <x>140</x>
+          <x>90</x>
           <y>70</y>
-          <width>101</width>
+          <width>61</width>
           <height>26</height>
          </rect>
         </property>
@@ -705,7 +705,7 @@
        <widget class="QLabel" name="deltaLabel">
         <property name="geometry">
          <rect>
-          <x>40</x>
+          <x>10</x>
           <y>70</y>
           <width>81</width>
           <height>26</height>
@@ -721,9 +721,9 @@
         </property>
         <property name="geometry">
          <rect>
-          <x>140</x>
+          <x>90</x>
           <y>160</y>
-          <width>101</width>
+          <width>61</width>
           <height>26</height>
          </rect>
         </property>
@@ -743,9 +743,9 @@
         </property>
         <property name="geometry">
          <rect>
-          <x>140</x>
+          <x>90</x>
           <y>100</y>
-          <width>101</width>
+          <width>61</width>
           <height>26</height>
          </rect>
         </property>
@@ -765,7 +765,7 @@
        <widget class="QLabel" name="c2Label">
         <property name="geometry">
          <rect>
-          <x>40</x>
+          <x>10</x>
           <y>130</y>
           <width>91</width>
           <height>26</height>
@@ -778,7 +778,7 @@
        <widget class="QLabel" name="c0Label">
         <property name="geometry">
          <rect>
-          <x>40</x>
+          <x>10</x>
           <y>40</y>
           <width>81</width>
           <height>26</height>
@@ -791,9 +791,9 @@
        <widget class="QDoubleSpinBox" name="c0DoubleSpinBox">
         <property name="geometry">
          <rect>
-          <x>140</x>
+          <x>90</x>
           <y>40</y>
-          <width>101</width>
+          <width>61</width>
           <height>26</height>
          </rect>
         </property>
@@ -834,6 +834,115 @@
         </property>
         <property name="text">
          <string>file name</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="turbuLabel">
+        <property name="geometry">
+         <rect>
+          <x>160</x>
+          <y>40</y>
+          <width>71</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>turbulence</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="turbuComboBox">
+        <property name="geometry">
+         <rect>
+          <x>230</x>
+          <y>40</y>
+          <width>41</width>
+          <height>25</height>
+         </rect>
+        </property>
+        <item>
+         <property name="text">
+          <string>Y</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>N</string>
+         </property>
+        </item>
+       </widget>
+       <widget class="QDoubleSpinBox" name="Cn2DoubleSpinBox">
+        <property name="geometry">
+         <rect>
+          <x>200</x>
+          <y>70</y>
+          <width>71</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="locale">
+         <locale language="English" country="UnitedStates"/>
+        </property>
+        <property name="keyboardTracking">
+         <bool>false</bool>
+        </property>
+        <property name="decimals">
+         <number>0</number>
+        </property>
+        <property name="minimum">
+         <double>-20.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>0.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QLabel" name="Cn2Label">
+        <property name="geometry">
+         <rect>
+          <x>160</x>
+          <y>70</y>
+          <width>31</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Cn2</string>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="L0DoubleSpinBox">
+        <property name="geometry">
+         <rect>
+          <x>200</x>
+          <y>100</y>
+          <width>71</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="locale">
+         <locale language="English" country="UnitedStates"/>
+        </property>
+        <property name="keyboardTracking">
+         <bool>false</bool>
+        </property>
+        <property name="decimals">
+         <number>1</number>
+        </property>
+        <property name="minimum">
+         <double>0.100000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>10000.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QLabel" name="L0Label">
+        <property name="geometry">
+         <rect>
+          <x>160</x>
+          <y>100</y>
+          <width>41</width>
+          <height>26</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>L0 (m)</string>
         </property>
        </widget>
       </widget>

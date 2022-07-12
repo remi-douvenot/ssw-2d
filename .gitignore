@@ -43,3 +43,10 @@ GUI/src/__pycache__/gui_ssw_2d.cpython-38.pyc
 GUI/src/__pycache__/plots.cpython-38.pyc
 *.pyc
 *.png
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/ssw-2d.iml
+.idea/vcs.xml
+*.pyc
+*.pyc

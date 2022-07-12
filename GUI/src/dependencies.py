@@ -275,6 +275,34 @@ class Dependencies(object):
         update_file('zt', zt, 'propa')
         self.plot_environment_in()
 
+    # --- turbulence --- #
+    def turbulence_yes_no(self):
+        turbu_type = self.turbuComboBox.currentText()
+        if turbu_type == 'N':  # disable all
+            self.Cn2DoubleSpinBox.setEnabled(False)
+            self.L0DoubleSpinBox.setEnabled(False)
+        else:
+            self.Cn2DoubleSpinBox.setEnabled(True)
+            self.L0DoubleSpinBox.setEnabled(True)
+        update_file('turbulence', turbu_type, 'propa')
+        self.plot_environment_in()
+
+    # --- Cn2 (exponent) --- #
+    def Cn2_clicked(self):
+        # --- update Cn2 --- #
+        Cn2 = self.Cn2DoubleSpinBox.value()  # Cn2 exponent
+        # write the Cn2
+        update_file('Cn2', Cn2, 'propa')
+        self.plot_environment_in()
+
+    # --- L0 --- #
+    def L0_clicked(self):
+        # --- update L0 --- #
+        L0 = self.L0DoubleSpinBox.value()  # L0 in m
+        # write the L0
+        update_file('L0', L0, 'propa')
+        self.plot_environment_in()
+
     # --- N_z --- #
     def n_z_clicked(self):
         # --- update z_step --- #
