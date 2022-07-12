@@ -1,7 +1,7 @@
 Property,Value,Unit
-N_x,800,Unnamed: 2
+N_x,80,Unnamed: 2
 N_z,30000,
-x_step,50.0,m
+x_step,500.0,m
 z_step,0.02,m
 frequency,10000.0,MHz
 polarisation,TE,
@@ -15,7 +15,7 @@ ground,None,
 epsr,15.0,
 sigma,0.5,S/m
 atmosphere,Homogeneous,
-turbulence,Y,Y or N
+turbulence,N,Y or N
 Cn2,-12.0,Cn2 exponent
 L0,-12.0,m
 c0,0.118,M-unit/m
