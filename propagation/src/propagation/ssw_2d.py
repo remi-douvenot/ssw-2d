@@ -66,7 +66,6 @@ def ssw_2d(u_0, config, n_refraction, ii_vect_relief):
 
     # Simulation parameters
     n_x = config.N_x
-
     # --- Creation of the apodisation window --- # @todo Code other apodisation windows
     # along z
     n_apo_z = np.int(config.apo_z * config.N_z)

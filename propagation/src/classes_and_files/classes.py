@@ -52,7 +52,7 @@ class Config:
         self.atm_filename = 'None'  # file for a hand-generated atmospheric profile
         self.turbulence = 'N'
         self.Cn2 = 0
-        self.L0 = 10
+        self.L0 = 0
 # ---------- END --------- #
 # --- Defining classes --- #
 # ------------------------ #
