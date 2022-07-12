@@ -82,3 +82,4 @@ plot_field(config, config_plot)
 # plot the library
 if config_plot.library == 'Y':
     plot_dictionary(config, config_plot)
+
