@@ -135,17 +135,22 @@ def double_duct(n_z, z_step, c0, delta, zb, c2, zt):
     return n_refractive_index
 
 # kolmogorov turbulence
+#function that generates a turbulent phase screen based on a Kolmogorov spectrum
 def turbulent(n_z, z_step, x_step, Los, Cn2_exponent,f):
     k0 = 2*np.pi*f / cst.c
     Kos = 2*np.pi/Los
+    # Compute spectral discretization
     q_z = np.linspace(-n_z/2,n_z/2-1, num=n_z, endpoint = True)
     k_z = (2/z_step * np.sin(np.pi*q_z/(n_z)))
-    S_Phi2D = k0*2*np.pi*x_step*0.055*10**(Cn2_exponent)*(k_z**2+Kos**2)**(-4/3)
+    # Define Von Karman Kolmogorov (VKK) spectrum
+    S_Phi2D = k0**2 * 2*np.pi * x_step*0.055*10**(Cn2_exponent)*(k_z**2+Kos**2)**(-4/3) #normalization of VKK spectrum by S*n_z
+    # Generate random gaussian white noise filtred by a VKK spectrum
     a = np.random.normal(0,1,n_z)
     b = np.random.normal(0,1,n_z)
-    gauss = a + 1j*b
+    gauss = np.fft.fft(1/np.sqrt(2)*(a + 1j*b)) #normalized gaussian with 1/np.sqrt(2)
     G = np.fft.fftshift(np.sqrt(S_Phi2D)*gauss)
-    Phi=n_z*(np.fft.ifft(G).real)
+    # --- turbulent phase screen --- #
+    Phi=(np.fft.ifft(G).real)*np.sqrt(n_z)
     return Phi
 
 # read profile from a text file

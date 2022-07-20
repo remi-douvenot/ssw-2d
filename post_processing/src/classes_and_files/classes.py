@@ -50,7 +50,9 @@ class Config:
         self.c2 = 0  # gradient in a trilinear duct
         self.zt = 0  # thickness of a trilinear duct
         self.atm_filename = 'None'  # file for a hand-generated atmospheric profile
-
+        self.turbulence = 'N'
+        self.Cn2 = 0
+        self.L0 = 0
 
 class Config_plot:
     def __init__(self):
