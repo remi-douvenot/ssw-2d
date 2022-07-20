@@ -90,6 +90,7 @@ sigma2_table = [np.zeros(n_x)]*n_simu
 # --- Starting simulations --- #
 
 for ii_simu in range (n_simu):
+    print(ii_simu)
     # main program: SSW propagation
     # change directory and launch propagation (depends on the OS)
     if sys.platform == "linux" or sys.platform == "linux2" or sys.platform == "darwin":

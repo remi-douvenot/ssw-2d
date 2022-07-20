@@ -50,7 +50,7 @@ def log_variance(config, E_turbulent,E_reference):
     # --- compute vertical log-variance at each range step --#
     for ii_x in range(0, n_x):
         ln_amplitude = np.zeros(n_z)
-        print(ii_x)
+        #print(ii_x)
         for ii_z in range(n_apo_z, n_z - n_apo_z): #Field is true only in apo window
             ln_amplitude[ii_z]=np.log(np.abs(E_turbulent[ii_x][ii_z]) / np.abs(E_reference[ii_x][ii_z]))
         sigma2[ii_x]= np.var(ln_amplitude)
@@ -75,7 +75,7 @@ def logvar_analytic(config):
         #f = lambda K_z,u : Np2dB**2*2*np.pi*k_0**2*x*0.055*Cn2*(K_z**2+ Kos**2)**(-4/3) *0.5 * (1-np.cos(K_z**2*x*u*(1-u)/k_0)) #2D spherical waves
         #F= intg.nquad(f,[[-3, 3],[0,1]],opts = {'limit' : 100 } ) #Warning : choice of interval of integration and number of subdivision
         f = lambda k_z : Np2dB**2*2*np.pi*k_0**2*x*0.055*10**(config.Cn2)*(k_z**2+ Kos**2)**(-4/3) *0.5 * (1-np.sinc(k_z**2*x/k_0)) #Plane waves
-        F= intg.quad(f,-10, 10,limit = 100000000)
+        F= intg.quad(f,-1, 1,limit = 100000000)
         sigma2[ii_x] = F[0]
         print(x,F[1])
     return sigma2
