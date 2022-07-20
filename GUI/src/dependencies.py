@@ -530,6 +530,12 @@ class Dependencies(object):
         self.ztDoubleSpinBox.setProperty("value", serie.loc['zt'])
         # dynamic
         self.dynamicSpinBox.setProperty("value", serie.loc['dynamic'])
+        # turbulence
+        self.turbuComboBox.setCurrentText(serie.loc['turbulence'])
+        #Cn2
+        self.Cn2DoubleSpinBox.setProperty("value", serie.loc['Cn2'])
+        #L0
+        self.L0DoubleSpinBox.setProperty("value", serie.loc['L0'])
 
         # --- Initialise source --- #
         file_to_read = open(file_source)

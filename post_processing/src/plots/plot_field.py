@@ -102,8 +102,10 @@ def plot_field(config, config_plot):
         # print('x_current', x_current)
 
         e_field_total[ii_x, :] = u_field_total[ii_x, :] / np.sqrt(k0 * x_current) * np.exp(-1j * k0 * x_current)
+    if config.turbulence == 'N':
+        np.save('./outputs/E_field_standard_1G_40km_Los100', e_field_total)
     # -------------------------------- #
-
+"""
     # --- 2D plot --- #
     output_type = config_plot.output_type
     print('output_type', output_type)
@@ -382,3 +384,4 @@ def plot_dictionary(config, config_plot):
             plt.tight_layout()# pad=0.4, w_pad=0.5, h_pad=1.0)
 
     return 0
+"""
