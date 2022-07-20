@@ -60,7 +60,6 @@ import pywt
 import sys
 import numpy as np
 from src.plots.plot_field import plot_field #, plot_dictionary
-from src.plots.log_variance import log_variance_1G_Los100,logvar_analytic
 # where config is defined
 from src.classes_and_files.read_files import read_config, read_config_plot
 
@@ -88,19 +87,4 @@ if config_plot.library == 'Y':
 """
 
 
-if config.turbulence == 'Y':
-    E_turbulent_1G_Los100 = np.load('./outputs/E_turbulent_1G_Los100.npy')
-    #sigma2 = log_variance_1G_Los10(config, E_turbulent_1G_Los10)
-    sigma2 = log_variance_1G_Los100(config, E_turbulent_1G_Los100)
-    #sigma2 = log_variance_10G_Los10(config,E_turbulent_10G_Los10)
-    #sigma2 = log_variance_10G_Los100(config, E_turbulent_10G_Los100)
-    sigma2_analytic = logvar_analytic(config)
-    x = np.linspace(0,config.N_x*config.x_step,config.N_x)
-    plt.plot(x, sigma2, label='SSW 2D')
-    plt.plot(x,sigma2_analytic)
-    plt.xlabel('Distance (km)')
-    plt.ylabel('\u03C3$^2$ (dB$^2$)')
-    plt.title('variance de la log-amplitude : 10 GHz ; Los =100 m ; Cn2 = 1e-12')
-    plt.grid()
-    plt.legend()
-    plt.show()
+

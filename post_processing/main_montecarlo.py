@@ -28,37 +28,31 @@ from scipy import integrate as intg
 #
 # @param[in] config         Class that contains the propagation parameters (see Classes)
 #
-# @param[out] None          Plots are displayed and saved in the "outputs" directory
+# @param[out] None          Plots of log-amplitude variance with
 
-# Usable only if ground == none
+# Warning : Before running this file, one must run a simulation without turbulence and save resulting field in post_processing/outputs
+# To do that, just modify file_name to save in function plot_field in ./src/plots/plot_field.py. Then, run main_post_processing.py and
+# loas the corresponding numpy file in this main_montecarlo.py file.
 ##
 
-import scipy.constants as cst
-import matplotlib.pyplot as plt
-from scipy.sparse import coo_matrix
-import pywt
-import sys
-import numpy as np
-from src.plots.plot_field import plot_field #, plot_dictionary
-from src.plots.log_variance import log_variance_1G_Los100,logvar_analytic
 
+
+
+
+# Local Module Imports
+import pywt
 import matplotlib.pyplot as plt
 import numpy as np
 import sys
 import os
-from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QMessageBox, QGraphicsScene, QGraphicsView, \
-    QGridLayout, QVBoxLayout, QGraphicsPixmapItem
-from PyQt5.QtGui import QPixmap
-
-# Local Module Imports
-
-
 import scipy.constants as cst
 
 from src.plots.log_variance import log_variance ,logvar_analytic
 
 # where config is defined
-from src.classes_and_files.read_files import read_config, read_config_plot
+from src.classes_and_files.read_files import read_config
+
+
 
 # put relief below the field (upward shift of the field)
 def shift_relief(u_field, ii_relief):
@@ -79,18 +73,21 @@ file_configuration = '../propagation/outputs/configuration.csv'
 config = read_config(file_configuration, file_source_config)
 # --------------------------------------------------------------------------------------- #
 
-# --- Define and fill the config variable that contains all the simulation parameters --- #
-e_reference = np.load('./outputs/E_field_standard_1G_40km_Los100.npy')
+# --- Load reference field without turbulence --- #
+e_reference = np.load('./outputs/E_field_standard_1G_40km_Los100.npy') #Must be saved before running this montecarlo simulation
 # --------------------------------------------------------------------------------------- #
 
-sigma2_analytic = logvar_analytic(config)
+sigma2_analytic = logvar_analytic(config) #Analytic log amplitude variance
 
-n_simu = 10 #number of monte carlo simulation
+n_simu = 100 #number of monte carlo simulation
 n_x = config.N_x
 n_z = config.N_z
+
 # --- Initialise tables --- #
 field_table = [np.zeros((n_x, n_z), dtype='complex64')]*n_simu
 sigma2_table = [np.zeros(n_x)]*n_simu
+
+# --- Starting simulations --- #
 
 for ii_simu in range (n_simu):
     # main program: SSW propagation
