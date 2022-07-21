@@ -9,15 +9,6 @@
 # <https://www.gnu.org/licenses/>.
 
 
-import numpy as np
-import scipy.constants as cst
-import matplotlib.pyplot as plt
-import math as m
-from matplotlib import cm
-from matplotlib.colors import ListedColormap, LinearSegmentedColormap
-import matplotlib.colors
-from scipy import integrate as intg
-
 ##
 # @package main_montecarlo.py
 # @author R. Douvenot - V. Darchy
@@ -74,12 +65,12 @@ config = read_config(file_configuration, file_source_config)
 # --------------------------------------------------------------------------------------- #
 
 # --- Load reference field without turbulence --- #
-e_reference = np.load('./outputs/E_field_standard_1G_40km_Los100.npy') #Must be saved before running this montecarlo simulation
+e_reference = np.load('./outputs/E_field_standard_10G_40km_Los100.npy') #Must be saved before running this montecarlo simulation
 # --------------------------------------------------------------------------------------- #
 
 sigma2_analytic = logvar_analytic(config) #Analytic log amplitude variance
 
-n_simu = 100 #number of monte carlo simulation
+n_simu = 5000 #number of monte carlo simulation
 n_x = config.N_x
 n_z = config.N_z
 
@@ -165,7 +156,7 @@ for ii_simu in range (n_simu):
 sigma2_mean = np.mean(sigma2_table,axis=0)
 x = np.linspace(0, config.N_x * config.x_step, config.N_x)
 plt.plot(x, sigma2_mean, label='SSW 2D')
-plt.plot(x, sigma2_analytic)
+plt.plot(x, sigma2_analytic, label='Analytic')
 plt.xlabel('Distance (km)')
 plt.ylabel('\u03C3$^2$ (dB$^2$)')
 plt.title('variance de la log-amplitude : 10 GHz ; Los =100 m ; Cn2 = 1e-12')

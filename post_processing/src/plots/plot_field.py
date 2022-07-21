@@ -103,7 +103,7 @@ def plot_field(config, config_plot):
 
         e_field_total[ii_x, :] = u_field_total[ii_x, :] / np.sqrt(k0 * x_current) * np.exp(-1j * k0 * x_current)
     if config.turbulence == 'N':
-        np.save('./outputs/E_field_standard_1G_40km_Los100', e_field_total)
+        np.save('./outputs/E_field_standard_10G_40km_Los100', e_field_total)
     # -------------------------------- #
 """
     # --- 2D plot --- #

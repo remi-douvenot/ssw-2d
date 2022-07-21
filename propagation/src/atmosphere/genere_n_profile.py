@@ -134,8 +134,19 @@ def double_duct(n_z, z_step, c0, delta, zb, c2, zt):
     n_refractive_index = 1
     return n_refractive_index
 
-# kolmogorov turbulence
-#function that generates a turbulent phase screen based on a Kolmogorov spectrum
+
+# read profile from a text file
+def read_file_profile(n_z, z_step, atm_filename):
+    raise ValueError(['read_file_profile not yet coded'])
+    n_refractive_index = 1
+    return n_refractive_index
+
+#--- kolmogorov turbulence ---#
+
+# function that generates a turbulent phase screen based on a Von-Karman Kolmogorov spectrum.
+# Warning : S_Phi2D is the classical VKK spectrum multiplied by N_z in order to be consistent with the general
+# convention of orthonormal normalization used in all the code. (see future REF)
+
 def turbulent(n_z, z_step, x_step, Los, Cn2_exponent,f):
     k0 = 2*np.pi*f / cst.c
     Kos = 2*np.pi/Los
@@ -147,14 +158,9 @@ def turbulent(n_z, z_step, x_step, Los, Cn2_exponent,f):
     # Generate random gaussian white noise filtred by a VKK spectrum
     a = np.random.normal(0,1,n_z)
     b = np.random.normal(0,1,n_z)
-    gauss = 1/np.sqrt(2)*(a + 1j*b) #normalized gaussian with 1/np.sqrt(2)
+    gauss = 1/np.sqrt(2)*(a + 1j*b) #normalized gaussian signal with 1/np.sqrt(2) ??
+    #fft shift to remove symmetry
     G = np.fft.fftshift(np.sqrt(S_Phi2D)*gauss)
     # --- turbulent phase screen --- #
-    Phi=(np.fft.ifft(G,norm = 'ortho').real)
+    Phi=(np.fft.ifft(G,norm = 'ortho').real) #take the real part
     return Phi
-
-# read profile from a text file
-def read_file_profile(n_z, z_step, atm_filename):
-    raise ValueError(['read_file_profile not yet coded'])
-    n_refractive_index = 1
-    return n_refractive_index
