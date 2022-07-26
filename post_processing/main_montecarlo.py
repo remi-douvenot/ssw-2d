@@ -21,9 +21,7 @@
 #
 # @param[out] None          Plots of log-amplitude variance with
 
-# Warning : Before running this file, one must run a simulation without turbulence and save resulting field in post_processing/outputs
-# To do that, just modify file_name to save in function plot_field in ./src/plots/plot_field.py. Then, run main_post_processing.py and
-# loas the corresponding numpy file in this main_montecarlo.py file.
+# Warning : Before running this file in a turbulent case, one must run it without turbulence in order to save the field E_reference
 ##
 
 
@@ -64,24 +62,105 @@ file_configuration = '../propagation/outputs/configuration.csv'
 config = read_config(file_configuration, file_source_config)
 # --------------------------------------------------------------------------------------- #
 
-# --- Load reference field without turbulence --- #
-e_reference = np.load('./outputs/E_field_standard_10G_40km_Los100.npy') #Must be saved before running this montecarlo simulation
-# --------------------------------------------------------------------------------------- #
 
 sigma2_analytic = logvar_analytic(config) #Analytic log amplitude variance
 
-n_simu = 5000 #number of monte carlo simulation
+n_simu = 2500 #number of monte carlo simulation
 n_x = config.N_x
 n_z = config.N_z
 
 # --- Initialise tables --- #
-field_table = [np.zeros((n_x, n_z), dtype='complex64')]*n_simu
+
 sigma2_table = [np.zeros(n_x)]*n_simu
 
 # --- Starting simulations --- #
+if config.turbulence == 'Y':
+    e_reference = np.load('./outputs/E_reference.npy') #Warning : check that this field has been updated before launching turbulent simulations
+    for ii_simu in range (n_simu):
+        print(ii_simu)
+        # main program: SSW propagation
+        # change directory and launch propagation (depends on the OS)
+        if sys.platform == "linux" or sys.platform == "linux2" or sys.platform == "darwin":
+            cmd = 'cd ../propagation && python3 ./main_propagation.py'
+        else:
+            cmd = 'cd ../propagation && python ./main_propagation.py'
+        os.system(cmd)
+        # --- Load wavelets along x --- #
+        wv_total = np.load('../propagation/outputs/wv_total.npy', allow_pickle=True)
 
-for ii_simu in range (n_simu):
-    print(ii_simu)
+        # --- Load relief --- #
+        z_relief = np.loadtxt('../terrain/outputs/z_relief.csv', delimiter=',', dtype="float")
+        diff_relief = np.diff(z_relief)
+
+        # --- Read the parameter values --- #
+        wv_l = config.wv_L
+        wv_family = config.wv_family
+        x_s = - config.x_s
+        x_max = config.N_x * config.x_step  # x_max in km
+        x_step = config.x_step
+        z_max = config.z_step * config.N_z
+        z_step = config.z_step
+        freq = config.freq
+        k0 = 2 * cst.pi * freq / cst.c
+        z_apo = int(config.apo_z * z_max)  # altitude of apodisation
+        n_apo_z = int(np.round(n_z*config.apo_z))
+
+        # --- Initialise field --- #
+        u_field_total = np.zeros((n_x, n_z), dtype='complex64')
+        e_field_total = np.zeros((n_x, n_z), dtype='complex64')
+
+        wv_ii_x = [[]] * (wv_l + 1)
+
+        # --- Image layer --- #
+        ground_type = config.ground
+        if ground_type == 'None':  # No ground, no image layer
+            n_im = 0
+        else:  # ground, therefore an image layer different from 0
+            image_layer = config.image_layer  # image_layer in % of the total size n_z
+            n_im = np.int(np.round(n_z * image_layer))
+            remain_im = n_im % 2 ** wv_l
+            if remain_im != 0:
+                n_im += 2 ** wv_l - remain_im
+
+        # --- from wavelets to E-field --- #
+        # loop on each distance step
+        for ii_x in np.arange(0, n_x):  # first field is not saved
+            # from coo matrix to array on each level
+            for ii_lvl in np.arange(0, wv_l + 1):
+                wv_ii_x[ii_lvl] = wv_total[ii_x][ii_lvl].todense()
+            # inverse fast wavelet transform
+            # squeeze to remove the first useless dimension
+            uu_x = np.squeeze(pywt.waverec(wv_ii_x, wv_family, 'per'))
+            # remove image field
+            u_field_total[ii_x, :] = uu_x[n_im:]
+            # add the relief
+            if ground_type == 'PEC' or ground_type == 'dielectric':
+                # whether ascending or descending relief, the shift is made before or after propagation
+                if diff_relief[ii_x] < 0:
+                    ii_relief = int(z_relief[ii_x + 1] / z_step)
+                else:
+                    ii_relief = int(z_relief[ii_x] / z_step)
+                u_field_total[ii_x, :] = shift_relief(u_field_total[ii_x, :], ii_relief)
+            x_current = x_s + (ii_x + 1) * x_step
+            # print('x_current', x_current)
+
+            e_field_total[ii_x, :] = u_field_total[ii_x, :] / np.sqrt(k0 * x_current) * np.exp(-1j * k0 * x_current)
+        #field_table[ii_simu]=e_field_total
+
+        # --- Compute log-variance for each simulation  --- #
+        sigma2_table[ii_simu] = log_variance(config,e_field_total,e_reference)
+    sigma2_mean = np.mean(sigma2_table,axis=0)
+    x = np.linspace(0, config.N_x * config.x_step, config.N_x)
+    plt.plot(x, sigma2_mean, label='SSW 2D')
+    plt.plot(x, sigma2_analytic, label='Analytic')
+    plt.xlabel('Distance (km)')
+    plt.ylabel('\u03C3$^2$ (dB$^2$)')
+    plt.title('variance de la log-amplitude : 1 GHz ; Los =100 m ; Cn2 = 1e-12')
+    plt.grid()
+    plt.legend()
+    plt.show()
+
+else : #save non turbulent field
     # main program: SSW propagation
     # change directory and launch propagation (depends on the OS)
     if sys.platform == "linux" or sys.platform == "linux2" or sys.platform == "darwin":
@@ -107,7 +186,7 @@ for ii_simu in range (n_simu):
     freq = config.freq
     k0 = 2 * cst.pi * freq / cst.c
     z_apo = int(config.apo_z * z_max)  # altitude of apodisation
-    n_apo_z = int(np.round(n_z*config.apo_z))
+    n_apo_z = int(np.round(n_z * config.apo_z))
 
     # --- Initialise field --- #
     u_field_total = np.zeros((n_x, n_z), dtype='complex64')
@@ -149,18 +228,6 @@ for ii_simu in range (n_simu):
         # print('x_current', x_current)
 
         e_field_total[ii_x, :] = u_field_total[ii_x, :] / np.sqrt(k0 * x_current) * np.exp(-1j * k0 * x_current)
-    field_table[ii_simu]=e_field_total
-
-    # --- Compute log-variance for each simulation  --- #
-    sigma2_table[ii_simu] = log_variance(config,e_field_total,e_reference)
-sigma2_mean = np.mean(sigma2_table,axis=0)
-x = np.linspace(0, config.N_x * config.x_step, config.N_x)
-plt.plot(x, sigma2_mean, label='SSW 2D')
-plt.plot(x, sigma2_analytic, label='Analytic')
-plt.xlabel('Distance (km)')
-plt.ylabel('\u03C3$^2$ (dB$^2$)')
-plt.title('variance de la log-amplitude : 10 GHz ; Los =100 m ; Cn2 = 1e-12')
-plt.grid()
-plt.legend()
-plt.show()
-
+    np.save('./outputs/E_reference', e_field_total)
+    print('Reference field is saved for f =',config.freq*1e-6,'MHz and L0 =',config.L0, 'm')
+    print('Launch turbulent simulation')

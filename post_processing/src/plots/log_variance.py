@@ -34,9 +34,6 @@ from scipy import integrate as intg
 ##
 
 
-# -- Load homogeneous fields SSW-2D as refrences --#
-
-e_field_standard_1G_Los100 = np.load('./outputs/E_field_standard_1G_40km_Los100.npy')
 
 
 
@@ -55,6 +52,7 @@ def log_variance(config, E_turbulent,E_reference):
             ln_amplitude[ii_z]=np.log(np.abs(E_turbulent[ii_x][ii_z]) / np.abs(E_reference[ii_x][ii_z]))
         sigma2[ii_x]= np.var(ln_amplitude)
     # np.save('sigma2')
+    print('max champ',np.max(20*np.log10(np.abs(E_turbulent[-1]))),np.max(20*np.log10(np.abs(E_reference[-1]))))
     return sigma2
 
 
@@ -72,10 +70,10 @@ def logvar_analytic(config):
     # --- compute vertical log-variance at each range step --#
     for ii_x in range(n_x) :
         x = X[ii_x]
-        #f = lambda K_z,u : Np2dB**2*2*np.pi*k_0**2*x*0.055*Cn2*(K_z**2+ Kos**2)**(-4/3) *0.5 * (1-np.cos(K_z**2*x*u*(1-u)/k_0)) #2D spherical waves
-        #F= intg.nquad(f,[[-3, 3],[0,1]],opts = {'limit' : 100 } ) #Warning : choice of interval of integration and number of subdivision
-        f = lambda k_z : Np2dB**2*2*np.pi*k_0**2*x*0.055*10**(config.Cn2)*(k_z**2+ Kos**2)**(-4/3) *0.5 * (1-np.sinc(k_z**2*x/k_0)) #Plane waves
-        F= intg.quad(f,-1, 1,limit = 100000000)
+        f = lambda k_z,u : Np2dB**2*2*np.pi*k_0**2*x*0.055*10**(config.Cn2)*(k_z**2+ Kos**2)**(-4/3) *0.5 * (1-np.cos(k_z**2*x*u*(1-u)/k_0)) #2D spherical waves
+        F= intg.nquad(f,[[-3, 3],[0,1]],opts = {'limit' : 1000 } ) #Warning : choice of interval of integration and number of subdivision
+        #f = lambda k_z : Np2dB**2*2*np.pi*k_0**2*x*0.055*10**(config.Cn2)*(k_z**2+ Kos**2)**(-4/3) *0.5 * (1-np.sinc(k_z**2*x/k_0)) #Plane waves
+        #F= intg.quad(f,-1, 1,limit = 100000000)
         sigma2[ii_x] = F[0]
         print(x,F[1])
     return sigma2

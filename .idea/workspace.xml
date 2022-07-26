@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="b5a6572f-2cbb-45cc-aad0-8ebc0e965382" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/ssw-2d.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/post_processing/main_montecarlo.py" beforeDir="false" afterPath="$PROJECT_DIR$/post_processing/main_montecarlo.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/post_processing/outputs/E_field_standard_10G_40km_Los100.npy" beforeDir="false" afterPath="$PROJECT_DIR$/post_processing/outputs/E_field_standard_10G_40km_Los100.npy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/post_processing/outputs/E_field_standard_1G_40km_Los100.npy" beforeDir="false" afterPath="$PROJECT_DIR$/post_processing/outputs/E_field_standard_1G_40km_Los100.npy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/post_processing/src/plots/log_variance.py" beforeDir="false" afterPath="$PROJECT_DIR$/post_processing/src/plots/log_variance.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/post_processing/src/plots/plot_field.py" beforeDir="false" afterPath="$PROJECT_DIR$/post_processing/src/plots/plot_field.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/propagation/inputs/configuration.csv" beforeDir="false" afterPath="$PROJECT_DIR$/propagation/inputs/configuration.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/propagation/outputs/configuration.csv" beforeDir="false" afterPath="$PROJECT_DIR$/propagation/outputs/configuration.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/propagation/outputs/dictionary.npy" beforeDir="false" afterPath="$PROJECT_DIR$/propagation/outputs/dictionary.npy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/propagation/src/DSSF/propa_discrete_spectral_domain.py" beforeDir="false" afterPath="$PROJECT_DIR$/propagation/src/DSSF/propa_discrete_spectral_domain.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/propagation/src/atmosphere/genere_n_profile.py" beforeDir="false" afterPath="$PROJECT_DIR$/propagation/src/atmosphere/genere_n_profile.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/propagation/src/propagation/ssw_2d.py" beforeDir="false" afterPath="$PROJECT_DIR$/propagation/src/propagation/ssw_2d.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/inputs/configuration.csv" beforeDir="false" afterPath="$PROJECT_DIR$/source/inputs/configuration.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/outputs/configuration.csv" beforeDir="false" afterPath="$PROJECT_DIR$/source/outputs/configuration.csv" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2CDDek5Y1gJM4MfQjtW0WmKD1dv" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RunManager" selected="Python.main_montecarlo">
+    <configuration name="main_2d_ssw_gui" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="ssw-2d" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/GUI" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/GUI/main_2d_ssw_gui.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="main_montecarlo" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="ssw-2d" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/post_processing" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/post_processing/main_montecarlo.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="main_post_processing" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="ssw-2d" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/post_processing" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/post_processing/main_post_processing.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.main_montecarlo" />
+        <item itemvalue="Python.main_post_processing" />
+        <item itemvalue="Python.main_2d_ssw_gui" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b5a6572f-2cbb-45cc-aad0-8ebc0e965382" name="Changes" comment="" />
+      <created>1658328359762</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1658328359762</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
