@@ -65,7 +65,7 @@ config = read_config(file_configuration, file_source_config)
 
 
 
-n_simu = 5 #number of monte carlo simulation
+n_simu = 10 #number of monte carlo simulation
 n_x = config.N_x
 n_z = config.N_z
 
@@ -106,8 +106,8 @@ if config.turbulence == 'Y':
         n_apo_z = int(np.round(n_z*config.apo_z))
 
         # --- Initialise field --- #
-        u_field_total = np.zeros((n_x, n_z), dtype='complex64')
-        e_field_total = np.zeros((n_x, n_z), dtype='complex64')
+        u_field_total = np.zeros((n_x, n_z), dtype='complex')
+        e_field_total = np.zeros((n_x, n_z), dtype='complex')
 
         wv_ii_x = [[]] * (wv_l + 1)
 

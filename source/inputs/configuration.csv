@@ -1,6 +1,6 @@
 Property,Value,Unit
-N_z,5000,
-z_step,0.2,m
+N_z,50000,
+z_step,0.02,m
 x_s,-50000.0,m
 frequency,10000.0,MHz
 P_Tx,1,W

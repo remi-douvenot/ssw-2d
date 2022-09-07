@@ -319,7 +319,7 @@ def apply_phi_turbulent(u_x, phi_turbulent):
     # apply the turbulent phase screen of one step delta_x
     # half the refraction applied before and after propagation
 
-    u_x *= (np.exp(-1j * phi_turbulent)).astype('complex64')
+    u_x *= np.exp(-1j * phi_turbulent)
 
     return u_x
 

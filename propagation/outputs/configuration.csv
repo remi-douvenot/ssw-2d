@@ -1,8 +1,8 @@
 Property,Value,Unit
-N_x,200,Unnamed: 2
-N_z,5000,
-x_step,50.0,m
-z_step,0.2,m
+N_x,20,Unnamed: 2
+N_z,50000,
+x_step,500.0,m
+z_step,0.02,m
 frequency,10000.0,MHz
 polarisation,TE,
 Max compression error,-10.0,dB
@@ -24,4 +24,4 @@ zb,200.0,m
 c2,-0.8,M-unit/m
 zt,200.0,m
 atm filename,toto.atm,
-dynamic,13,dB
+dynamic,30,dB
