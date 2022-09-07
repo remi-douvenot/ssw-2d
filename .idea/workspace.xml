@@ -8,7 +8,6 @@
       <change beforePath="$PROJECT_DIR$/propagation/inputs/configuration.csv" beforeDir="false" afterPath="$PROJECT_DIR$/propagation/inputs/configuration.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/propagation/outputs/configuration.csv" beforeDir="false" afterPath="$PROJECT_DIR$/propagation/outputs/configuration.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/propagation/outputs/dictionary.npy" beforeDir="false" afterPath="$PROJECT_DIR$/propagation/outputs/dictionary.npy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/propagation/src/propagation/ssw_2d.py" beforeDir="false" afterPath="$PROJECT_DIR$/propagation/src/propagation/ssw_2d.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/inputs/configuration.csv" beforeDir="false" afterPath="$PROJECT_DIR$/source/inputs/configuration.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/outputs/configuration.csv" beforeDir="false" afterPath="$PROJECT_DIR$/source/outputs/configuration.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/terrain/inputs/conf_terrain.csv" beforeDir="false" afterPath="$PROJECT_DIR$/terrain/inputs/conf_terrain.csv" afterDir="false" />
