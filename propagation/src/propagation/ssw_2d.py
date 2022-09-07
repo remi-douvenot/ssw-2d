@@ -237,7 +237,7 @@ def compute_image_field(u_x, n_im):
     n_z = u_x.size
 
     # Init the size of the field added with image layer
-    u_x_im = np.zeros([n_z + n_im], dtype='complex64')
+    u_x_im = np.zeros([n_z + n_im], dtype='complex')
 
     # Fill the image layer
     u_x_im[n_im:n_z + n_im] = u_x
@@ -304,7 +304,7 @@ def apply_refractive_index(u_x, n_index, config):
     # apply the phase screen of one step delta_x
     # half the refraction applied before and after propagation
 
-    u_x = (np.exp(-1j * k0 * (n_index-1)/2 * config.x_step) * u_x).astype('complex64')
+    u_x = np.exp(-1j * k0 * (n_index-1)/2 * config.x_step) * u_x
 
     return u_x
 

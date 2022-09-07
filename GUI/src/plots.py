@@ -126,8 +126,8 @@ class Plots(object):
         z_apo = int(self.sizeApoSpinBox.value()/100 * z_max)  # altitude of apodisation
 
         # --- Initialise field --- #
-        u_field_total = np.zeros((n_x, n_z), dtype='complex64')
-        e_field_total = np.zeros((n_x, n_z), dtype='complex64')
+        u_field_total = np.zeros((n_x, n_z), dtype='complex')
+        e_field_total = np.zeros((n_x, n_z), dtype='complex')
 
         wv_ii_x = [[]] * (wv_l + 1)
 
@@ -162,7 +162,7 @@ class Plots(object):
                     ii_relief = int(z_relief[ii_x] / z_step)
                 u_field_total[ii_x, :] = shift_relief(u_field_total[ii_x, :], ii_relief)
             x_current = -x_s + (ii_x + 1) * x_step
-            print('x_current',x_current)
+            # print('x_current',x_current)
             e_field_total[ii_x, :] = u_field_total[ii_x, :] / np.sqrt(k0 * x_current) * np.exp(-1j * k0 * x_current)
         # -------------------------------- #
 

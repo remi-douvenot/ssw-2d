@@ -23,7 +23,7 @@ import scipy.constants as cst
 
 def u2w(alpha, u_field, n_z, z_step):
     # initialisation
-    w_field = np.zeros(n_z, dtype=np.complex64)  # index from 1 to n_z-2
+    w_field = np.zeros(n_z, dtype=np.complex)  # index from 1 to n_z-2
     # gradient function does ( u[n+1] - u[n-1] ) / 2
     # w_field[1:n_z - 1] = np.gradient(u_field_2d)[1:n_z - 1] / z_step + alpha * u_field_2d[1:n_z - 1]
     w_field[1:n_z - 1] = (u_field[2:n_z] - u_field[0:n_z - 2]) / (2*z_step) + alpha * u_field[1:n_z - 1]
@@ -41,8 +41,8 @@ def u2w(alpha, u_field, n_z, z_step):
 def w2u(spectre_w_0, spectre_w_n_z, w_field, n_z, z_step, r0, aa):
 
     # initialisation of the variables
-    yy = np.zeros(n_z, dtype=np.complex64)  # intermediate variables for diff equation (from w to u)
-    fp_field = np.zeros(n_z, dtype=np.complex64)  # intermediate variables for diff equation (from w to u)
+    yy = np.zeros(n_z, dtype=np.complex)  # intermediate variables for diff equation (from w to u)
+    fp_field = np.zeros(n_z, dtype=np.complex)  # intermediate variables for diff equation (from w to u)
 
     # ----------------------------------------------------------------------- #
     # --- calculate fp_field the particular solution of the diff equation --- #
@@ -79,14 +79,14 @@ def w2u(spectre_w_0, spectre_w_n_z, w_field, n_z, z_step, r0, aa):
         sum_temp2 += np.sum(sum_list2)
 
         # calculate B1 and B2
-        b_1 = (spectre_w_0 - aa * sum_temp1).astype('complex64')
-        b_2 = (spectre_w_n_z - aa * sum_temp2).astype('complex64')
+        b_1 = spectre_w_0 - aa * sum_temp1
+        b_2 = spectre_w_n_z - aa * sum_temp2
 
     # retrieve u_field wrt b_1, b_2, and r0
     u_field = fp_field + b_1 * (r0 ** np.arange(0, n_z)) + b_2 * ((-r0) ** np.arange(n_z-1, -1, -1))
     # print('b1', b_1, 'b2', b_2)
 
-    return u_field.astype('complex64')
+    return u_field
 
 
 ##
@@ -184,7 +184,7 @@ def calculate_r0(z_step, alpha, polarisation):
     else:  # TE polarisation
         # alpha has a negative real part
         r0 = - np.sqrt(1+(alpha*z_step)**2) - alpha*z_step
-    return r0.astype('complex64')
+    return r0
 
 
 ##
