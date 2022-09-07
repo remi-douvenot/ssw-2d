@@ -120,7 +120,7 @@ def wavelet_propag_one_step(wv_x, library, config):
 
     # --- Init the propagated wavelet coefficient --- #
     # Decompose a matrix of zeros to obtain a wavelet list full of zeros
-    zeros = np.zeros(n_z, dtype='complex64')  # matrix full of zeros
+    zeros = np.zeros(n_z, dtype='complex')  # matrix full of zeros
     # Wavelet transform
     wv_x_dx = pywt.wavedec(zeros, family, mode, ll)
     # changes the wavelet coeffs in complex 64 format.
@@ -199,7 +199,7 @@ def add_propagator_at_once(wv_x_lvl, propagator, ll, wv_x_dx):
         # loop on wavelet orientations: one convolution of each orientation
 
         # initialisation of the input signal for convolution
-        wv_x_lvl_dilate = np.zeros(n_z_dilate, dtype='complex64')
+        wv_x_lvl_dilate = np.zeros(n_z_dilate, dtype='complex')
 
         # first wavelet of each level corresponds to the input of the propagator
         wv_x_lvl_dilate[::t_level_prime] = wv_x_lvl
@@ -302,9 +302,9 @@ def eliminate_top_wavelets(wv_x):
 # @date: 09/06/2021
 # @version: V1.0
 #
-# @brief Put a wavelet decomposition in a Fortran format (with complex64 instead of complex128)
+# @brief Put a wavelet decomposition in a Fortran format
 # @param[in] wv_x Wavelet decomposition
-# @param[out] wv_x_fortran Wavelet decomposition with complex64 format
+# @param[out] wv_x_fortran Wavelet decomposition
 ##
 
 
@@ -316,6 +316,6 @@ def fortran_type(wv_u):
     wv_u_fortran = [[]] * (ll+1)
     # fill the wavelet levels
     for ii_lvl in np.arange(0, ll+1):
-        wv_u_fortran[ii_lvl] = wv_u[ii_lvl].astype('complex64')
+        wv_u_fortran[ii_lvl] = wv_u[ii_lvl]
 
     return wv_u_fortran

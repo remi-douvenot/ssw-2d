@@ -162,7 +162,7 @@ def read_source(config, file_source_config, file_e_init):
     # --- Reading source E-field --- #
     # ------------------------------ #
 
-    return e_field.astype('complex64'), z_s
+    return e_field, z_s
 
 
 def read_relief(config, file_relief_config, file_relief):

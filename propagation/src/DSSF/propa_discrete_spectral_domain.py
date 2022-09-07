@@ -39,7 +39,7 @@ def compute_discrete_spectral_propagator(simulation_parameters, n_z):
     ind_evan = np.logical_not(ind_prop)
 
     # compute k_x
-    k_x = np.zeros_like(k_x2, dtype='complex64')
+    k_x = np.zeros_like(k_x2, dtype='complex')
     # propagating waves
     k_x[ind_prop] = np.sqrt(k_x2[ind_prop])
     # evanescent waves = Take the sqrt with positive imag part
