@@ -2,25 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b5a6572f-2cbb-45cc-aad0-8ebc0e965382" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/ssw-2d.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/post_processing/main_montecarlo.py" beforeDir="false" afterPath="$PROJECT_DIR$/post_processing/main_montecarlo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/post_processing/outputs/E_field_standard_10G_40km_Los100.npy" beforeDir="false" afterPath="$PROJECT_DIR$/post_processing/outputs/E_field_standard_10G_40km_Los100.npy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/post_processing/outputs/E_field_standard_1G_40km_Los100.npy" beforeDir="false" afterPath="$PROJECT_DIR$/post_processing/outputs/E_field_standard_1G_40km_Los100.npy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/post_processing/outputs/E_reference.npy" beforeDir="false" afterPath="$PROJECT_DIR$/post_processing/outputs/E_reference.npy" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/post_processing/src/plots/log_variance.py" beforeDir="false" afterPath="$PROJECT_DIR$/post_processing/src/plots/log_variance.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/post_processing/src/plots/plot_field.py" beforeDir="false" afterPath="$PROJECT_DIR$/post_processing/src/plots/plot_field.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/propagation/inputs/configuration.csv" beforeDir="false" afterPath="$PROJECT_DIR$/propagation/inputs/configuration.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/propagation/outputs/configuration.csv" beforeDir="false" afterPath="$PROJECT_DIR$/propagation/outputs/configuration.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/propagation/outputs/dictionary.npy" beforeDir="false" afterPath="$PROJECT_DIR$/propagation/outputs/dictionary.npy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/propagation/src/DSSF/propa_discrete_spectral_domain.py" beforeDir="false" afterPath="$PROJECT_DIR$/propagation/src/DSSF/propa_discrete_spectral_domain.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/propagation/src/atmosphere/genere_n_profile.py" beforeDir="false" afterPath="$PROJECT_DIR$/propagation/src/atmosphere/genere_n_profile.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/propagation/src/propagation/ssw_2d.py" beforeDir="false" afterPath="$PROJECT_DIR$/propagation/src/propagation/ssw_2d.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/inputs/configuration.csv" beforeDir="false" afterPath="$PROJECT_DIR$/source/inputs/configuration.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/outputs/configuration.csv" beforeDir="false" afterPath="$PROJECT_DIR$/source/outputs/configuration.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/terrain/inputs/conf_terrain.csv" beforeDir="false" afterPath="$PROJECT_DIR$/terrain/inputs/conf_terrain.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/terrain/outputs/z_relief.csv" beforeDir="false" afterPath="$PROJECT_DIR$/terrain/outputs/z_relief.csv" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -111,8 +103,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.main_montecarlo" />
-        <item itemvalue="Python.main_post_processing" />
         <item itemvalue="Python.main_2d_ssw_gui" />
+        <item itemvalue="Python.main_post_processing" />
       </list>
     </recent_temporary>
   </component>

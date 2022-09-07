@@ -64,14 +64,15 @@ def logvar_analytic(config):
     k_0 = 2*np.pi*config.freq/3e8
     n_x = config.N_x
     R = n_x*config.x_step #total range
-    X = np.linspace(100,R,n_x)
-    sigma2 = np.zeros(n_x)
+    N_ite = 20
+    X = np.linspace(100,R,N_ite)
+    sigma2 = np.zeros(N_ite)
     Np2dB = 8.68
     # --- compute vertical log-variance at each range step --#
-    for ii_x in range(n_x) :
+    for ii_x in range(N_ite) :
         x = X[ii_x]
         f = lambda k_z,u : Np2dB**2*2*np.pi*k_0**2*x*0.055*10**(config.Cn2)*(k_z**2+ Kos**2)**(-4/3) *0.5 * (1-np.cos(k_z**2*x*u*(1-u)/k_0)) #2D spherical waves
-        F= intg.nquad(f,[[-3, 3],[0,1]],opts = {'limit' : 1000 } ) #Warning : choice of interval of integration and number of subdivision
+        F= intg.nquad(f,[[-3, 3],[0,1]],opts = {'limit' : 100 } ) #Warning : choice of interval of integration and number of subdivision
         #f = lambda k_z : Np2dB**2*2*np.pi*k_0**2*x*0.055*10**(config.Cn2)*(k_z**2+ Kos**2)**(-4/3) *0.5 * (1-np.sinc(k_z**2*x/k_0)) #Plane waves
         #F= intg.quad(f,-1, 1,limit = 100000000)
         sigma2[ii_x] = F[0]
