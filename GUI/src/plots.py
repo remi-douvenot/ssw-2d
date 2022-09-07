@@ -126,8 +126,8 @@ class Plots(object):
         z_apo = int(self.sizeApoSpinBox.value()/100 * z_max)  # altitude of apodisation
 
         # --- Initialise field --- #
-        u_field_total = np.zeros((n_x, n_z), dtype='complex64')
-        e_field_total = np.zeros((n_x, n_z), dtype='complex64')
+        u_field_total = np.zeros((n_x, n_z), dtype='complex')
+        e_field_total = np.zeros((n_x, n_z), dtype='complex')
 
         wv_ii_x = [[]] * (wv_l + 1)
 

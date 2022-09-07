@@ -141,7 +141,7 @@ def create_dssf_wavelet(n_u_top, n_u_bottom, family, ii_lvl, ll):
     if family != 'sym6':
         raise ValueError('Incorrect wavelet family. only sym6 is available')
 
-    u_wavelet = np.zeros(n_u_top + n_u_bottom, dtype='complex64')
+    u_wavelet = np.zeros(n_u_top + n_u_bottom, dtype='complex')
     # 1/ generate an empty wavelet decomposition of the corresponding size
     wv_dec = pywt.wavedec(u_wavelet, family, 'per', ll)
 
@@ -177,7 +177,7 @@ def create_dssf_scaling_fct(n_u_top, n_u_bottom, family, ii_lvl, ll):
         raise ValueError('Incorrect wavelet family. only sym6 is available')
 
     # 1/ generate an empty wavelet decomposition of the corresponding size
-    u_wavelet = np.zeros(n_u_top + n_u_bottom, dtype='complex64')
+    u_wavelet = np.zeros(n_u_top + n_u_bottom, dtype='complex')
     wv_dec = pywt.wavedec(u_wavelet, family, 'per', ll - ii_lvl + 1)
 
     # 2/ median wavelet = 1
