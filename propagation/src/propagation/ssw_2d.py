@@ -122,7 +122,9 @@ def ssw_2d(u_0, config, n_refraction, ii_vect_relief):
         # --- refractivity applied twice 1/2 --- #
         u_x = apply_refractive_index(u_x, n_refraction, config)
         #print(config.turbulence)
-
+        if config.turbulence == 'Y':
+            phi_turbulent = genere_phi_turbulent(config)
+            u_x = apply_phi_turbulent(u_x,phi_turbulent,config)
         # -------------------------------------- #
 
         # ------------------------------ #
@@ -201,9 +203,7 @@ def ssw_2d(u_0, config, n_refraction, ii_vect_relief):
 
         # --- refractivity applied twice 2/2 --- #
         u_x_dx = apply_refractive_index(u_x_dx, n_refraction, config)
-        if config.turbulence == 'Y':
-            phi_turbulent = genere_phi_turbulent(config)
-            u_x_dx = apply_phi_turbulent(u_x_dx,phi_turbulent)
+
         # -------------------------------------- #
 
         # store the wavelet parameters (in coo format)
@@ -313,12 +313,12 @@ def apply_refractive_index(u_x, n_index, config):
 
     return u_x
 
-def apply_phi_turbulent(u_x, phi_turbulent):
+def apply_phi_turbulent(u_x, phi_turbulent,config):
 
 
     # apply the turbulent phase screen of one step delta_x
     # half the refraction applied before and after propagation
-
+    k0 = 2 * cst.pi * config.freq / cst.c
     u_x *= np.exp(-1j * phi_turbulent)
 
     return u_x

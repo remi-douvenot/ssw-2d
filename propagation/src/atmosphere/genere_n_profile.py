@@ -151,17 +151,21 @@ def turbulent(n_z, z_step, x_step, Los, Cn2_exponent,f):
     k0 = 2*np.pi*f / cst.c
     Kos = 2*np.pi/Los
     # Compute spectral discretization
-    q_z = np.linspace(-n_z/2,n_z/2-1, num=n_z, endpoint = True)
+    q_z = np.linspace(0,n_z-1, num=n_z, endpoint = True)
     k_z = (2/z_step) * np.sin(np.pi*q_z/(n_z)) #version DSSF
     #k_z = (2*np.pi)/(n_z*z_step)*q_z #version SSF
     # Define Von Karman Kolmogorov (VKK) spectrum
-    S_Phi2D = k0**2 * 2*np.pi * x_step*0.055*10**(Cn2_exponent)*(k_z**2+Kos**2)**(-4/3)*n_z #normalization of VKK spectrum by S*n_z
+    S_Phi2D = (2*np.pi)* k0**2*x_step*0.055*10**(Cn2_exponent)*(k_z**2+Kos**2)**(-4/3) #normalization of VKK spectrum by S*n_z
     # Generate random gaussian white noise filtred by a VKK spectrum
-    a = np.random.normal(0,1,n_z)
-    b = np.random.normal(0,1,n_z)
-    gauss = 1/np.sqrt(2)*(a + 1j*b) #normalized gaussian signal with 1/np.sqrt(2) ??
+    a = np.random.normal(0,np.sqrt((2*np.pi*n_z)/(z_step))*np.sqrt(S_Phi2D),n_z)
+    b = np.random.normal(0,np.sqrt((2*np.pi*n_z)/(z_step))*np.sqrt(S_Phi2D),n_z)
+    gauss = (a + 1j*b) #normalized gaussian signal with 1/np.sqrt(2) ??
+    print('energy gauss', np.sum(np.abs(gauss)**2))
     #fft shift to remove symmetry
-    G = np.fft.fftshift(np.sqrt(S_Phi2D)*gauss)
+    G = gauss
     # --- turbulent phase screen --- #
-    Phi=(np.fft.ifft(G,norm = 'ortho').real) #take the real part
+    Phi=(np.fft.ifft(G).real)
+    #Phi=(G*np.exp(2*np.pi*1j*q_z/n_z)).real
+    #take the real part
+    print('energy phi',np.sum(np.abs(Phi)**2)/n_z)
     return Phi

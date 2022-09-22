@@ -44,12 +44,14 @@ def log_variance(config, E_turbulent,E_reference):
     sigma2 = np.zeros(n_x)
     n_z = config.N_z
     n_apo_z = np.int(config.apo_z * n_z)
+    print(n_apo_z)
     # --- compute vertical log-variance at each range step --#
+    Np2dB = 8.686
     for ii_x in range(0, n_x):
         ln_amplitude = np.zeros(n_z)
         #print(ii_x)
         for ii_z in range(n_apo_z, n_z - n_apo_z): #Field is true only in apo window
-            ln_amplitude[ii_z]=np.log(np.abs(E_turbulent[ii_x][ii_z]) / np.abs(E_reference[ii_x][ii_z]))
+            ln_amplitude[ii_z]= Np2dB*np.log(np.abs(E_turbulent[ii_x][ii_z]) / np.abs(E_reference[ii_x][ii_z]))
         sigma2[ii_x]= np.var(ln_amplitude)
     # np.save('sigma2')
     print('max champ',np.max(20*np.log10(np.abs(E_turbulent[-1]))),np.max(20*np.log10(np.abs(E_reference[-1]))))
@@ -67,7 +69,7 @@ def logvar_analytic(config):
     N_ite = 20
     X = np.linspace(100,R,N_ite)
     sigma2 = np.zeros(N_ite)
-    Np2dB = 8.68
+    Np2dB = 8.686
     # --- compute vertical log-variance at each range step --#
     for ii_x in range(N_ite) :
         x = X[ii_x]

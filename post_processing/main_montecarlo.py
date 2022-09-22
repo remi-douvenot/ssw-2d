@@ -151,8 +151,8 @@ if config.turbulence == 'Y':
         sigma2_table[ii_simu] = log_variance(config,e_field_total,e_reference)
     sigma2_mean = np.mean(sigma2_table,axis=0)
     sigma2_analytic = logvar_analytic(config)  # Analytic log amplitude variance
-    x = np.linspace(0, config.N_x * config.x_step, config.N_x)
-    x_analytic = np.linspace(0, config.N_x*config.x_step, len(sigma2_analytic))
+    x = np.linspace(x_step, config.N_x * config.x_step, config.N_x)
+    x_analytic = np.linspace(x_step, config.N_x*config.x_step, len(sigma2_analytic))
     plt.plot(x, sigma2_mean, label='SSW 2D')
     plt.plot(x_analytic, sigma2_analytic, label='Analytic')
     plt.xlabel('Distance (km)')
