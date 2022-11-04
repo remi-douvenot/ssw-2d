@@ -1,11 +1,11 @@
 Property,Value,Unit
-N_x,80,Unnamed: 2
-N_z,3000,
+N_x,200,Unnamed: 2
+N_z,7500,
 x_step,500.0,m
-z_step,0.16666666666666666,m
-frequency,1000.082,MHz
+z_step,0.06666666666666667,m
+frequency,10000.0,MHz
 polarisation,TE,
-Max compression error,-50.0,dB
+Max compression error,-40.0,dB
 wavelet level,2,
 wavelet family,sym6,
 apodisation window,Hanning,
@@ -24,4 +24,4 @@ zb,200.0,m
 c2,-0.8,M-unit/m
 zt,200.0,m
 atm filename,toto.atm,
-dynamic,30,dB
+dynamic,70,dB

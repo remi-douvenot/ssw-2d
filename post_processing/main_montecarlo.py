@@ -65,7 +65,7 @@ config = read_config(file_configuration, file_source_config)
 
 
 
-n_simu = 5 #number of monte carlo simulation
+n_simu = 150 #number of monte carlo simulation
 n_x = config.N_x
 n_z = config.N_z
 
@@ -145,6 +145,7 @@ if config.turbulence == 'Y':
             # print('x_current', x_current)
 
             e_field_total[ii_x, :] = u_field_total[ii_x, :] / np.sqrt(k0 * x_current) * np.exp(-1j * k0 * x_current)
+            #e_field_total[ii_x, :] = u_field_total[ii_x, :]
         #field_table[ii_simu]=e_field_total
 
         # --- Compute log-variance for each simulation  --- #
@@ -153,11 +154,12 @@ if config.turbulence == 'Y':
     sigma2_analytic = logvar_analytic(config)  # Analytic log amplitude variance
     x = np.linspace(x_step, config.N_x * config.x_step, config.N_x)
     x_analytic = np.linspace(x_step, config.N_x*config.x_step, len(sigma2_analytic))
-    plt.plot(x, sigma2_mean, label='SSW 2D')
-    plt.plot(x_analytic, sigma2_analytic, label='Analytic')
+    plt.plot(x/1000, sigma2_mean,'--', label='SSF')
+    plt.plot(x_analytic/1000, sigma2_analytic, label='Analytic')
     plt.xlabel('Distance (km)')
     plt.ylabel('\u03C3$^2$ (dB$^2$)')
-    plt.title('variance de la log-amplitude : 1 GHz ; Los =100 m ; Cn2 = 1e-12')
+    #plt.xlim(7.5,40)
+    plt.title('Log-amplitude variance : 10 GHz ; Los = 100 m ; Cn2 = 1e-12')
     plt.grid()
     plt.legend()
     plt.show()
@@ -230,6 +232,7 @@ else : #save non turbulent field
         # print('x_current', x_current)
 
         e_field_total[ii_x, :] = u_field_total[ii_x, :] / np.sqrt(k0 * x_current) * np.exp(-1j * k0 * x_current)
+        #e_field_total[ii_x, :] = u_field_total[ii_x, :]
     np.save('./outputs/E_reference', e_field_total)
     print('Reference field is saved for f =',config.freq*1e-6,'MHz and L0 =',config.L0, 'm')
     print('Launch turbulent simulation')
