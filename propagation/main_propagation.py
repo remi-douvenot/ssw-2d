@@ -76,6 +76,7 @@ import time
 import scipy.constants as cst
 from src.wavelets.compute_thresholds import compute_thresholds
 from src.propagation.ssw_2d import ssw_2d
+from src.propagation.wwp_2d import wwp_2d
 import shutil  # to make file copies
 # where config is defined
 from src.classes_and_files.read_files import read_config, read_source, read_relief
@@ -155,7 +156,10 @@ config.V_s, config.V_p = compute_thresholds(config.N_x, config.max_compression_e
 # --- 2D Propagation --- #
 # ---------------------- #
 t_propa_SSW_s = time.process_time()
-u_final, wv_total = ssw_2d(u_0, config, n_refraction, ii_vect_relief)
+if config.method == 'SSW':
+    u_final, wv_total = ssw_2d(u_0, config, n_refraction, ii_vect_relief)
+elif config.method == 'WWP':
+    u_final, wv_total = wwp_2d(u_0, config, n_refraction, ii_vect_relief)
 
 # --- de-normalise in infinity norm --- #
 # field: simple multiplication

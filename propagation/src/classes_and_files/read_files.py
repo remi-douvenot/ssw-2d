@@ -29,7 +29,9 @@ def read_config(file_configuration):
     f_config = open(file_configuration, newline='')
     file_tmp = csv.reader(f_config)
     for row in file_tmp:
-        if row[0] == 'N_z':
+        if row[0] == 'method':  # SSW or WWP
+            Config.method = row[1]
+        elif row[0] == 'N_z':
             Config.N_z = np.int(row[1])
         elif row[0] == 'N_x':
             Config.N_x = np.int(row[1])
@@ -85,6 +87,9 @@ def read_config(file_configuration):
 
     if (Config.ground != 'None') & (Config.ground != 'PEC') & (Config.ground != 'Dielectric'):
         raise ValueError(['Ground must be chosen among: None, PEC, or Dielectric'])
+
+    if (Config.method != 'SSW') & (Config.method != 'WWP'):
+        raise ValueError(['Method must be chosen among: SSW or WWP'])
     # ------------ END ------------ #
     # --- Reading configuration --- #
     # ----------------------------- #

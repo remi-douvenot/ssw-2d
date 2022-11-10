@@ -21,8 +21,8 @@ def generate_n_profile(config):
     # choice of the atmospheric profile type
     if config.atmosphere == 'Homogeneous':  # constant n (vacuum)
         n_refractive_index = np.ones(config.N_z)
-    elif config.atmosphere == 'Standard':  # constant slope
-        n_refractive_index = standard_atmosphere(config.N_z, config.z_step, config.c0)
+    elif config.atmosphere == 'Linear':  # constant slope
+        n_refractive_index = linear_atmosphere(config.N_z, config.z_step, config.c0)
     elif config.atmosphere == 'Evaporation':  # log then constant slope
         n_refractive_index = evaporation_duct(config.N_z, config.z_step, config.c0, config.delta)
     elif config.atmosphere == 'Bilinear':  # bilinear profile = trilinear with zb = 0
@@ -40,7 +40,7 @@ def generate_n_profile(config):
 
 
 # standard atmosphere
-def standard_atmosphere(n_z, z_step, c0):
+def linear_atmosphere(n_z, z_step, c0):
     # vector of vertical positions
     z_vect = np.linspace(0, z_step*n_z, n_z, endpoint=False)
     # refractivity

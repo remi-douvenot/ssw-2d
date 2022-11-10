@@ -26,7 +26,7 @@
 # @param[in] config_source Class that contains the source configuration. See class list for details
 # @param[in] n_refraction Vector containing the modified refractive index n. Real array of size (N_z)
 # @param[in] z_relief Vector containing the relief indices at each distance step. Real array of size (N_z)
-# @param[out] U_tot Wavelet coefficients of the 3D field. Complex array of size (N_x, N_z)
+# @param[out] wv_total Wavelet coefficients of the 3D field. Complex array of size (N_x, N_z)
 # @warning Put lengths = multiple of 2^l
 ##
 
@@ -95,10 +95,6 @@ def ssw_2d(u_0, config, n_refraction, ii_vect_relief):
     config.N_im = n_im
     # ------------------------------------------------- #
 
-    # --- Height of the antenna: used in DMFT --- #
-    if config.ground == 'Dielectric':
-        config.z_s = 20
-    # ------------------------------------------------- #
     # --- Initialisations --- #
     # initial field
     u_x = apply_apodisation(u_0, apo_window_z, config)
@@ -304,7 +300,7 @@ def apply_refractive_index(u_x, n_index, config):
     # apply the phase screen of one step delta_x
     # half the refraction applied before and after propagation
 
-    u_x = np.exp(-1j * k0 * (n_index-1)/2 * config.x_step) * u_x
+    u_x *= np.exp(-1j * k0 * (n_index-1)/2 * config.x_step)
 
     return u_x
 
