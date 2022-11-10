@@ -354,7 +354,7 @@ class Plots(object):
         # choice of the atmospheric profile type
         if atm_type == 'Homogeneous':  # constant vacuum
             n_refractivity = np.zeros(n_z)+m_0
-        elif atm_type == 'Standard':  # constant slope
+        elif atm_type == 'Linear':  # constant slope
             z_step = self.deltaZMDoubleSpinBox.value()
             c0 = self.c0DoubleSpinBox.value()  # c0 in M-unit/m
             n_refractivity = standard_atmosphere(n_z, z_step, c0)

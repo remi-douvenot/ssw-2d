@@ -190,6 +190,8 @@ class Window(QMainWindow, Ui_MainWindow, Dependencies, Plots):
         # ---------------------------- #
 
         # --- Main features --- #
+        # Method
+        self.methodComboBox.currentTextChanged.connect(self.method_changed)
         # Frequency and wavelength
         self.frequencyMHzDoubleSpinBox.valueChanged.connect(self.frequency_clicked)
         self.lambdaMDoubleSpinBox.valueChanged.connect(self.lambda_clicked)
@@ -249,9 +251,24 @@ class Window(QMainWindow, Ui_MainWindow, Dependencies, Plots):
         # ---------------------------- #
 
     def ssw(self):
+
+        # TODO replace os.system by subprocess. See https://docs.python.org/3/library/subprocess.html
+        # definition of the messages wrt. chosen method
+        method = self.methodComboBox.value()
+        if method == 'SSW':
+            start_message = "Field calculation using SSW -- in progress"
+            end_message = "Field calculation using SSW -- Successfully finished"
+            error_message = "Field calculation using SSW -- Error. Do not consider the display"
+        elif method == 'WWP':
+            start_message = "Field calculation using WWP -- in progress"
+            end_message = "Field calculation using WWP -- Successfully finished"
+            error_message = "Field calculation using WWP -- Error. Do not consider the display"
+        else:
+            raise ValueError('Wrong propagation method!')
+
         # start message
         self.run_simulation.setStyleSheet('QPushButton {background-color: red;}')
-        self.informationTextBrowser.setPlainText("Field calculation -- in progress")
+        self.informationTextBrowser.setPlainText(start_message)
         self.informationTextBrowser.repaint()
         # check for modulo
         n_z = self.nZSpinBox.value()
@@ -270,7 +287,7 @@ class Window(QMainWindow, Ui_MainWindow, Dependencies, Plots):
         # plot on the GUI
         self.plot_field_in()
         # end message
-        self.informationTextBrowser.setPlainText("Field calculation -- finished")
+        self.informationTextBrowser.setPlainText(end_message)
         self.run_simulation.setStyleSheet('QPushButton {background-color: green;}')
 
     def source(self):

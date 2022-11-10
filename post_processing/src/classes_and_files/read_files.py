@@ -28,7 +28,9 @@ def read_config(file_configuration, file_source_config):
     f_config = open(file_configuration, newline='')
     file_tmp = csv.reader(f_config)
     for row in file_tmp:
-        if row[0] == 'N_z':
+        if row[0] == 'method':
+            Config.method = row[1]
+        elif row[0] == 'N_z':
             Config.N_z = np.int(row[1])
         elif row[0] == 'N_x':
             Config.N_x = np.int(row[1])

@@ -117,7 +117,7 @@ def plot_field(config, config_plot):
         elif output_type == 'F':
             # F = \sqrt{2\pi} E r / \sqrt{\zeta_0 P_Tx G_Tx}
             zeta_0 = 1 / (cst.epsilon_0 * cst.c)
-            x_vect = np.arange(x_step, x_max + x_step, x_step) - x_s
+            x_vect = np.arange(x_step, x_max + x_step, x_step) # + x_s
             f_field_total = np.sqrt(2 * cst.pi / zeta_0) * e_field_total
             f_field_total *= np.array(x_vect)[:, np.newaxis]
             data_db = 20 * np.log10(np.abs(f_field_total)).T

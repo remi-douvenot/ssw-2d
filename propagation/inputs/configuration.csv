@@ -1,24 +1,25 @@
 Property,Value,Unit
-N_x,800,Unnamed: 2
-N_z,12000,
-x_step,50.0,m
-z_step,0.25,m
-frequency,500.041,MHz
+method,WWP,
+N_x,1000,Unnamed: 2
+N_z,15000,
+x_step,100.0,m
+z_step,0.6,m
+frequency,1000.0,MHz
 polarisation,TE,
-Max compression error,-100.0,dB
-wavelet level,3,
+Max compression error,-20.0,dB
+wavelet level,2,
 wavelet family,sym6,
 apodisation window,Hanning,
-apodisation size,0.35,% of N_z
+apodisation size,0.2,% of N_z
 image size,0.15,% of N_z
-ground,PEC,
+ground,None,
 epsr,15.0,
 sigma,0.5,S/m
-atmosphere,Homogeneous,
-c0,0.118,M-unit/m
+atmosphere,Linear,
+c0,-0.118,M-unit/m
 delta,15.0,m
-zb,200.0,m
+zb,3500.0,m
 c2,-0.8,M-unit/m
-zt,200.0,m
+zt,500.0,m
 atm filename,toto.atm,
 dynamic,25,dB

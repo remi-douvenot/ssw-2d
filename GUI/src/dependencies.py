@@ -16,7 +16,14 @@ import pandas as pd
 
 class Dependencies(object):
 
+    # --- method --- #
+    def method_changed(self):
+        # --- get method --- #
+        method = self.methodComboBox.currentText()
+        # write the polarisation value in files
+        update_file('method', method, 'propa')
     # --- frequency --- #
+
     def frequency_clicked(self):
         # update lambda #
         freq = self.frequencyMHzDoubleSpinBox.value()
@@ -189,7 +196,7 @@ class Dependencies(object):
             self.c2DoubleSpinBox.setEnabled(False)
             self.ztDoubleSpinBox.setEnabled(False)
             self.atmFileTextEdit.setEnabled(False)
-        elif atm_type == 'Standard':  # enable c0 only
+        elif atm_type == 'Linear':  # enable c0 only
             self.c0DoubleSpinBox.setEnabled(True)
             self.deltaDoubleSpinBox.setEnabled(False)
             self.zbDoubleSpinBox.setEnabled(False)
@@ -447,6 +454,8 @@ class Dependencies(object):
         dataframe = pd.read_csv(file_to_read)
         # create a Series with it
         serie = pd.Series(data=dataframe.iloc[:, 1].values, index=dataframe.iloc[:, 0].values)
+        # method
+        self.methodComboBox.setCurrentText(serie.loc['method'])
         # N_x
         self.nXSpinBox.setProperty("value", serie.loc['N_x'])
         # N_z
