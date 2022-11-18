@@ -254,17 +254,15 @@ class Window(QMainWindow, Ui_MainWindow, Dependencies, Plots):
 
         # TODO replace os.system by subprocess. See https://docs.python.org/3/library/subprocess.html
         # definition of the messages wrt. chosen method
-        method = self.methodComboBox.value()
-        if method == 'SSW':
-            start_message = "Field calculation using SSW -- in progress"
-            end_message = "Field calculation using SSW -- Successfully finished"
-            error_message = "Field calculation using SSW -- Error. Do not consider the display"
-        elif method == 'WWP':
-            start_message = "Field calculation using WWP -- in progress"
-            end_message = "Field calculation using WWP -- Successfully finished"
-            error_message = "Field calculation using WWP -- Error. Do not consider the display"
-        else:
-            raise ValueError('Wrong propagation method!')
+        method = self.methodComboBox.currentText()
+        start_message = "Field calculation using "+method+" -- in progress"
+        end_message = "Field calculation using "+method+" -- Successfully finished"
+        error_message = "Field calculation using "+method+" -- Error. Do not consider the display"
+        if method == 'WWP':
+            groundType = self.groundTypeComboBox.currentText()
+            if groundType != 'None':
+                error_message = "Error with WWP, ground not accounted. Do not consider the display"
+                raise ValueError('Error with WWP, ground not accounted. Do not consider the display')
 
         # start message
         self.run_simulation.setStyleSheet('QPushButton {background-color: red;}')

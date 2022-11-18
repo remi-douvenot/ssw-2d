@@ -74,12 +74,6 @@ def wwp_2d(u_0, config, n_refraction, ii_vect_relief):
     # Simulation parameters
     n_x = config.N_x
 
-    # --- Creation of the apodisation window --- # @todo Code other apodisation windows
-    # along z
-    n_apo_z = np.int(config.apo_z * config.N_z)
-    apo_window_z = apodisation_window(config.apo_window, n_apo_z)
-    # ------------------------------------------ #
-
     # Compute the dictionary of unit operators. Those operators correspond to the wavelet-to-wavelet propagation of
     # each basis wavelet.
     print('--- Creation of the dictionary of the free-space operators ---')
@@ -101,7 +95,17 @@ def wwp_2d(u_0, config, n_refraction, ii_vect_relief):
         print('--- Main loop. No ground ---')
         n_im = 0
     config.N_im = n_im
+
+    n_apo_z = np.int(config.apo_z * config.N_z)
+    remain_apo = n_apo_z % 2 ** config.wv_L
+    if remain_apo != 0:
+        n_apo_z += 2 ** config.wv_L - remain_apo
     # ------------------------------------------------- #
+
+    # --- Creation of the apodisation window --- # @todo Code other apodisation windows
+    # along z
+    apo_window_z = apodisation_window(config.apo_window, n_apo_z)
+    # ------------------------------------------ #
 
     # --- Initialisations --- #
     # initial field
