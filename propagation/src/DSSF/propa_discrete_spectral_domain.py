@@ -30,9 +30,12 @@ def compute_discrete_spectral_propagator(simulation_parameters, n_z):
 
     # compute k_z = 2/step_z * sin(pi*q_z/2N_z_tot)
     qz_list = np.linspace(-n_z / 2, (n_z / 2 - 1), num=n_z, endpoint=True)
+    theta_list = np.linspace(-2.5, 2.5, num=n_z, endpoint=True)
     #qz_list = np.linspace(0, (n_z - 1), num=n_z, endpoint=True)
     kz2_list = (4 / step_z * np.sin(np.pi * qz_list / n_z)) ** 2 #version DSSF
     #kz2_list = ((2*np.pi)/(step_z*n_z)*qz_list)**2 #version SSF pour turbulence
+    #kz2_list = k0**2 * np.sin(theta_list*np.pi/180)**2  # version Yardim
+
 
     # compute k_x^2
     k_x2 = k0 ** 2 - kz2_list

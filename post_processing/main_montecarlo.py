@@ -65,7 +65,7 @@ config = read_config(file_configuration, file_source_config)
 
 
 
-n_simu = 150 #number of monte carlo simulation
+n_simu = 200 #number of monte carlo simulation
 n_x = config.N_x
 n_z = config.N_z
 
@@ -154,12 +154,12 @@ if config.turbulence == 'Y':
     sigma2_analytic = logvar_analytic(config)  # Analytic log amplitude variance
     x = np.linspace(x_step, config.N_x * config.x_step, config.N_x)
     x_analytic = np.linspace(x_step, config.N_x*config.x_step, len(sigma2_analytic))
-    plt.plot(x/1000, sigma2_mean,'--', label='SSF')
+    plt.plot(x/1000, sigma2_mean,'--', label='SSW')
     plt.plot(x_analytic/1000, sigma2_analytic, label='Analytic')
     plt.xlabel('Distance (km)')
     plt.ylabel('\u03C3$^2$ (dB$^2$)')
-    #plt.xlim(7.5,40)
-    plt.title('Log-amplitude variance : 10 GHz ; Los = 100 m ; Cn2 = 1e-12')
+    #plt.xlim(0,40)
+    plt.title('Log-amplitude variance : 10 GHz ; Los = 10 m ; Cn2 = 1e-12')
     plt.grid()
     plt.legend()
     plt.show()

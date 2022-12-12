@@ -264,13 +264,13 @@ class Window(QMainWindow, Ui_MainWindow, Dependencies, Plots):
         flag_error = check_modulo(n_z, wv_l)
         turbu_type = self.turbuComboBox.currentText()
         ground_type = self.groundTypeComboBox.currentText()
-        flag_error_turbu = check_turbu(turbu_type,ground_type)
+        #flag_error_turbu = check_turbu(turbu_type,ground_type)
         if flag_error:
             self.informationTextBrowser.setPlainText("ERROR: N_z must be multiple of 2^L (max wavelet level)")
             raise (ValueError(['N_z must be multiple of 2^L (max wavelet level)']))
-        if flag_error_turbu:
-            self.informationTextBrowser.setPlainText("ERROR: Ground type must be None if turbulence is True")
-            raise (ValueError(['Ground type must be None if turbulence is True']))
+        #if flag_error_turbu:
+            #self.informationTextBrowser.setPlainText("ERROR: Ground type must be None if turbulence is True")
+            #raise (ValueError(['Ground type must be None if turbulence is True']))
         # main program: SSW propagation
         # change directory and launch propagation (depends on the OS)
         if sys.platform == "linux" or sys.platform == "linux2" or sys.platform == "darwin":
@@ -346,6 +346,7 @@ def check_modulo(n_z, wv_l):
         flag_error = False
     return flag_error
 
+"""
 def check_turbu(turbu_type, ground_type):
     # --- Check the size of the vectors, multiple of 2^n --- #
     if turbu_type == 'Y' and ground_type != 'None':
@@ -353,7 +354,7 @@ def check_turbu(turbu_type, ground_type):
     else:
         flag_error = False
     return flag_error
-
+"""
 
 if __name__ == "__main__":
 

@@ -39,16 +39,16 @@ import scipy.constants as cst
 
 
 # function complex_source_point
-def complex_source_point(config_source):
+def plane_wave_source(config_source):
 
-    # print('Complex source point placed at x_s = ' + np.str(config_source.x_s) + ' m')
+    # print('plane wave source at x_s = ' + np.str(config_source.x_s) + ' m')
 
     # --- GEOMETRY PARAMETERS --- #
     # k0 = wavenumber
     # number of points for the field array...
     n_z = config_source.n_z
     # ...and corresponding steps
-    z_step = config_source.z_step
+    #z_step = config_source.z_step
     # --------------------------- #
 
     # --- SOURCE PARAMETERS --- #
@@ -58,11 +58,11 @@ def complex_source_point(config_source):
     zeta0 = np.sqrt(cst.mu_0/cst.epsilon_0)
     # Real position
     x_s = config_source.x_s
-    z_s = config_source.z_s
+    #z_s = config_source.z_s
     # with of the csp
-    w0 = config_source.W0
+    #w0 = config_source.W0
     # imaginary position of the source along x
-    xw0 = k0*(w0**2)/2.0
+    #xw0 = k0*(w0**2)/2.0
     # ------------------------- #
 
     # -------------------------------- #
@@ -70,20 +70,16 @@ def complex_source_point(config_source):
     # -------------------------------- #
 
     # compute the complex x_position from the real position and the width
-    x_pos = -x_s + 1j*xw0
+    #x_pos = -x_s + 1j*xw0
 
     # compute the z_pos from the source position
-    z_vect = z_step * np.arange(0, n_z) - z_s
-    # compute the range of the source
-    rr_tilde_2_vect = x_pos ** 2 + z_vect ** 2
-    rr_tilde_vect = np.sqrt(np.abs(rr_tilde_2_vect)) * np.exp(
-        1j * ((np.angle(rr_tilde_2_vect) + (1 - np.sign(np.angle(rr_tilde_2_vect))) * cst.pi) / 2.0))
+    z_vect = z_step * np.arange(0, n_z)
 
-    # compute the csp field at each position on the 0yz plan
-    e_field = 1j / (4 * np.sqrt(np.pi * rr_tilde_vect)) * np.exp(-1j * k0 * rr_tilde_vect - k0 * xw0)
-    #e_field = 1j / (4 * np.sqrt(np.pi * rr_tilde_vect)) * np.exp(-1j * k0 * rr_tilde_vect )
-    #e_field = 1j / (4 * np.sqrt(np.pi * rr_tilde_vect)) #equivalent plane wave
-    #e_field = 1j / (4 * np.sqrt(np.pi * rr_tilde_vect))* np.exp(-1j * k0)
+
+    #e_field = np.ones(n_z)*np.exp(-1j * k0 * x_s)
+    #e_field = np.ones(n_z) * np.exp(1j * k0)
+    e_field = np.ones(n_z)
+
     # ------------ END --------------- #
     # --- Computation of the field --- #
     # -------------------------------- #
@@ -95,7 +91,7 @@ def complex_source_point(config_source):
     # max amplitude corresponds to the inputted gain and radiated power
     g_lin = 10**(config_source.G_Tx/10)
     e_field *= np.sqrt(zeta0 * config_source.P_Tx * g_lin / (2*np.pi)) / (-x_s)
-    #e_field *= np.sqrt(zeta0 * config_source.P_Tx * g_lin / (2 * np.pi))
+
 
     # --------------------- #
 

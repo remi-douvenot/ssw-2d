@@ -105,7 +105,7 @@ def plot_field(config, config_plot):
     if config.turbulence == 'N':
         np.save('./outputs/E_field_standard_1G_40km_Los100', e_field_total)
     # -------------------------------- #
-"""
+
     # --- 2D plot --- #
     output_type = config_plot.output_type
     print('output_type', output_type)
@@ -241,6 +241,7 @@ def plot_field(config, config_plot):
 ##
 
 # Plot the WAVELET COEFFICIENTS on the desired cut
+"""
 def plot_wavelet_cut(config, x_cut, wv_x, z_max, dynamic, title):
     print('ii_x = ', int(np.round(x_cut/config.x_step)))
 
@@ -324,7 +325,7 @@ def plot_wavelet_cut(config, x_cut, wv_x, z_max, dynamic, title):
     plt.show()
 
     return 0
-
+"""
 
 ##
 # @package plot_dictionary
@@ -341,6 +342,7 @@ def plot_wavelet_cut(config, x_cut, wv_x, z_max, dynamic, title):
 ##
 
 # Plot the WAVELET LIBRARY
+"""
 def plot_dictionary(config, config_plot):
 
     # download dictionary

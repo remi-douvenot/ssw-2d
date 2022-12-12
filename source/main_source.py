@@ -59,6 +59,7 @@ import scipy.constants as cst
 import matplotlib.pyplot as plt
 # import sys
 from src.complex_source_point import complex_source_point
+from src.plane_wave_source import plane_wave_source
 
 # contains the source type
 file_source = 'inputs/configuration.csv'
@@ -138,6 +139,7 @@ if ConfigSource.x_s >= 0:
 ConfigSource.k0 = 2 * cst.pi * freq / cst.c
 # compute E field
 e_field = complex_source_point(ConfigSource)
+#e_field =plane_wave_source(ConfigSource)
 
 
 # ------------ END ----------- #

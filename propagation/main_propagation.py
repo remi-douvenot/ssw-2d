@@ -124,7 +124,7 @@ ii_vect_relief = np.round(z_relief/config.z_step).astype('int')  # relief indice
 # --- Calculate u_0 from E_init (normalised in infinity norm to have max(|u_0|) = 1) --- #
 k0 = 2*np.pi*config.freq/cst.c
 u_0 = e_field * np.sqrt(k0*(-config.x_s)) * np.exp(1j * k0 * (-config.x_s))
-#u_0 = e_field
+#u_0 = e_field / np.sqrt(k0*(-config.x_s))
 u_infty = np.max(np.abs(u_0))  # norm infinity of the initial field
 u_0 /= u_infty  # put max at 1 to avoid numerical errors
 # -------------------------------------------------------------------------------------- #
@@ -183,6 +183,7 @@ x_max = config.N_x * config.x_step
 print('Distance from the source = ', -config.x_s+x_max)
 # de-normalise the reduced field
 e_field = u_final / np.sqrt(k0*(-config.x_s+x_max)) * np.exp(-1j * k0 * (-config.x_s+x_max))
+#e_field = u_final * np.sqrt(k0*(-config.x_s+x_max))
 
 with np.errstate(divide='ignore'):
     data_dB = 20*np.log10(np.abs(e_field))
