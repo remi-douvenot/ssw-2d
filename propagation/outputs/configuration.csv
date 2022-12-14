@@ -1,9 +1,9 @@
 Property,Value,Unit
-method,WWP,
+method,WWP-H,
 N_x,1000,Unnamed: 2
-N_z,6676,
+N_z,1000,
 x_step,100.0,m
-z_step,0.5995206710605153,m
+z_step,1.0,m
 frequency,1000.0,MHz
 polarisation,TE,
 Max compression error,-20.0,dB
@@ -11,14 +11,14 @@ wavelet level,2,
 wavelet family,sym6,
 apodisation window,Hanning,
 apodisation size,0.2,% of N_z
-image size,0.15,% of N_z
-ground,None,
+image size,0.1,% of N_z
+ground,PEC,
 epsr,15.0,
 sigma,0.5,S/m
 atmosphere,Trilinear,
 c0,0.1,M-unit/m
 delta,15.0,m
-zb,1500.0,m
+zb,200.0,m
 c2,-0.8,M-unit/m
 zt,500.0,m
 atm filename,toto.atm,

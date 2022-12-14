@@ -105,6 +105,7 @@ class Plots(object):
         fig_final.show()
 
     # --- plot the source field --- #
+    # TODO : Remove coefficients corresponding to image field in the saved wavelets in SSW
     def plot_field(self, ax_field, ax_final):
         # --- Load wavelets along x --- #
         wv_total = np.load('../propagation/outputs/wv_total.npy', allow_pickle=True)
@@ -133,14 +134,6 @@ class Plots(object):
 
         # --- Image layer --- #
         ground_type = self.groundTypeComboBox.currentText()
-        if ground_type == 'None':  # No ground, no image layer
-            n_im = 0
-        else:  # ground, therefore an image layer different from 0
-            image_layer = self.sizeImageSpinBox.value()/100  # image_layer in % of the total size n_z
-            n_im = np.int(np.round(n_z * image_layer))
-            remain_im = n_im % 2**wv_l
-            if remain_im != 0:
-                n_im += 2**wv_l - remain_im
 
         # --- from wavelets to E-field --- #
         # loop on each distance step
@@ -151,8 +144,6 @@ class Plots(object):
             # inverse fast wavelet transform
             # squeeze to remove the first useless dimension
             uu_x = np.squeeze(pywt.waverec(wv_ii_x, wv_family, 'per'))
-            # remove image field
-            u_field_total[ii_x, :] = uu_x[n_im:]
             # add the relief
             if ground_type == 'PEC' or ground_type == 'Dielectric':
                 # whether ascending or descending relief, the shift is made before or after propagation
@@ -160,10 +151,10 @@ class Plots(object):
                     ii_relief = int(z_relief[ii_x+1]/z_step)
                 else:
                     ii_relief = int(z_relief[ii_x] / z_step)
-                u_field_total[ii_x, :] = shift_relief(u_field_total[ii_x, :], ii_relief)
+                uu_x = shift_relief(uu_x, ii_relief)
             x_current = -x_s + (ii_x + 1) * x_step
             # print('x_current',x_current)
-            e_field_total[ii_x, :] = u_field_total[ii_x, :] / np.sqrt(k0 * x_current) * np.exp(-1j * k0 * x_current)
+            e_field_total[ii_x, :] = uu_x / np.sqrt(k0 * x_current) * np.exp(-1j * k0 * x_current)
         # -------------------------------- #
 
         # --- 2D plot --- #

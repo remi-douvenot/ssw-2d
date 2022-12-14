@@ -25,7 +25,7 @@ import numpy as np
 import time
 import math
 import pywt
-from src.wavelets.thresholding import thresholding
+from src.wavelets.wavelet_operations import thresholding, q_max_calculation
 from src.propagators.wavelet_propagation import wavelet_propagation
 import scipy
 import matplotlib.pyplot as plt
@@ -306,12 +306,11 @@ def shift_field(u_wavelet, ii_lvl, ll, q_z):
     return u_wavelet_t
 
 
-
-
-
 ##
 # @brief function to plot the a 2D wavelet. Useful for debug
 ##
+
+
 def plot_2D_wavelet(wavelet_2D):
     Nx, Ny = wavelet_2D.shape
 
@@ -360,24 +359,3 @@ def init_dictionary(ll):
     # empty dictionary with the correct number of lists and sub-lists and sub-sub-lists and so on...
     return dictionary
 
-
-##
-# @package q_max_calculation
-# @brief Calculation of the number of propagators at each level
-# @author Thomas Bonnafont
-# @date 08/06/2021
-# @version V1
-# @param[in] ll Max level of decomposition
-# @param[out] q_max_list Number of propagators at each level
-# @details Calculation of the number of propagators at each level with respect to the largest decomposition level
-##
-
-def q_max_calculation(ll):
-    q_max_list = np.zeros(ll+1, dtype=int) # L wavelets + 1 scaling function
-    for ii_lvl in np.arange(0, ll + 1):
-        level = ii_lvl
-        if ii_lvl == 0: # level 0 (scaling function) corresponds to level 1 in equation below
-            level =+ 1
-        q_max_list[ii_lvl] = (2 ** (level - 1))
-
-    return q_max_list

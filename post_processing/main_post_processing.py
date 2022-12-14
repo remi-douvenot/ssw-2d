@@ -33,7 +33,7 @@
 ##
 # @package main_post_processing
 # @author R. Douvenot
-# @date 20/07/2021 (created)
+# @date 20/07/2021 (created) 13/12/22 (last modif)
 # @version in progress
 #
 # @brief Computes and plots the demanded data from the final field and total wavelet parameters given by SSW

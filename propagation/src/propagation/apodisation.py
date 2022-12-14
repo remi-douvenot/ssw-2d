@@ -17,7 +17,7 @@
 
 import numpy as np
 import time
-from src.propagators.dictionary_generation import q_max_calculation
+from src.wavelets.wavelet_operations import q_max_calculation
 
 
 def apply_apodisation(u_x, apo_window_z, config):
@@ -74,27 +74,17 @@ def apply_apodisation_wavelet(w_x, apo_window_z, config):
     # size of the apodisation windows
     n_apo_z = apo_window_z.size
 
-    # is there a ground?
-    if config.ground == 'None':
-        # apply apodisation along z (top and bottom)
-        # apply it on each level with different number of points
-        for ii_l in np.arange(0, config.wv_L + 1):
-            w_x_ll = w_x[ii_l]
-            delta = decimation[ii_l]
-            n_apo_z_delta = int(n_apo_z/delta)
-            w_x_ll[-n_apo_z_delta:] *= apo_window_z[::delta]
+    # apodisation on each level
+    for ii_l in np.arange(0, config.wv_L + 1):
+        w_x_ll = w_x[ii_l]
+        delta = decimation[ii_l]
+        n_apo_z_delta = int(n_apo_z/delta)
+
+        # apply apodisation along z (top of the vector)
+        w_x_ll[-n_apo_z_delta:] *= apo_window_z[::delta]
+        # apply apodisation along z (bottom)
+        if config.ground == 'None':
             w_x_ll[:n_apo_z_delta] *= apo_window_z[::-delta]
-            w_x[ii_l] = w_x_ll
-    else:
-        # apply apodisation along z (top only)
-        # apply apodisation along z (top and bottom)
-        # apply it on each level with different number of points
-        for ii_l in np.arange(0, config.wv_L + 1):
-            w_x_ll = w_x[ii_l]
-            delta = decimation[ii_l]
-            n_apo_z_delta = int(n_apo_z / delta)
-            w_x_ll[-n_apo_z_delta:] *= apo_window_z[::delta]
-            w_x_ll[:n_apo_z_delta] *= apo_window_z[::-delta]
-            w_x[ii_l] = w_x_ll
+        w_x[ii_l] = w_x_ll
 
     return w_x

@@ -18,7 +18,7 @@
 #
 # @brief One step of the wwp 2d free-space propagation
 # @param[in] w_x Wavelet decomposition of the electric field before the free-space propagation
-# @param[in] library Pre-generated wavelet propagators.
+# @param[in] dictionary Pre-generated wavelet propagators.
 # @param[in] config Structure containing the parameters of the simulation.
 # @param[out] w_x_dx Wavelet decomposition of the electric field after the free-space propagation
 # @details Propagates a field decomposed on a wavelet based with the 2D WWP technique in free space on one step.
@@ -48,25 +48,20 @@ import numpy as np
 import multiprocessing as mp
 import pywt
 import time
-from src.wavelets.thresholding import thresholding
-from src.propagators.dictionary_generation import q_max_calculation
-from scipy.sparse import coo_matrix  # for sparsify
+from src.wavelets.wavelet_operations import thresholding, q_max_calculation
 # from src.maths import convolution  # for add_propagator_at_once
 from scipy.signal import convolve
 
 
-def wwp_2d_one_step(wv_x, library, config):
+def wwp_2d_one_step(wv_x, dictionary, config):
 
     # Propagate the field in the wavelet domain
-    wv_x_dx = wavelet_propag_one_step(wv_x, library, config)
+    wv_x_dx = wavelet_propag_one_step(wv_x, dictionary, config)
 
     # Threshold V_s on the signal
     wv_x_dx = thresholding(wv_x_dx, config.V_s)
 
-    # store a sparse vector
-    wv_x_dx_sparse = sparsify(wv_x_dx)
-
-    return wv_x_dx, wv_x_dx_sparse
+    return wv_x_dx
 
 
 ##
@@ -77,7 +72,7 @@ def wwp_2d_one_step(wv_x, library, config):
 #
 # @brief One step of the SSW 2D free-space propagation
 # @param[in] wv_x Wavelet decomposition of the field before the free-space propagation
-# @param[in] library Pre-generated wavelet propagators.
+# @param[in] dictionary Pre-generated wavelet propagators.
 # @param[in] config Structure containing the parameters of the simulation.
 # @param[out] wv_x_dx Wavelet decomposition of the field after the free-space propagation
 # @details Apply the free-space propagators to all the nonzero wavelet coefficients
@@ -85,7 +80,7 @@ def wwp_2d_one_step(wv_x, library, config):
 # import scipy
 
 
-def wavelet_propag_one_step(wv_x, library, config):
+def wavelet_propag_one_step(wv_x, dictionary, config):
 
     # Wavelet parameters
     family = config.wv_family
@@ -124,7 +119,7 @@ def wavelet_propag_one_step(wv_x, library, config):
         # loop on the propagators at level ii_lvl
         for ii_z in np.arange(0, q_max):
             # choose the propagator
-            propagator = library[ii_lvl][ii_z]
+            propagator = dictionary[ii_lvl][ii_z]
             # extract the wavelets that match this propagator
             wv_x_lvl_z = wv_x_lvl[ii_z::q_max]
             wv_x_dx = add_propagator_at_once(wv_x_lvl_z, propagator, config.wv_L, wv_x_dx)
@@ -190,30 +185,6 @@ def add_propagator_at_once(wv_x_lvl, propagator, ll, wv_x_dx):
         # print('convolution is ',t_end-t_start, 's')
 
     return wv_x_dx
-
-##
-# @package: sparsify
-# @author: R. Douvenot
-# @date: 09/06/2021
-# @version: V1.0
-#
-# @brief Put a wavelet decomposition in a sparse shape (coo format)
-# @param[in] wv_x Wavelet decomposition
-# @param[out] wv_x_sparse Sparse wavelet decomposition
-##
-
-
-def sparsify(wv_x):
-
-    # max level of decomposition
-    ll = len(wv_x)-1
-    # creation of the empty list
-    wv_x_sparse = [[]] * (ll+1)
-    # fill the scaling function
-    # fill the wavelet levels
-    for ii_lvl in np.arange(0, ll+1):
-        wv_x_sparse[ii_lvl] = coo_matrix(wv_x[ii_lvl])
-    return wv_x_sparse
 
 ##
 # @package: eliminate_top_field

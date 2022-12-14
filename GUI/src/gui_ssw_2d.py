@@ -681,6 +681,7 @@ class Ui_MainWindow(object):
         self.methodComboBox.setObjectName("methodComboBox")
         self.methodComboBox.addItem("")
         self.methodComboBox.addItem("")
+        self.methodComboBox.addItem("")
         self.label = QtWidgets.QLabel(self.frame_11)
         self.label.setGeometry(QtCore.QRect(20, 10, 71, 17))
         font = QtGui.QFont()
@@ -817,4 +818,5 @@ class Ui_MainWindow(object):
         self.run_relief.setText(_translate("MainWindow", "Run Relief"))
         self.methodComboBox.setItemText(0, _translate("MainWindow", "SSW"))
         self.methodComboBox.setItemText(1, _translate("MainWindow", "WWP"))
+        self.methodComboBox.setItemText(2, _translate("MainWindow", "WWP-H"))
         self.label.setText(_translate("MainWindow", "Method"))

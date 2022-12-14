@@ -2016,6 +2016,11 @@
          <string>WWP</string>
         </property>
        </item>
+       <item>
+        <property name="text">
+         <string>WWP-H</string>
+        </property>
+       </item>
       </widget>
       <widget class="QLabel" name="label">
        <property name="geometry">

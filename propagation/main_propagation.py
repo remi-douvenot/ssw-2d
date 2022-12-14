@@ -78,9 +78,10 @@
 import numpy as np
 import time
 import scipy.constants as cst
-from src.wavelets.compute_thresholds import compute_thresholds
+from src.wavelets.wavelet_operations import compute_thresholds
 from src.propagation.ssw_2d import ssw_2d
 from src.propagation.wwp_2d import wwp_2d
+from src.propagation.wwp_h_2d import wwp_h_2d
 import shutil  # to make file copies
 # where config is defined
 from src.classes_and_files.read_files import read_config, read_source, read_relief
@@ -160,10 +161,17 @@ config.V_s, config.V_p = compute_thresholds(config.N_x, config.max_compression_e
 # --- 2D Propagation --- #
 # ---------------------- #
 t_propa_SSW_s = time.process_time()
+# SSW
 if config.method == 'SSW':
     u_final, wv_total = ssw_2d(u_0, config, n_refraction, ii_vect_relief)
-elif config.method == 'WWP':
+# WWP  <-- if WW-H is chosen without ground then WWP is launched
+elif (config.method == 'WWP') or ((config.method == 'WWP-H') and (config.ground == 'None')):
     u_final, wv_total = wwp_2d(u_0, config, n_refraction, ii_vect_relief)
+# WWP-H
+elif config.method == 'WWP-H':
+    u_final, wv_total = wwp_h_2d(u_0, config, n_refraction, ii_vect_relief)
+else:
+    raise ValueError('Unknown propagation method.')
 
 # --- de-normalise in infinity norm --- #
 # field: simple multiplication
