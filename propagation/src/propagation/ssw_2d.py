@@ -41,6 +41,9 @@ from src.propagators.dictionary_generation import dictionary_generation
 from src.propagation.ssw_2d_one_step import ssw_2d_one_step
 from src.propagation.apodisation import apply_apodisation, apodisation_window
 from src.DSSF.dmft import dmft_parameters, u2w, w2u, surface_wave_propagation
+from src.propagation.refraction import apply_refractive_index
+from src.propagation.image_field import compute_image_field, compute_image_field_tm_pec
+from src.wavelets.wavelet_operations import sparsify
 
 # import cProfile, pstats, io
 # def profile(fnc):
@@ -198,111 +201,13 @@ def ssw_2d(u_0, config, n_refraction, ii_vect_relief):
         # -------------------------------------- #
 
         # store the wavelet parameters (in coo format)
-        wv_total[ii_x-1] = wavelets_x_dx
+        wv_total[ii_x-1] = sparsify(wavelets_x_dx)
         # store the wavelet parameters (in coo format)
         # spectrum_w_0_tot[ii_x - 1] = spectrum_w_0_tot
         # update u_x
         u_x = u_x_dx
 
     return u_x_dx, wv_total
-
-##
-# @brief function that computes and adds the image field for the local image method.
-# @author R. Douvenot
-# @package compute_image_field
-# @date 02/09/21
-# @version OK
-#
-# @details function that compute and add the image field for the local image method. The image field is computed with
-# Fresnel coefficient and added on N_im point
-# u_x_im = compute_image_field(u_x,ground_coeff,simulation_parameters,wavelet_parameters)
-#
-# @params[in] u_x : reduced electric field (complex array)
-# @params[in] config : class with the parameters
-# @params[in] N_im : size of the image layer
-# @params[out] u_x_im : reduced field with the image layer added
-##
-
-
-def compute_image_field(u_x, n_im):
-
-    # compute the image field on N_im point for the image theorem
-    # print('compute the image field on N_im point for the image theorem')
-
-    # Simulation parameters
-    n_z = u_x.size
-
-    # Init the size of the field added with image layer
-    u_x_im = np.zeros([n_z + n_im], dtype='complex')
-
-    # Fill the image layer
-    u_x_im[n_im:n_z + n_im] = u_x
-    u_x_im[0:n_im] = - u_x[n_im - 1::-1]
-    return u_x_im
-
-##
-# @brief function that computes and adds the image field for the local image method.
-# @author R. Douvenot
-# @package compute_image_field_TM_PEC
-# @date 02/05/22
-# @version WIP
-#
-# @details function that compute and add the image field for the local image method. The image field is computed with
-# Fresnel coefficient +1 and added on N_im point
-# This function is only useful for a TM polar on a PEC.
-# u_x_im = compute_image_field(u_x,ground_coeff,simulation_parameters,wavelet_parameters)
-#
-# @params[in] u_x : reduced electric field (complex array)
-# @params[in] config : class with the parameters
-# @params[in] N_im : size of the image layer
-# @params[out] u_x_im : reduced field with the image layer added
-##
-
-
-def compute_image_field_tm_pec(u_x, n_im):
-
-    # compute the image field on N_im point for the image theorem
-    # print('compute the image field on N_im point for the image theorem')
-
-    # Simulation parameters
-    n_z = u_x.size
-
-    # Init the size of the field added with image layer
-    u_x_im = np.zeros([n_z + n_im], dtype='complex')
-
-    # Fill the image layer
-    u_x_im[n_im:n_z + n_im] = u_x
-    u_x_im[0:n_im] = u_x[n_im - 1::-1]
-    return u_x_im
-
-
-##
-# @brief function that applies half a phase screen before or after propagation
-# @author R. Douvenot
-# @package apply_refractive_index
-# @date 10/09/21
-# @version OK
-#
-# @details Function that applies half a phase screen before or after propagation.
-# def apply_refractive_index(u_x, n_index, config):
-#
-# @params[in] u_x : reduced electric field (complex array)
-# @params[in] n_index : phase screen (real array)
-# @params[in] config : class with the parameters
-# @params[in] u_x : reduced electric field (complex array)
-##
-
-
-def apply_refractive_index(u_x, n_index, config):
-
-    k0 = 2*cst.pi*config.freq / cst.c
-
-    # apply the phase screen of one step delta_x
-    # half the refraction applied before and after propagation
-
-    u_x *= np.exp(-1j * k0 * (n_index-1)/2 * config.x_step)
-
-    return u_x
 
 
 ##
