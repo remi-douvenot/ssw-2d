@@ -11,11 +11,13 @@
 ##
 # @mainpage         main_propagation: Core program of the split-step wavelet SSW-2D package
 # @author           Rémi Douvenot, ENAC
-# @date             17/06/22
-# @version          0.1
+# @date             2022/06/17 -- last modification 2022/11/10
+# @version          0.2
 #
 # @section intro    Introduction
 #                   This document describes the code for the propagation by the SSW-2D code.
+#                   This code calculates the electric field propagated on long distances using the split-step wavelet or
+#                   the wavelet-to-wavelet method.
 #
 # @section prereq   Prerequisites.
 #                   Python packages: numpy, scipy, pywavelets, matplolib
@@ -30,8 +32,7 @@
 #                   2D field are stored in the outputs directory. \n
 #
 #                   OR, alternatively \n
-#                   1/ run the GUI module. TiE4qvsBc3qnlVp
-#                   his package is launched when pressing "run simulation"
+#                   1/ run the GUI module. This package is launched when pressing "run simulation"
 #
 ##
 
@@ -43,13 +44,14 @@
 # @date: 19/07/2021
 # @version: work in progress
 #
-# @brief Propagates a field with the 2D SSW technique
-# @details Propagates a field with the 2D SSW technique. Inputs are first read from input files and SSW_3D package
+# @brief Propagates a field with the 2D SSW or 2D WWP method
+# @details Propagates a field with the 2D SSW or WWP method. Inputs are first read from input files and SSW_3D package
 # is launched.
 #
 # @param[in]
 # Inputs are defined in the files in the "inputs" directory
 # - configuration.csv that contains \n
+# -- method:        chosen propagation method. Can be "SSW" or "WWP"
 # -- N_x:           number of propagation steps \n
 # -- N_z:           number of vertical points \n
 # -- x_step:        step along the main propagation direction \n
@@ -65,17 +67,21 @@
 # -- sigma          ground conductivity in S (if ground = dielectric)
 # Initial field is read in ../source/outputs directory (output of main_source.py function)
 #
-# @param[out] u_field : (N_x,N_z)-array. Contains the total field
+# @param[out]       the outputs are saved in the /output/ directory.
+#                   - E_field.npy contains the electric field on the last vertical of calculation.
+#                   - wv_total.npy contains the total electric field in the shape of wavelet coefficients.
 #
-# @warning: only vacuum propagation for now. No relief, no atmosphere
+# @warning: only atmosphere is accounted with WWP. No ground or relief.
 ##
 
 
 import numpy as np
 import time
 import scipy.constants as cst
-from src.wavelets.compute_thresholds import compute_thresholds
+from src.wavelets.wavelet_operations import compute_thresholds
 from src.propagation.ssw_2d import ssw_2d
+from src.propagation.wwp_2d import wwp_2d
+from src.propagation.wwp_h_2d import wwp_h_2d
 import shutil  # to make file copies
 # where config is defined
 from src.classes_and_files.read_files import read_config, read_source, read_relief
@@ -156,7 +162,17 @@ config.V_s, config.V_p = compute_thresholds(config.N_x, config.max_compression_e
 # --- 2D Propagation --- #
 # ---------------------- #
 t_propa_SSW_s = time.process_time()
-u_final, wv_total = ssw_2d(u_0, config, n_refraction, ii_vect_relief)
+# SSW
+if config.method == 'SSW':
+    u_final, wv_total = ssw_2d(u_0, config, n_refraction, ii_vect_relief)
+# WWP  <-- if WW-H is chosen without ground then WWP is launched
+elif (config.method == 'WWP') or ((config.method == 'WWP-H') and (config.ground == 'None')):
+    u_final, wv_total = wwp_2d(u_0, config, n_refraction, ii_vect_relief)
+# WWP-H
+elif config.method == 'WWP-H':
+    u_final, wv_total = wwp_h_2d(u_0, config, n_refraction, ii_vect_relief)
+else:
+    raise ValueError('Unknown propagation method.')
 
 # --- de-normalise in infinity norm --- #
 # field: simple multiplication

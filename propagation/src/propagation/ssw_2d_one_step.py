@@ -49,11 +49,11 @@ import numpy as np
 import multiprocessing as mp
 import pywt
 import time
-from src.wavelets.thresholding import thresholding
-from src.propagators.dictionary_generation import q_max_calculation
+from src.wavelets.wavelet_operations import thresholding, q_max_calculation
 from scipy.sparse import coo_matrix  # for sparsify
 # from src.maths import convolution  # for add_propagator_at_once
 from scipy.signal import convolve
+from src.wavelets.wavelet_operations import remove_image_coef
 
 
 def ssw_2d_one_step(u_x, library, config):
@@ -87,10 +87,9 @@ def ssw_2d_one_step(u_x, library, config):
     # if config.ground == 'PEC' or config.ground == 'dielectric':
     #     u_x_dx = eliminate_top_field(u_x_dx)
 
-    # store a sparse vector
-    wv_x_dx_sparse = sparsify(wv_x_dx)
+    wv_x_dx = remove_image_coef(wv_x_dx, config)
 
-    return u_x_dx, wv_x_dx_sparse
+    return u_x_dx, wv_x_dx
 
 
 ##

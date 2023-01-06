@@ -1,4 +1,5 @@
 Date: 05 April 2022
+Last modif.: 10 Nov. 2022
 Author: Rémi Douvenot
 
 Table of Content
@@ -79,7 +80,7 @@ III/ Documentation
 SSW is composed of 4 independent modules.
 1/ source module calculates the source (initial field in SSW)
 2/ terrain generates the relief
-3/ propagation is the core of SSW. It calculates the total electromagnetic field using SSW.
+3/ propagation is the core of SSW and SSW. It calculates the total electromagnetic field using SSW or WWP.
 4/ post-processing plots the result. It is not operational (04/2022)
 5/ GUI contains the graphical user interface. It calls 1/, 2/ and 3/ and plots the results on the GUI directly.
 
@@ -89,7 +90,7 @@ If you want to modify the code, the expert mode is recommended.
 To call a module, open the corresponding directory with Pycharm and launch the main file.
 
 The detailed documentation of the modules can be generated using teh Doxygen files. One per module.
-This documentation is not complete yet. If you need details on a specific module/function, please send an email.
+This documentation is not complete yet. If you need details on a specific module/function, please send an email or ask on the webpage of the GitHub project.
 
 RESET procedure:
 If your code does not launch, please reset to the original configuration with the git command:
@@ -100,15 +101,19 @@ IV/ Contact
 
 For questions, suggestions, and so on...
 remi.douvenot@enac.fr
+or directly on the page of the GitHub project.
 
 
 V/ How to cite
 
 Rémi Douvenot. SSW-2D: Split-step wavelet in 2D. Software, 2022. ⟨hal-03697711⟩
 
+Hang Zhou, Alexandre Chabory, Rémi Douvenot. A Fast Wavelet-to-Wavelet Propagation Method for the Simulation of Long-Range Propagation in Low Troposphere. 
+IEEE Transactions on Antennas and Propagation, 2022, 70, pp.2137-2148. doi: 10.1109/TAP.2021.3118821
+
 Thomas Bonnafont, Rémi Douvenot, Alexandre Chabory, "A local split‐step wavelet method for the long range propagation simulation in 2D",
 Radio Science, 2021, 56, doi: 10.1029/2020RS007114
 
 Hang Zhou, Rémi Douvenot, Alexandre Chabory, "Modeling the long-range wave propagation by a split-step wavelet method",
-Journal of Computational Physics, 2020, 402, pp.109042. ⟨10.1016/j.jcp.2019.109042⟩
+Journal of Computational Physics, 2020, 402, pp.109042. doi: 10.1016/j.jcp.2019.109042
 

@@ -18,74 +18,12 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="2">
-     <widget class="QFrame" name="frame">
+    <item row="2" column="2">
+     <widget class="QFrame" name="frame_6">
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>100</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>16777215</width>
-        <height>100</height>
-       </size>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <property name="sizeConstraint">
-        <enum>QLayout::SetDefaultConstraint</enum>
-       </property>
-       <item>
-        <widget class="QLabel" name="informationLabel">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>85</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>85</height>
-          </size>
-         </property>
-         <property name="text">
-          <string>INFORMATION</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QTextBrowser" name="informationTextBrowser">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>85</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>95</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item row="2" column="1">
-     <widget class="QFrame" name="frame_5">
-      <property name="minimumSize">
-       <size>
-        <width>190</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>190</width>
-        <height>16777215</height>
+        <height>200</height>
        </size>
       </property>
       <property name="frameShape">
@@ -94,7 +32,7 @@
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <widget class="QPushButton" name="pushButtonSource">
+      <widget class="QPushButton" name="pushButtonField">
        <property name="geometry">
         <rect>
          <x>10</x>
@@ -107,32 +45,32 @@
         <string>manipulate</string>
        </property>
       </widget>
-      <widget class="QGraphicsView" name="source_window">
+      <widget class="QGraphicsView" name="field_window">
        <property name="geometry">
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>190</width>
+         <width>871</width>
          <height>393</height>
         </rect>
        </property>
       </widget>
-      <zorder>source_window</zorder>
-      <zorder>pushButtonSource</zorder>
+      <zorder>field_window</zorder>
+      <zorder>pushButtonField</zorder>
      </widget>
     </item>
-    <item row="4" column="1">
-     <widget class="QFrame" name="frame_10">
+    <item row="3" column="1">
+     <widget class="QFrame" name="frame_8">
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>31</height>
+        <height>110</height>
        </size>
       </property>
       <property name="maximumSize">
        <size>
-        <width>16777215</width>
-        <height>31</height>
+        <width>190</width>
+        <height>110</height>
        </size>
       </property>
       <property name="frameShape">
@@ -141,105 +79,138 @@
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <widget class="QPushButton" name="run_source">
+      <widget class="QLabel" name="frequencyMHzLabel">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
        <property name="geometry">
         <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>81</width>
-         <height>31</height>
+         <x>4</x>
+         <y>8</y>
+         <width>60</width>
+         <height>26</height>
         </rect>
        </property>
-       <property name="palette">
-        <palette>
-         <active>
-          <colorrole role="Button">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>239</red>
-             <green>41</green>
-             <blue>41</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </active>
-         <inactive>
-          <colorrole role="Button">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>239</red>
-             <green>41</green>
-             <blue>41</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </inactive>
-         <disabled>
-          <colorrole role="Button">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>239</red>
-             <green>41</green>
-             <blue>41</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </disabled>
-        </palette>
+       <property name="font">
+        <font>
+         <italic>false</italic>
+         <kerning>true</kerning>
+        </font>
        </property>
        <property name="text">
-        <string>Run Source</string>
+        <string>Frequency</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="run_relief">
+      <widget class="QDoubleSpinBox" name="frequencyMHzDoubleSpinBox">
        <property name="geometry">
         <rect>
-         <x>100</x>
-         <y>0</y>
-         <width>91</width>
-         <height>31</height>
+         <x>70</x>
+         <y>8</y>
+         <width>111</width>
+         <height>26</height>
         </rect>
        </property>
-       <property name="palette">
-        <palette>
-         <active>
-          <colorrole role="Button">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>239</red>
-             <green>41</green>
-             <blue>41</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </active>
-         <inactive>
-          <colorrole role="Button">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>239</red>
-             <green>41</green>
-             <blue>41</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </inactive>
-         <disabled>
-          <colorrole role="Button">
-           <brush brushstyle="SolidPattern">
-            <color alpha="255">
-             <red>239</red>
-             <green>41</green>
-             <blue>41</blue>
-            </color>
-           </brush>
-          </colorrole>
-         </disabled>
-        </palette>
+       <property name="locale">
+        <locale language="English" country="UnitedStates"/>
+       </property>
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
+       <property name="suffix">
+        <string> MHz</string>
+       </property>
+       <property name="decimals">
+        <number>4</number>
+       </property>
+       <property name="maximum">
+        <double>1000000.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>100.000000000000000</double>
+       </property>
+       <property name="value">
+        <double>500.000000000000000</double>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lambdaMLabel">
+       <property name="geometry">
+        <rect>
+         <x>4</x>
+         <y>40</y>
+         <width>43</width>
+         <height>26</height>
+        </rect>
        </property>
        <property name="text">
-        <string>Run Relief</string>
+        <string>lambda</string>
        </property>
+      </widget>
+      <widget class="QDoubleSpinBox" name="lambdaMDoubleSpinBox">
+       <property name="geometry">
+        <rect>
+         <x>70</x>
+         <y>40</y>
+         <width>111</width>
+         <height>26</height>
+        </rect>
+       </property>
+       <property name="locale">
+        <locale language="English" country="UnitedStates"/>
+       </property>
+       <property name="keyboardTracking">
+        <bool>false</bool>
+       </property>
+       <property name="suffix">
+        <string> m</string>
+       </property>
+       <property name="decimals">
+        <number>6</number>
+       </property>
+       <property name="maximum">
+        <double>5000.000000000000000</double>
+       </property>
+       <property name="value">
+        <double>0.600000000000000</double>
+       </property>
+      </widget>
+      <widget class="QLabel" name="lambdaMLabel_2">
+       <property name="geometry">
+        <rect>
+         <x>4</x>
+         <y>70</y>
+         <width>101</width>
+         <height>26</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>polarisation</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="polarisationComboBox">
+       <property name="geometry">
+        <rect>
+         <x>90</x>
+         <y>70</y>
+         <width>51</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="currentText">
+        <string>TE</string>
+       </property>
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <item>
+        <property name="text">
+         <string>TE</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>TM</string>
+        </property>
+       </item>
       </widget>
      </widget>
     </item>
@@ -608,7 +579,7 @@
            </item>
            <item>
             <property name="text">
-             <string>Standard</string>
+             <string>Linear</string>
             </property>
            </item>
            <item>
@@ -1125,6 +1096,290 @@
       </widget>
      </widget>
     </item>
+    <item row="1" column="2">
+     <widget class="QFrame" name="frame_4">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QPushButton" name="pushButtonEnvironment">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>230</y>
+         <width>81</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>manipulate</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="pushButtonRefractivity">
+       <property name="geometry">
+        <rect>
+         <x>100</x>
+         <y>230</y>
+         <width>81</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>refractivity</string>
+       </property>
+      </widget>
+      <widget class="QGraphicsView" name="environment_window">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>871</width>
+         <height>261</height>
+        </rect>
+       </property>
+      </widget>
+      <zorder>environment_window</zorder>
+      <zorder>pushButtonEnvironment</zorder>
+      <zorder>pushButtonRefractivity</zorder>
+     </widget>
+    </item>
+    <item row="2" column="3">
+     <widget class="QFrame" name="frame_7">
+      <property name="minimumSize">
+       <size>
+        <width>280</width>
+        <height>200</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>280</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QPushButton" name="pushButtonFinal">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>360</y>
+         <width>81</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>manipulate</string>
+       </property>
+      </widget>
+      <widget class="QGraphicsView" name="final_field_window">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>280</width>
+         <height>393</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>280</width>
+         <height>200</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>280</width>
+         <height>16777215</height>
+        </size>
+       </property>
+      </widget>
+      <zorder>final_field_window</zorder>
+      <zorder>pushButtonFinal</zorder>
+     </widget>
+    </item>
+    <item row="0" column="1" rowspan="2">
+     <widget class="QFrame" name="frame_12">
+      <property name="maximumSize">
+       <size>
+        <width>190</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QGraphicsView" name="graphicsSSW">
+       <property name="geometry">
+        <rect>
+         <x>3</x>
+         <y>3</y>
+         <width>185</width>
+         <height>180</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>185</width>
+         <height>180</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>185</width>
+         <height>180</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QGraphicsView" name="graphicsLogoEnac">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>280</y>
+         <width>130</width>
+         <height>85</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>130</width>
+         <height>85</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>130</width>
+         <height>85</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QGraphicsView" name="graphicsLogoMinister">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>189</y>
+         <width>100</width>
+         <height>90</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>90</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>100</width>
+         <height>90</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QGraphicsView" name="graphicsView">
+       <property name="geometry">
+        <rect>
+         <x>100</x>
+         <y>189</y>
+         <width>90</width>
+         <height>90</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>90</width>
+         <height>90</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>90</width>
+         <height>90</height>
+        </size>
+       </property>
+       <property name="sizeIncrement">
+        <size>
+         <width>0</width>
+         <height>50</height>
+        </size>
+       </property>
+      </widget>
+      <zorder>graphicsLogoMinister</zorder>
+      <zorder>graphicsLogoEnac</zorder>
+      <zorder>graphicsView</zorder>
+      <zorder>graphicsSSW</zorder>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QFrame" name="frame">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>100</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>100</height>
+       </size>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetDefaultConstraint</enum>
+       </property>
+       <item>
+        <widget class="QLabel" name="informationLabel">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>85</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>85</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>INFORMATION</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTextBrowser" name="informationTextBrowser">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>85</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>95</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
     <item row="4" column="2">
      <widget class="QFrame" name="frame_3">
       <property name="minimumSize">
@@ -1195,99 +1450,6 @@
         <string>Run Simulation</string>
        </property>
       </widget>
-     </widget>
-    </item>
-    <item row="1" column="2">
-     <widget class="QFrame" name="frame_4">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
-      </property>
-      <widget class="QPushButton" name="pushButtonEnvironment">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>230</y>
-         <width>81</width>
-         <height>25</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>manipulate</string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="pushButtonRefractivity">
-       <property name="geometry">
-        <rect>
-         <x>100</x>
-         <y>230</y>
-         <width>81</width>
-         <height>25</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>refractivity</string>
-       </property>
-      </widget>
-      <widget class="QGraphicsView" name="environment_window">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>871</width>
-         <height>261</height>
-        </rect>
-       </property>
-      </widget>
-      <zorder>environment_window</zorder>
-      <zorder>pushButtonEnvironment</zorder>
-      <zorder>pushButtonRefractivity</zorder>
-     </widget>
-    </item>
-    <item row="2" column="2">
-     <widget class="QFrame" name="frame_6">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>200</height>
-       </size>
-      </property>
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
-      </property>
-      <widget class="QPushButton" name="pushButtonField">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>360</y>
-         <width>81</width>
-         <height>25</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>manipulate</string>
-       </property>
-      </widget>
-      <widget class="QGraphicsView" name="field_window">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>871</width>
-         <height>393</height>
-        </rect>
-       </property>
-      </widget>
-      <zorder>field_window</zorder>
-      <zorder>pushButtonField</zorder>
      </widget>
     </item>
     <item row="3" column="3">
@@ -1391,17 +1553,17 @@
       </widget>
      </widget>
     </item>
-    <item row="2" column="3">
-     <widget class="QFrame" name="frame_7">
+    <item row="2" column="1">
+     <widget class="QFrame" name="frame_5">
       <property name="minimumSize">
        <size>
-        <width>280</width>
-        <height>200</height>
+        <width>190</width>
+        <height>0</height>
        </size>
       </property>
       <property name="maximumSize">
        <size>
-        <width>280</width>
+        <width>190</width>
         <height>16777215</height>
        </size>
       </property>
@@ -1411,7 +1573,7 @@
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <widget class="QPushButton" name="pushButtonFinal">
+      <widget class="QPushButton" name="pushButtonSource">
        <property name="geometry">
         <rect>
          <x>10</x>
@@ -1424,33 +1586,18 @@
         <string>manipulate</string>
        </property>
       </widget>
-      <widget class="QGraphicsView" name="final_field_window">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
+      <widget class="QGraphicsView" name="source_window">
        <property name="geometry">
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>280</width>
+         <width>190</width>
          <height>393</height>
         </rect>
        </property>
-       <property name="minimumSize">
-        <size>
-         <width>280</width>
-         <height>200</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>280</width>
-         <height>16777215</height>
-        </size>
-       </property>
       </widget>
-      <zorder>final_field_window</zorder>
-      <zorder>pushButtonFinal</zorder>
+      <zorder>source_window</zorder>
+      <zorder>pushButtonSource</zorder>
      </widget>
     </item>
     <item row="3" column="2">
@@ -1812,18 +1959,18 @@
       </widget>
      </widget>
     </item>
-    <item row="3" column="1">
-     <widget class="QFrame" name="frame_8">
+    <item row="4" column="1">
+     <widget class="QFrame" name="frame_10">
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>110</height>
+        <height>31</height>
        </size>
       </property>
       <property name="maximumSize">
        <size>
-        <width>190</width>
-        <height>110</height>
+        <width>16777215</width>
+        <height>31</height>
        </size>
       </property>
       <property name="frameShape">
@@ -1832,253 +1979,176 @@
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <widget class="QLabel" name="frequencyMHzLabel">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
+      <widget class="QPushButton" name="run_source">
        <property name="geometry">
         <rect>
-         <x>4</x>
-         <y>8</y>
-         <width>60</width>
-         <height>26</height>
+         <x>0</x>
+         <y>0</y>
+         <width>81</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="palette">
+        <palette>
+         <active>
+          <colorrole role="Button">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>239</red>
+             <green>41</green>
+             <blue>41</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </active>
+         <inactive>
+          <colorrole role="Button">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>239</red>
+             <green>41</green>
+             <blue>41</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </inactive>
+         <disabled>
+          <colorrole role="Button">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>239</red>
+             <green>41</green>
+             <blue>41</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </disabled>
+        </palette>
+       </property>
+       <property name="text">
+        <string>Run Source</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="run_relief">
+       <property name="geometry">
+        <rect>
+         <x>100</x>
+         <y>0</y>
+         <width>91</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="palette">
+        <palette>
+         <active>
+          <colorrole role="Button">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>239</red>
+             <green>41</green>
+             <blue>41</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </active>
+         <inactive>
+          <colorrole role="Button">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>239</red>
+             <green>41</green>
+             <blue>41</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </inactive>
+         <disabled>
+          <colorrole role="Button">
+           <brush brushstyle="SolidPattern">
+            <color alpha="255">
+             <red>239</red>
+             <green>41</green>
+             <blue>41</blue>
+            </color>
+           </brush>
+          </colorrole>
+         </disabled>
+        </palette>
+       </property>
+       <property name="text">
+        <string>Run Relief</string>
+       </property>
+      </widget>
+     </widget>
+    </item>
+    <item row="0" column="3">
+     <widget class="QFrame" name="frame_11">
+      <property name="minimumSize">
+       <size>
+        <width>280</width>
+        <height>100</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>208</width>
+        <height>100</height>
+       </size>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QComboBox" name="methodComboBox">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>40</y>
+         <width>81</width>
+         <height>31</height>
         </rect>
        </property>
        <property name="font">
         <font>
-         <italic>false</italic>
-         <kerning>true</kerning>
+         <pointsize>17</pointsize>
+        </font>
+       </property>
+       <item>
+        <property name="text">
+         <string>SSW</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>WWP</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>WWP-H</string>
+        </property>
+       </item>
+      </widget>
+      <widget class="QLabel" name="label">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>10</y>
+         <width>71</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
         </font>
        </property>
        <property name="text">
-        <string>Frequency</string>
+        <string>Method</string>
        </property>
       </widget>
-      <widget class="QDoubleSpinBox" name="frequencyMHzDoubleSpinBox">
-       <property name="geometry">
-        <rect>
-         <x>70</x>
-         <y>8</y>
-         <width>111</width>
-         <height>26</height>
-        </rect>
-       </property>
-       <property name="locale">
-        <locale language="English" country="UnitedStates"/>
-       </property>
-       <property name="keyboardTracking">
-        <bool>false</bool>
-       </property>
-       <property name="suffix">
-        <string> MHz</string>
-       </property>
-       <property name="decimals">
-        <number>4</number>
-       </property>
-       <property name="maximum">
-        <double>1000000.000000000000000</double>
-       </property>
-       <property name="singleStep">
-        <double>100.000000000000000</double>
-       </property>
-       <property name="value">
-        <double>500.000000000000000</double>
-       </property>
-      </widget>
-      <widget class="QLabel" name="lambdaMLabel">
-       <property name="geometry">
-        <rect>
-         <x>4</x>
-         <y>40</y>
-         <width>43</width>
-         <height>26</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>lambda</string>
-       </property>
-      </widget>
-      <widget class="QDoubleSpinBox" name="lambdaMDoubleSpinBox">
-       <property name="geometry">
-        <rect>
-         <x>70</x>
-         <y>40</y>
-         <width>111</width>
-         <height>26</height>
-        </rect>
-       </property>
-       <property name="locale">
-        <locale language="English" country="UnitedStates"/>
-       </property>
-       <property name="keyboardTracking">
-        <bool>false</bool>
-       </property>
-       <property name="suffix">
-        <string> m</string>
-       </property>
-       <property name="decimals">
-        <number>6</number>
-       </property>
-       <property name="maximum">
-        <double>5000.000000000000000</double>
-       </property>
-       <property name="value">
-        <double>0.600000000000000</double>
-       </property>
-      </widget>
-      <widget class="QLabel" name="lambdaMLabel_2">
-       <property name="geometry">
-        <rect>
-         <x>4</x>
-         <y>70</y>
-         <width>101</width>
-         <height>26</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>polarisation</string>
-       </property>
-      </widget>
-      <widget class="QComboBox" name="polarisationComboBox">
-       <property name="geometry">
-        <rect>
-         <x>90</x>
-         <y>70</y>
-         <width>51</width>
-         <height>25</height>
-        </rect>
-       </property>
-       <property name="currentText">
-        <string>TE</string>
-       </property>
-       <property name="currentIndex">
-        <number>0</number>
-       </property>
-       <item>
-        <property name="text">
-         <string>TE</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>TM</string>
-        </property>
-       </item>
-      </widget>
-     </widget>
-    </item>
-    <item row="0" column="1" rowspan="2">
-     <widget class="QFrame" name="frame_12">
-      <property name="maximumSize">
-       <size>
-        <width>190</width>
-        <height>16777215</height>
-       </size>
-      </property>
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
-      </property>
-      <widget class="QGraphicsView" name="graphicsSSW">
-       <property name="geometry">
-        <rect>
-         <x>3</x>
-         <y>3</y>
-         <width>185</width>
-         <height>180</height>
-        </rect>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>185</width>
-         <height>180</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>185</width>
-         <height>180</height>
-        </size>
-       </property>
-      </widget>
-      <widget class="QGraphicsView" name="graphicsLogoEnac">
-       <property name="geometry">
-        <rect>
-         <x>30</x>
-         <y>280</y>
-         <width>130</width>
-         <height>85</height>
-        </rect>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>130</width>
-         <height>85</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>130</width>
-         <height>85</height>
-        </size>
-       </property>
-      </widget>
-      <widget class="QGraphicsView" name="graphicsLogoMinister">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>189</y>
-         <width>100</width>
-         <height>90</height>
-        </rect>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>100</width>
-         <height>90</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>100</width>
-         <height>90</height>
-        </size>
-       </property>
-      </widget>
-      <widget class="QGraphicsView" name="graphicsView">
-       <property name="geometry">
-        <rect>
-         <x>100</x>
-         <y>189</y>
-         <width>90</width>
-         <height>90</height>
-        </rect>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>90</width>
-         <height>90</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>90</width>
-         <height>90</height>
-        </size>
-       </property>
-       <property name="sizeIncrement">
-        <size>
-         <width>0</width>
-         <height>50</height>
-        </size>
-       </property>
-      </widget>
-      <zorder>graphicsLogoMinister</zorder>
-      <zorder>graphicsLogoEnac</zorder>
-      <zorder>graphicsView</zorder>
-      <zorder>graphicsSSW</zorder>
      </widget>
     </item>
    </layout>
@@ -2094,6 +2164,7 @@
    <zorder>frame</zorder>
    <zorder>tabWidget</zorder>
    <zorder>frame_12</zorder>
+   <zorder>frame_11</zorder>
   </widget>
  </widget>
  <tabstops>
