@@ -15,13 +15,15 @@
 # @date 06/07/2022
 # @version V1
 #
-# @brief computes and plots log-amplitude variance of the electric field along the propagation in turbulent atmosphere case
+# @brief computes and plots log-amplitude variance of the electric field along the propagation in turbulent atmosphere
+# case
 #
 # @param[in] config         Class that contains the propagation parameters (see Classes)
 #
 # @param[out] None          Plots of log-amplitude variance with
 
-# Warning : Before running this file in a turbulent case, one must run it without turbulence in order to save the field E_reference
+# Warning : Before running this file in a turbulent case, one must run it without turbulence in order to save the field
+# E_reference
 ##
 
 
