@@ -50,3 +50,4 @@ GUI/src/__pycache__/plots.cpython-38.pyc
 .idea/vcs.xml
 *.pyc
 *.pyc
+*.npy

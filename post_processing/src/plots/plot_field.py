@@ -379,6 +379,6 @@ def plot_dictionary(config, config_plot):
             plt.grid('on')
             plt.ylabel('Altitude (m)', fontsize=12)
             plt.xlabel('E (dBV/m)', fontsize=12)
-            plt.tight_layout()# pad=0.4, w_pad=0.5, h_pad=1.0)
+            plt.tight_layout()  # pad=0.4, w_pad=0.5, h_pad=1.0)
 
     return 0
