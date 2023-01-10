@@ -137,7 +137,7 @@ def remove_image_coef(w_x, config):
     n_im = config.N_im
     # dilation at each level
     q_max = q_max_calculation(ll)
-    dilation = 2**(ll-q_max+1)
+    dilation = 2**ll/q_max
     # on each level (including scaling), fill appropriately
     for ii_l in np.arange(0, ll+1):
         # take into account the dilation at level ii_l
@@ -169,7 +169,7 @@ def hybrid_ssw_wwp(w_ssw_x, w_wwp_x, config):
     n_im = config.N_im
     # dilation at each level
     q_max = q_max_calculation(ll)
-    dilation = 2**(ll-q_max+1)
+    dilation = 2**ll/q_max
     # on each level (including scaling), fill appropriately
     for ii_l in np.arange(0, ll+1):
         # take into account the dilation at level ii_l
@@ -202,7 +202,7 @@ def extract_ssw(w_ssw, w_x, config):
     n_im = config.N_im
     # dilation at each level
     q_max = q_max_calculation(ll)
-    dilation = 2**(ll-q_max+1)
+    dilation = 2**ll / q_max
     # on each level (including scaling), fill appropriately
     for ii_l in np.arange(0, ll+1):
         # take into account the dilation at level ii_l
@@ -237,7 +237,7 @@ def assemble_ssw_wwp(w_x, w_ssw, w_wwp, config):
     n_im = config.N_im
     # dilation at each level
     q_max = q_max_calculation(ll)
-    dilation = 2**(ll-q_max+1)
+    dilation = 2**ll / q_max
     # on each level (including scaling), fill appropriately
     for ii_l in np.arange(0, ll+1):
         # take into account the dilation at level ii_l
@@ -274,7 +274,7 @@ def disassemble_ssw_wwp(w_x, w_ssw, w_wwp, config):
     n_im = config.N_im
     # dilation at each level
     q_max = q_max_calculation(ll)
-    dilation = 2**(ll-q_max+1)
+    dilation = 2**ll / q_max
     # on each level (including scaling), fill appropriately
     for ii_l in np.arange(0, ll+1):
         # take into account the dilation at level ii_l
