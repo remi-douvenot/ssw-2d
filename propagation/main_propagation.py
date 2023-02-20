@@ -80,6 +80,7 @@ import time
 import scipy.constants as cst
 from src.wavelets.wavelet_operations import compute_thresholds
 from src.propagation.ssw_2d import ssw_2d
+from src.propagation.ssf_2d import ssf_2d
 from src.propagation.wwp_2d import wwp_2d
 from src.propagation.wwp_h_2d import wwp_h_2d
 import shutil  # to make file copies
@@ -161,7 +162,7 @@ config.V_s, config.V_p = compute_thresholds(config.N_x, config.max_compression_e
 # ---------------------- #
 # --- 2D Propagation --- #
 # ---------------------- #
-t_propa_SSW_s = time.process_time()
+t_propa_s = time.process_time()
 # SSW
 if config.method == 'SSW':
     u_final, wv_total = ssw_2d(u_0, config, n_refraction, ii_vect_relief)
@@ -171,8 +172,14 @@ elif (config.method == 'WWP') or ((config.method == 'WWP-H') and (config.ground 
 # WWP-H
 elif config.method == 'WWP-H':
     u_final, wv_total = wwp_h_2d(u_0, config, n_refraction, ii_vect_relief)
+# SSF
+elif config.method == 'SSF':
+    u_final, wv_total = ssf_2d(u_0, config, n_refraction, ii_vect_relief)
 else:
     raise ValueError('Unknown propagation method.')
+
+t_propa_f = time.process_time()
+print('Total '+config.method+' (ms)', np.round(t_propa_f-t_propa_s, 5)*1e3)
 
 # --- de-normalise in infinity norm --- #
 # field: simple multiplication
@@ -183,9 +190,6 @@ for ii_x in np.arange(0, config.N_x):
     # 2/ all the LL+1 wavelet levels
     for ii_lvl in np.arange(0, config.wv_L+1):
         wv_total[ii_x][ii_lvl] *= u_infty
-
-t_propa_SSW_f = time.process_time()
-print('Total SSW (ms)', np.round(t_propa_SSW_f-t_propa_SSW_s, 5)*1e3)
 
 # ------- END ---------- #
 # --- 2D Propagation --- #
@@ -199,7 +203,6 @@ x_max = config.N_x * config.x_step
 print('Distance from the source = ', -config.x_s+x_max)
 # de-normalise the reduced field
 e_field = u_final / np.sqrt(k0*(-config.x_s+x_max)) * np.exp(-1j * k0 * (-config.x_s+x_max))
-#e_field = u_final * np.sqrt(k0*(-config.x_s+x_max))
 
 with np.errstate(divide='ignore'):
     data_dB = 20*np.log10(np.abs(e_field))

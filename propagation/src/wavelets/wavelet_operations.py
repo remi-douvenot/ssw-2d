@@ -24,11 +24,12 @@
 import pywt
 import numpy as np
 from scipy.sparse import coo_matrix  # for sparsify
+
+
 # from scipy.sparse import dok, dok_matrix
 
 
 def thresholding(coeffs, threshold):
-
     # Obtain an array of the wavelet coefficient
     coeffs_arr, coeffs_slice = pywt.coeffs_to_array(coeffs)
 
@@ -39,7 +40,6 @@ def thresholding(coeffs, threshold):
     coeffs_t = pywt.array_to_coeffs(coeffs_arr, coeffs_slice, output_format='wavedec')
 
     return coeffs_t
-
 
 
 ##
@@ -55,11 +55,11 @@ def thresholding(coeffs, threshold):
 
 
 def q_max_calculation(ll):
-    q_max_list = np.zeros(ll+1, dtype=int) # L wavelets + 1 scaling function
+    q_max_list = np.zeros(ll + 1, dtype=int)  # L wavelets + 1 scaling function
     for ii_lvl in np.arange(0, ll + 1):
         level = ii_lvl
-        if ii_lvl == 0: # level 0 (scaling function) corresponds to level 1 in equation below
-            level =+ 1
+        if ii_lvl == 0:  # level 0 (scaling function) corresponds to level 1 in equation below
+            level = + 1
         q_max_list[ii_lvl] = (2 ** (level - 1))
 
     return q_max_list
@@ -78,14 +78,13 @@ def q_max_calculation(ll):
 
 
 def sparsify(wv_x):
-
     # max level of decomposition
-    ll = len(wv_x)-1
+    ll = len(wv_x) - 1
     # creation of the empty list
-    wv_x_sparse = [[]] * (ll+1)
+    wv_x_sparse = [[]] * (ll + 1)
     # fill the scaling function
     # fill the wavelet levels
-    for ii_lvl in np.arange(0, ll+1):
+    for ii_lvl in np.arange(0, ll + 1):
         wv_x_sparse[ii_lvl] = coo_matrix(wv_x[ii_lvl])
     return wv_x_sparse
 
@@ -111,9 +110,10 @@ def sparsify(wv_x):
 
 def compute_thresholds(n_x, max_error_db):
     max_error = 10 ** (max_error_db / 20)
-    threshold_v_s = max_error/(2 * n_x)
-    threshold_v_m = max_error/(2 * n_x)
+    threshold_v_s = max_error / (2 * n_x)
+    threshold_v_m = max_error / (2 * n_x)
     return threshold_v_s, threshold_v_m
+
 
 ##
 # @brief function that removes the first wavelet coefficients that correspond to the image layer
@@ -131,21 +131,21 @@ def compute_thresholds(n_x, max_error_db):
 
 
 def remove_image_coef(w_x, config):
-
     ll = config.wv_L
     nn = config.N_z
     n_im = config.N_im
     # dilation at each level
     q_max = q_max_calculation(ll)
-    dilation = 2**ll/q_max
+    dilation = 2 ** ll / q_max
     # on each level (including scaling), fill appropriately
-    for ii_l in np.arange(0, ll+1):
+    for ii_l in np.arange(0, ll + 1):
         # take into account the dilation at level ii_l
-        p_im = int(n_im/dilation[ii_l])
+        p_im = int(n_im / dilation[ii_l])
         # remove the useless part (size = N_im --> remove image and top layers)
         w_x[ii_l] = w_x[ii_l][p_im:]
 
     return w_x
+
 
 ##
 # @brief function that hybrids SSW and WWP wavelet decompositions
@@ -163,21 +163,21 @@ def remove_image_coef(w_x, config):
 
 
 def hybrid_ssw_wwp(w_ssw_x, w_wwp_x, config):
-
     ll = config.wv_L
     nn = config.N_z
     n_im = config.N_im
     # dilation at each level
     q_max = q_max_calculation(ll)
-    dilation = 2**ll/q_max
+    dilation = 2 ** ll / q_max
     # on each level (including scaling), fill appropriately
-    for ii_l in np.arange(0, ll+1):
+    for ii_l in np.arange(0, ll + 1):
         # take into account the dilation at level ii_l
-        p_im = int(n_im/dilation[ii_l])
+        p_im = int(n_im / dilation[ii_l])
         # copy the WWP coefficients in SSW
-        w_ssw_x[ii_l][2*p_im:] = w_wwp_x[ii_l][:p_im]
+        w_ssw_x[ii_l][2 * p_im:] = w_wwp_x[ii_l][:p_im]
 
     return w_ssw_x
+
 
 ##
 # @brief function that extracts the SSW part from the total wavelet decomposition is WWP-H
@@ -196,19 +196,18 @@ def hybrid_ssw_wwp(w_ssw_x, w_wwp_x, config):
 
 
 def extract_ssw(w_ssw, w_x, config):
-
     ll = config.wv_L
     nn = config.N_z
     n_im = config.N_im
     # dilation at each level
     q_max = q_max_calculation(ll)
-    dilation = 2**ll / q_max
+    dilation = 2 ** ll / q_max
     # on each level (including scaling), fill appropriately
-    for ii_l in np.arange(0, ll+1):
+    for ii_l in np.arange(0, ll + 1):
         # take into account the dilation at level ii_l
-        p_im = int(n_im/dilation[ii_l])
+        p_im = int(n_im / dilation[ii_l])
         # copy the WWP coefficients in SSW (total size = image layer + 2 * image layer size)
-        w_ssw[ii_l] = w_x[ii_l][:3*p_im]
+        w_ssw[ii_l] = w_x[ii_l][:3 * p_im]
 
     return w_ssw
 
@@ -231,24 +230,22 @@ def extract_ssw(w_ssw, w_x, config):
 
 
 def assemble_ssw_wwp(w_x, w_ssw, w_wwp, config):
-
     ll = config.wv_L
     nn = config.N_z
     n_im = config.N_im
     # dilation at each level
     q_max = q_max_calculation(ll)
-    dilation = 2**ll / q_max
+    dilation = 2 ** ll / q_max
     # on each level (including scaling), fill appropriately
-    for ii_l in np.arange(0, ll+1):
+    for ii_l in np.arange(0, ll + 1):
         # take into account the dilation at level ii_l
-        p_im = int(n_im/dilation[ii_l])
+        p_im = int(n_im / dilation[ii_l])
         # 1/ fill the SSW part (layer image + SSW part of same size)
-        w_x[ii_l][0: 2*p_im] = w_ssw[ii_l][0:2*p_im]
+        w_x[ii_l][0: 2 * p_im] = w_ssw[ii_l][0:2 * p_im]
         # 2/ fill the WWP part (for n_im to top)
-        w_x[ii_l][2*p_im:] = w_wwp[ii_l][:]
+        w_x[ii_l][2 * p_im:] = w_wwp[ii_l][:]
 
     return w_x
-
 
 
 ##
@@ -266,21 +263,20 @@ def assemble_ssw_wwp(w_x, w_ssw, w_wwp, config):
 # @params[in] config : configuration of the simulation
 ##
 
-
 def disassemble_ssw_wwp(w_x, w_ssw, w_wwp, config):
-
+    #
     ll = config.wv_L
     nn = config.N_z
     n_im = config.N_im
     # dilation at each level
     q_max = q_max_calculation(ll)
-    dilation = 2**ll / q_max
+    dilation = 2 ** ll / q_max
     # on each level (including scaling), fill appropriately
-    for ii_l in np.arange(0, ll+1):
+    for ii_l in np.arange(0, ll + 1):
         # take into account the dilation at level ii_l
-        p_im = int(n_im/dilation[ii_l])
+        p_im = int(n_im / dilation[ii_l])
         # copy the WWP-H coefficients in SSW (total size = image layer + 2 * image layer size)
-        w_ssw[ii_l] = w_x[ii_l][:3*p_im]
+        w_ssw[ii_l] = w_x[ii_l][:3 * p_im]
         # copy the WWP-H coefficients in WWP (total size = N_z - 3 * image layer size)
         w_wwp[ii_l] = w_x[ii_l][2 * p_im:]
 

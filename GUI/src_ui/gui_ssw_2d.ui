@@ -98,15 +98,15 @@
         </font>
        </property>
        <property name="text">
-        <string>Frequency</string>
+        <string>Freq.</string>
        </property>
       </widget>
       <widget class="QDoubleSpinBox" name="frequencyMHzDoubleSpinBox">
        <property name="geometry">
         <rect>
-         <x>70</x>
+         <x>60</x>
          <y>8</y>
-         <width>111</width>
+         <width>121</width>
          <height>26</height>
         </rect>
        </property>
@@ -137,7 +137,7 @@
         <rect>
          <x>4</x>
          <y>40</y>
-         <width>43</width>
+         <width>61</width>
          <height>26</height>
         </rect>
        </property>
@@ -148,9 +148,9 @@
       <widget class="QDoubleSpinBox" name="lambdaMDoubleSpinBox">
        <property name="geometry">
         <rect>
-         <x>70</x>
+         <x>80</x>
          <y>40</y>
-         <width>111</width>
+         <width>101</width>
          <height>26</height>
         </rect>
        </property>
@@ -183,7 +183,7 @@
         </rect>
        </property>
        <property name="text">
-        <string>polarisation</string>
+        <string>polar</string>
        </property>
       </widget>
       <widget class="QComboBox" name="polarisationComboBox">
@@ -438,7 +438,7 @@
          <rect>
           <x>9</x>
           <y>20</y>
-          <width>251</width>
+          <width>259</width>
           <height>31</height>
          </rect>
         </property>
@@ -1475,7 +1475,7 @@
       <widget class="QSpinBox" name="dynamicSpinBox">
        <property name="geometry">
         <rect>
-         <x>60</x>
+         <x>70</x>
          <y>40</y>
          <width>161</width>
          <height>26</height>
@@ -1494,7 +1494,7 @@
       <widget class="QComboBox" name="outputComboBox">
        <property name="geometry">
         <rect>
-         <x>60</x>
+         <x>70</x>
          <y>9</y>
          <width>161</width>
          <height>25</height>
@@ -1530,7 +1530,7 @@
         <rect>
          <x>4</x>
          <y>40</y>
-         <width>50</width>
+         <width>61</width>
          <height>26</height>
         </rect>
        </property>
@@ -1543,7 +1543,7 @@
         <rect>
          <x>4</x>
          <y>9</y>
-         <width>42</width>
+         <width>61</width>
          <height>25</height>
         </rect>
        </property>
@@ -1623,9 +1623,9 @@
       <widget class="QWidget" name="layoutWidget">
        <property name="geometry">
         <rect>
-         <x>360</x>
+         <x>410</x>
          <y>10</y>
-         <width>161</width>
+         <width>173</width>
          <height>91</height>
         </rect>
        </property>
@@ -1674,9 +1674,9 @@
       <widget class="QWidget" name="layoutWidget">
        <property name="geometry">
         <rect>
-         <x>550</x>
+         <x>660</x>
          <y>10</y>
-         <width>191</width>
+         <width>201</width>
          <height>91</height>
         </rect>
        </property>
@@ -1762,7 +1762,7 @@
         <item row="2" column="0">
          <widget class="QLabel" name="maxCompressionLabel">
           <property name="text">
-           <string>max compression</string>
+           <string>max compress.</string>
           </property>
          </widget>
         </item>
@@ -1773,7 +1773,7 @@
         <rect>
          <x>10</x>
          <y>10</y>
-         <width>153</width>
+         <width>181</width>
          <height>92</height>
         </rect>
        </property>
@@ -1864,9 +1864,9 @@
       <widget class="QWidget" name="layoutWidget">
        <property name="geometry">
         <rect>
-         <x>180</x>
+         <x>210</x>
          <y>10</y>
-         <width>164</width>
+         <width>181</width>
          <height>92</height>
         </rect>
        </property>
@@ -2128,6 +2128,11 @@
        <item>
         <property name="text">
          <string>WWP-H</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>SSF</string>
         </property>
        </item>
       </widget>
