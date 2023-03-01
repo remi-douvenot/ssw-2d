@@ -31,8 +31,8 @@ def compute_image_field(u_x, n_im):
     u_x_im = np.zeros([n_z + n_im], dtype='complex')
 
     # Fill the image layer
-    u_x_im[n_im:n_z + n_im] = u_x
-    u_x_im[0:n_im] = - u_x[n_im - 1::-1]
+    u_x_im[n_im+1:n_z + n_im] = u_x[1:n_z]
+    u_x_im[0:n_im] = - u_x[n_im:0:-1]
     return u_x_im
 
 ##
@@ -67,6 +67,7 @@ def compute_image_field_tm_pec(u_x, n_im):
 
     # Fill the image layer
     u_x_im[n_im:n_z + n_im] = u_x
-    u_x_im[0:n_im] = u_x[n_im - 1::-1]
+    u_x_im[0:n_im] = u_x[n_im:0:-1]
+    u_toto = np.abs(u_x_im)
     return u_x_im
 

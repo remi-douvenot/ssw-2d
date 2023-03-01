@@ -125,15 +125,18 @@ class Plots(object):
         freq = self.frequencyMHzDoubleSpinBox.value()
         k0 = 2*cst.pi*freq*1e6/cst.c
         z_apo = int(self.sizeApoSpinBox.value()/100 * z_max)  # altitude of apodisation
+        n_im = int(self.sizeImageSpinBox.value()/100 * n_z)  # size of image layer
+        method = self.methodComboBox.currentText()
 
         # --- Initialise field --- #
-        u_field_total = np.zeros((n_x, n_z), dtype='complex')
         e_field_total = np.zeros((n_x, n_z), dtype='complex')
 
         wv_ii_x = [[]] * (wv_l + 1)
 
         # --- Image layer --- #
         ground_type = self.groundTypeComboBox.currentText()
+        if ground_type == 'None' or method == 'SSF':  # No ground or SSF -> no image layer
+            n_im = 0
 
         # --- from wavelets to E-field --- #
         # loop on each distance step
@@ -144,6 +147,8 @@ class Plots(object):
             # inverse fast wavelet transform
             # squeeze to remove the first useless dimension
             uu_x = np.squeeze(pywt.waverec(wv_ii_x, wv_family, 'per'))
+            # remove image field
+            uu_x = uu_x[n_im:]
             # add the relief
             if ground_type == 'PEC' or ground_type == 'Dielectric':
                 # whether ascending or descending relief, the shift is made before or after propagation

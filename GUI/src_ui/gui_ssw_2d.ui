@@ -232,7 +232,7 @@
        </size>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_3">
        <attribute name="title">
@@ -358,14 +358,14 @@
        <widget class="QLabel" name="imageLabel">
         <property name="geometry">
          <rect>
-          <x>30</x>
+          <x>40</x>
           <y>50</y>
           <width>81</width>
           <height>26</height>
          </rect>
         </property>
         <property name="text">
-         <string>Size image (%)</string>
+         <string>Size image</string>
         </property>
        </widget>
        <widget class="QSpinBox" name="sizeImageSpinBox">
@@ -383,6 +383,9 @@
         <property name="keyboardTracking">
          <bool>false</bool>
         </property>
+        <property name="suffix">
+         <string> %</string>
+        </property>
         <property name="maximum">
          <number>50</number>
         </property>
@@ -393,14 +396,14 @@
        <widget class="QLabel" name="imageLabel_2">
         <property name="geometry">
          <rect>
-          <x>30</x>
+          <x>40</x>
           <y>140</y>
           <width>111</width>
           <height>26</height>
          </rect>
         </property>
         <property name="text">
-         <string>Size image (nb pts)</string>
+         <string>Size image</string>
         </property>
        </widget>
        <widget class="QSpinBox" name="nImageSpinBox">
@@ -420,6 +423,9 @@
         </property>
         <property name="keyboardTracking">
          <bool>false</bool>
+        </property>
+        <property name="suffix">
+         <string> pts</string>
         </property>
         <property name="maximum">
          <number>5000000</number>
@@ -1866,7 +1872,7 @@
         <rect>
          <x>210</x>
          <y>10</y>
-         <width>181</width>
+         <width>186</width>
          <height>92</height>
         </rect>
        </property>

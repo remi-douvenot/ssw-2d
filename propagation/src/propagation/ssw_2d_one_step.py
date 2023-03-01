@@ -87,7 +87,7 @@ def ssw_2d_one_step(u_x, library, config):
     # if config.ground == 'PEC' or config.ground == 'dielectric':
     #     u_x_dx = eliminate_top_field(u_x_dx)
 
-    wv_x_dx = remove_image_coef(wv_x_dx, config)
+    # wv_x_dx = remove_image_coef(wv_x_dx, config)
 
     return u_x_dx, wv_x_dx
 

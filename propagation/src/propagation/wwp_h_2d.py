@@ -185,16 +185,6 @@ def wwp_h_2d(u_0, config, n_refraction, ii_vect_relief):
             # config.N_z = n_ssw
             w_x_dx = wavelet_propag_one_step(w_x, dictionary, config)
 
-            # Propagate the field in the wavelet domain
-            # config.N_z = n_ssw
-            # w_ssw_x_dx = wavelet_propag_one_step(w_ssw_x, dictionary, config)
-            # Threshold V_s on the signal
-            # w_ssw_x_dx = thresholding(w_ssw_x_dx, config.V_s)
-            # update field
-            # u_ssw_x_dx = pywt.waverec(w_ssw_x_dx, family, mode)
-            # remove image field
-            # u_ssw_x_dx = u_ssw_x_dx[n_im:]
-
             # ascending relief
             if diff_relief[ii_x - 1] > 0:
                 # Put zeros in the relief
@@ -238,7 +228,7 @@ def wwp_h_2d(u_0, config, n_refraction, ii_vect_relief):
         # ------------------------------------------------------ #
 
         # store the wavelet parameters (in coo format)
-        w_x_dx = remove_image_coef(w_x_dx, config)
+        # w_x_dx = remove_image_coef(w_x_dx, config)
         wv_total[ii_x-1] = sparsify(w_x_dx)
         # store the wavelet parameters (in coo format)
         # spectrum_w_0_tot[ii_x - 1] = spectrum_w_0_tot

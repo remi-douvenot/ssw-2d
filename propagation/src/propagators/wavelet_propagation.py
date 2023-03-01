@@ -17,7 +17,7 @@
 ##
 
 from src.DSSF.dssf_one_step import dssf_one_step
-from src.DSSF.propa_discrete_spectral_domain import compute_discrete_spectral_propagator
+from src.DSSF.propa_discrete_spectral_domain import discrete_spectral_propagator
 import numpy as np
 import math
 import matplotlib.pyplot as plt
@@ -29,7 +29,7 @@ def wavelet_propagation(u_wavelet_x, config):
     n_z_tot = u_wavelet_x.size
     # N_y_pre,N_z_pre = P_DSSF.shape
     # if N_y_tot != N_y_pre or N_z_tot!=N_z_pre:
-    propagator_dssf = compute_discrete_spectral_propagator(config, n_z_tot)
+    propagator_dssf = discrete_spectral_propagator(config, n_z_tot)
 
     u_wavelet_x_dx = dssf_one_step(u_wavelet_x, propagator_dssf)
 

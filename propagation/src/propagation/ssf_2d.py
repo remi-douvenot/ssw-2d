@@ -41,8 +41,8 @@ from src.propagation.apodisation import apply_apodisation, apodisation_window
 from src.atmosphere.genere_n_profile import genere_phi_turbulent
 from src.DSSF.dmft import dmft_parameters, u2w, w2u, surface_wave_propagation
 from src.propagation.refraction import apply_refractive_index
-from src.DSSF.propa_discrete_spectral_domain import compute_discrete_spectral_propagator
-from src.DSSF.dssf_one_step import dssf_one_step
+from src.DSSF.propa_discrete_spectral_domain import discrete_spectral_propagator, discrete_spectral_propagator_sin
+from src.DSSF.dssf_one_step import dssf_one_step, dssf_one_step_cos, dssf_one_step_sin
 import pywt
 from src.wavelets.wavelet_operations import sparsify  # for sparsify
 
@@ -90,7 +90,14 @@ def ssf_2d(u_0, config, n_refraction, ii_vect_relief):
     wv_total = [[]] * n_x
 
     # --- propagator --- %
-    propagator_dssf = compute_discrete_spectral_propagator(config, config.N_z)
+    print('ground')
+    print(config.ground)
+    if config.ground == 'None':
+        print('I am there')
+        propagator_dssf = discrete_spectral_propagator(config, config.N_z)
+    elif config.ground == 'PEC':
+        print('I am here')
+        propagator_dssf = discrete_spectral_propagator_sin(config, config.N_z)
 
     # Loop over the x_axis
     for ii_x in np.arange(1, n_x+1):
@@ -110,40 +117,7 @@ def ssf_2d(u_0, config, n_refraction, ii_vect_relief):
         if config.ground == 'Dielectric':
             raise ValueError(['Dielectric ground not yet available in SSF'])
 
-            # descending relief
-            if diff_relief[ii_x - 1] < 0:
-                # Add zeros below the field
-                u_x = shift_relief(u_x, -diff_relief[ii_x - 1])
-
-            # DMFT parameters
-            alpha, r0, aa = dmft_parameters(ii_x, config)
-
-            # from u to w
-            w_x = u2w(alpha, u_x, config.N_z, config.z_step)
-
-            # Add the image layer to w to apply reflection
-            w_x = compute_image_field(w_x, n_im)
-
-            # Propagate using SSW
-            w_x_dx, wavelets_x_dx = ssw_2d_one_step(w_x, dictionary, config)
-
-            # Pop image field: remove the image points
-            w_x_dx = w_x_dx[n_im:n_im + config.N_z]
-
-            # propagate surface wave
-            spectrum_w_0, spectrum_w_n_z = surface_wave_propagation(w_x_dx, config, r0, aa)
-            # spectrum_w_0, spectrum_w_n_z = 0.0, 0.0
-            # from w to u
-            u_x_dx = w2u(spectrum_w_0, spectrum_w_n_z, w_x_dx, config.N_z, config.z_step, r0, aa)
-
-            # ascending relief
-            if diff_relief[ii_x - 1] > 0:
-                # Put zeros in the relief
-                u_x_dx = shift_relief(u_x_dx, -diff_relief[ii_x - 1])
-                # u_x_dx[0:diff_relief[ii_x - 1]] = 0.0
-
         elif config.ground == 'PEC':
-            raise ValueError(['PEC ground not yet available in SSF'])
 
             # descending relief
             if diff_relief[ii_x - 1] < 0:
@@ -152,14 +126,13 @@ def ssf_2d(u_0, config, n_refraction, ii_vect_relief):
 
             # Add the image layer to apply the local image method #
             if config.polar == 'TE':
-                u_x = compute_image_field(u_x, n_im)
+                print('TE')
+                # Propagate using DSF. The first point u_x[0] is always = 0
+                u_x_dx[1:config.N_z] = dssf_one_step_sin(u_x[1:config.N_z], propagator_dssf[1:config.N_z])
             elif config.polar == 'TM':
-                u_x = compute_image_field_tm_pec(u_x, n_im)
-            # Propagate using SSW
-            u_x_dx, wavelets_x_dx = ssw_2d_one_step(u_x, dictionary, config)
-
-            # Pop image field: remove the image points
-            u_x_dx = u_x_dx[n_im:n_im + config.N_z]
+                print('TM')
+                # Propagate using DCF
+                u_x_dx = dssf_one_step_cos(u_x, propagator_dssf)
 
             # ascending relief
             if diff_relief[ii_x - 1] > 0:
@@ -184,7 +157,7 @@ def ssf_2d(u_0, config, n_refraction, ii_vect_relief):
         u_x_dx = apply_refractive_index(u_x_dx, n_refraction, config)
         if config.turbulence == 'Y':
             phi_turbulent = genere_phi_turbulent(config)
-            u_x_dx = apply_phi_turbulent(u_x_dx,phi_turbulent,config)
+            u_x_dx = apply_phi_turbulent(u_x_dx, phi_turbulent, config)
 
         # -------------------------------------- #
 
@@ -192,13 +165,13 @@ def ssf_2d(u_0, config, n_refraction, ii_vect_relief):
         u_x = u_x_dx
 
         # store field as a wavelet decomposition
+
         wv_total[ii_x-1] = sparsify(pywt.wavedec(u_x, config.wv_family, 'per', config.wv_L))
 
     return u_x_dx, wv_total
 
 
-def apply_phi_turbulent(u_x, phi_turbulent,config):
-
+def apply_phi_turbulent(u_x, phi_turbulent, config):
 
     # apply the turbulent phase screen of one step delta_x
     # half the refraction applied before and after propagation

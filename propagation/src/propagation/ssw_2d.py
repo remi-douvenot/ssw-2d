@@ -174,10 +174,8 @@ def ssw_2d(u_0, config, n_refraction, ii_vect_relief):
                 u_x = compute_image_field_tm_pec(u_x, n_im)
             # Propagate using SSW
             u_x_dx, wavelets_x_dx = ssw_2d_one_step(u_x, dictionary, config)
-
             # Pop image field: remove the image points
             u_x_dx = u_x_dx[n_im:n_im + config.N_z]
-
             # ascending relief
             if diff_relief[ii_x - 1] > 0:
                 # Put zeros in the relief
@@ -201,7 +199,7 @@ def ssw_2d(u_0, config, n_refraction, ii_vect_relief):
         u_x_dx = apply_refractive_index(u_x_dx, n_refraction, config)
         if config.turbulence == 'Y':
             phi_turbulent = genere_phi_turbulent(config)
-            u_x_dx = apply_phi_turbulent(u_x_dx,phi_turbulent,config)
+            u_x_dx = apply_phi_turbulent(u_x_dx, phi_turbulent, config)
 
         # -------------------------------------- #
 
@@ -215,10 +213,7 @@ def ssw_2d(u_0, config, n_refraction, ii_vect_relief):
     return u_x_dx, wv_total
 
 
-
-
 def apply_phi_turbulent(u_x, phi_turbulent,config):
-
 
     # apply the turbulent phase screen of one step delta_x
     # half the refraction applied before and after propagation
