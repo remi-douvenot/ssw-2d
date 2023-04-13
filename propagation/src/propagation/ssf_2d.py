@@ -126,11 +126,11 @@ def ssf_2d(u_0, config, n_refraction, ii_vect_relief):
 
             # Add the image layer to apply the local image method #
             if config.polar == 'TE':
-                print('TE')
+                # print('TE')
                 # Propagate using DSF. The first point u_x[0] is always = 0
                 u_x_dx[1:config.N_z] = dssf_one_step_sin(u_x[1:config.N_z], propagator_dssf[1:config.N_z])
             elif config.polar == 'TM':
-                print('TM')
+                # print('TM')
                 # Propagate using DCF
                 u_x_dx = dssf_one_step_cos(u_x, propagator_dssf)
 

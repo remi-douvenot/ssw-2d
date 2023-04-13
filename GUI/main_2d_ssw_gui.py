@@ -192,6 +192,8 @@ class Window(QMainWindow, Ui_MainWindow, Dependencies, Plots):
         # --- Main features --- #
         # Method
         self.methodComboBox.currentTextChanged.connect(self.method_changed)
+        # Language
+        self.languageComboBox.currentTextChanged.connect(self.language_changed)
         # Frequency and wavelength
         self.frequencyMHzDoubleSpinBox.valueChanged.connect(self.frequency_clicked)
         self.lambdaMDoubleSpinBox.valueChanged.connect(self.lambda_clicked)

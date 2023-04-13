@@ -137,6 +137,10 @@ class Plots(object):
         ground_type = self.groundTypeComboBox.currentText()
         if ground_type == 'None' or method == 'SSF':  # No ground or SSF -> no image layer
             n_im = 0
+        else:  # n_im must be multiple of 2^L
+            remain_im = n_im % 2 ** wv_l
+            if remain_im != 0:
+                n_im += 2 ** wv_l - remain_im
 
         # --- from wavelets to E-field --- #
         # loop on each distance step
@@ -158,7 +162,6 @@ class Plots(object):
                     ii_relief = int(z_relief[ii_x] / z_step)
                 uu_x = shift_relief(uu_x, ii_relief)
             x_current = -x_s + (ii_x + 1) * x_step
-            # print('x_current',x_current)
             e_field_total[ii_x, :] = uu_x / np.sqrt(k0 * x_current) * np.exp(-1j * k0 * x_current)
         # -------------------------------- #
 

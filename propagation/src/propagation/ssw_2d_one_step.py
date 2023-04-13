@@ -46,19 +46,19 @@
 
 
 import numpy as np
-import multiprocessing as mp
 import pywt
 import time
 from src.wavelets.wavelet_operations import thresholding, q_max_calculation
-from scipy.sparse import coo_matrix  # for sparsify
-# from src.maths import convolution  # for add_propagator_at_once
 from scipy.signal import convolve
-from src.wavelets.wavelet_operations import remove_image_coef
+from src.propa_cython.wavelet_propag_one_step import wavelet_propag_one_step_cy
+from src.wavelets_cython.wavelets_operations import normalized_indices, calculate_dilation
+import timeit
 
 
 def ssw_2d_one_step(u_x, library, config):
+
     # Simulation parameters
-    n_z = u_x.shape
+    n_z = u_x.shape[0]
 
     # Wavelet parameters
     family = config.wv_family
@@ -70,24 +70,41 @@ def ssw_2d_one_step(u_x, library, config):
     # Threshold V_s on the signal
     wv_x = thresholding(wv_x, config.V_s)
 
-    # Propagate the field in the wavelet domain
-    wv_x_dx = wavelet_propag_one_step(wv_x, library, config)
+    # Propagation with the Python code
+    if config.py_or_cy == 'Python':
+
+        # Propagate the field in the wavelet domain
+        wv_x_dx = wavelet_propag_one_step(wv_x, library, config)
+
+    # Propagation with the Cython code
+    elif config.py_or_cy == 'Cython':
+        # TODO: calculate library and nonzero coefficients at the beginning of the code
+        library2 = []
+        q_list = q_max_calculation(config.wv_L)
+        # Index at which the propagators of the level begin
+        n_propa_lib = np.zeros(config.wv_L + 2, dtype='int32')
+        # put the library in the shape of a vector. Useful for Cython version
+        for ii_lvl in range(0, config.wv_L + 1):
+            n_propa_lib[ii_lvl + 1] += n_propa_lib[ii_lvl]  # add previous level
+            for ii_q in range(0, q_list[ii_lvl]):
+                toto = library[ii_lvl][ii_q]
+                tata = pywt.coeffs_to_array(toto)[0]
+                n_propa_lib[ii_lvl+1] += len(tata)  # add the size of each propagator
+                library2 = np.append(library2, tata)
+        wx_x_coeffs = pywt.coeffs_to_array(wv_x)
+        wv_x = wx_x_coeffs[0]
+        wv_x_dx_array = wavelet_propag_one_step_cy(n_z, wv_x, library2, config.wv_L, n_propa_lib, config.V_p)
+
+        # wv_x_dx2 = unsparsify_dok(wv_x_dx2_sparse)
+        wv_x_dx = pywt.array_to_coeffs(wv_x_dx_array, wx_x_coeffs[1], output_format='wavedec')
+    else:
+        raise ValueError('py_or_cy variable can be ''Cython'' or ''Python'' only')
 
     # Threshold V_s on the signal
     wv_x_dx = thresholding(wv_x_dx, config.V_s)
 
-    # @todo Eliminate spurious field on top of the apodisation layer only if there is a ground
-    # These spurious wavelets are due to bottom field decomposed with periodic mode
-    # if config.ground == 'PEC' or config.ground == 'dielectric':
-    #     wv_x_dx = eliminate_top_wavelets(wv_x_dx)
-    # Calculate the field from the wavelet decomposition
-    # @todo Eliminate spurious field on top of the apodisation layer only if there is a ground
-    # This spurious field is due to bottom wavelets recomposed with periodic mode
+    # Recompose signal
     u_x_dx = pywt.waverec(wv_x_dx, family, mode)
-    # if config.ground == 'PEC' or config.ground == 'dielectric':
-    #     u_x_dx = eliminate_top_field(u_x_dx)
-
-    # wv_x_dx = remove_image_coef(wv_x_dx, config)
 
     return u_x_dx, wv_x_dx
 
@@ -150,7 +167,7 @@ def wavelet_propag_one_step(wv_x, library, config):
             propagator = library[ii_lvl][ii_z]
             # extract the wavelets that match this propagator
             wv_x_lvl_z = wv_x_lvl[ii_z::q_max]
-            wv_x_dx = add_propagator_at_once(wv_x_lvl_z, propagator, config.wv_L, wv_x_dx)
+            wv_x_dx = add_propagator_at_once(wv_x_lvl_z, propagator, ll, wv_x_dx)
             # print('fill all orientation time for one coeff',t_end_or-t_start_or)
             # t_end_orp = time.process_time()
             # print('propagate all coeffs for one level one orientation time',t_end_orp-t_start_orp)
@@ -214,29 +231,6 @@ def add_propagator_at_once(wv_x_lvl, propagator, ll, wv_x_dx):
 
     return wv_x_dx
 
-##
-# @package: sparsify
-# @author: R. Douvenot
-# @date: 09/06/2021
-# @version: V1.0
-#
-# @brief Put a wavelet decomposition in a sparse shape (coo format)
-# @param[in] wv_x Wavelet decomposition
-# @param[out] wv_x_sparse Sparse wavelet decomposition
-##
-
-
-def sparsify(wv_x):
-
-    # max level of decomposition
-    ll = len(wv_x)-1
-    # creation of the empty list
-    wv_x_sparse = [[]] * (ll+1)
-    # fill the scaling function
-    # fill the wavelet levels
-    for ii_lvl in np.arange(0, ll+1):
-        wv_x_sparse[ii_lvl] = coo_matrix(wv_x[ii_lvl])
-    return wv_x_sparse
 
 ##
 # @package: eliminate_top_field
@@ -318,3 +312,99 @@ def fortran_type(wv_u):
         wv_u_fortran[ii_lvl] = wv_u[ii_lvl]
 
     return wv_u_fortran
+
+
+def wavelet_propag_one_step3(wv_x, library, wv_ll, n_start_propa):
+
+    # --- Init the propagated wavelet coefficient --- #
+    # OUTPUT: matrix full of zeros: wavelet decomposition after propagation
+    n_z = len(wv_x)
+    wv_x_dx = np.zeros(n_z, dtype=np.complex128)
+    # INPUTS (constant)
+    # define variables
+    n_scal = int(len(wv_x) / (2**wv_ll))  # number of parameters on the highest levels (scaling function) of the signal vectors
+
+    # lists of the number of propagators per level
+    list_q = calculate_dilation(wv_ll)
+    # list_indices = normalized_indices(wv_ll)
+
+    # ----------------------------------------------------------- #
+    # ------------- Propagation in the wavelet domain ----------- #
+    # --- LOOP ON THE WAVELET LEVELS OF THE INPUT VECTOR WV_X --- #
+    # ----------------------------------------------------------- #
+
+    # --- LOOP ON THE LEVELS OF W_X --- #
+    for ii_lvl_wv in range(0, wv_ll + 1):
+        # number of propagators at this level
+        q_wv = list_q[ii_lvl_wv]
+        norm_indices = normalized_indices(wv_ll)
+        # index where level ii_lvl_wv begins
+        n_start_wv_lvl = norm_indices[ii_lvl_wv] * n_scal
+        # index where level ii_lvl_wv ends
+        n_stop_wv_lvl = norm_indices[ii_lvl_wv+1] * n_scal
+        # TODO: keep only nonzero coefs
+        # nz_indices = wv_x[ii_lvl_wv].nonzero()[1]
+        # index where propagators begin
+        n_start_propa_lvl = n_start_propa[ii_lvl_wv]
+        # index where propagators end
+        n_stop_propa_lvl = n_start_propa[ii_lvl_wv+1]
+        # size of ONE propagator
+        n_propa = int((n_stop_propa_lvl-n_start_propa_lvl) / q_wv)
+        # size of the scaling function
+        n_scal_pr = int(n_propa / (2**wv_ll))
+        # --- LOOP ON THE WAVELET PARAMETERS OF EACH LEVEL --- #
+        for ii_wv in range(n_start_wv_lvl, n_stop_wv_lvl):
+            # Value of the wavelet coefficient
+            wv_coef = wv_x[ii_wv]
+            if wv_coef == 0:
+                continue
+            # choose the right propagator for the coefficient at current level = modulo of q_wv
+            ii_q = ii_wv % q_wv
+
+            # index where THE propagator begins
+            n_start_propa_lvl_q = n_start_propa_lvl + ii_q*n_propa
+            # index where THE propagator ends
+            n_stop_propa_lvl_q = n_start_propa_lvl_q + n_propa
+
+            # --- LOOP ON THE LEVELS OF THE PROPAGATOR / OUTPUT VECTOR --- #
+            # write at level ii_lvl_pr in w_x_dx
+            for ii_lvl_pr in range(0, wv_ll + 1):
+                # current dilation level of the propagator
+                q_pro = list_q[ii_lvl_pr]
+                # index where the propagator level begins
+                n_start_propa_lvl_q_lvl = n_start_propa_lvl_q + norm_indices[ii_lvl_pr] * n_scal_pr
+                # index where the propagator level ends
+                n_stop_propa_lvl_q_lvl = n_start_propa_lvl_q + norm_indices[ii_lvl_pr+1] * n_scal_pr
+
+                # index where level ii_lvl_wv_dx begins
+                n_start_wvdx_lvl = norm_indices[ii_lvl_pr] * n_scal
+                # index where level ii_lvl_wv_dx ends
+                n_stop_wvdx_lvl = norm_indices[ii_lvl_pr+1] * n_scal
+
+                # number of coefficients at this level
+                n_coef = n_stop_wvdx_lvl-n_start_wvdx_lvl
+
+                # current ii_z takes into account dilations due to the change of levels.
+                # must be calculated with respect to n_start_wv_lvl
+                ii_z_current = int(((ii_wv - ii_q)-n_start_wv_lvl) / q_wv * q_pro + n_start_wvdx_lvl)
+
+                # size (and center) of the propagator
+                n_ker = n_stop_propa_lvl_q_lvl - n_start_propa_lvl_q_lvl
+                n_ker2 = n_ker//2
+
+                # we propagate the level ii_lvl_pr
+                # the coef is included in the propagator
+                uu = np.array(library[n_start_propa_lvl_q_lvl:n_stop_propa_lvl_q_lvl])
+                propagator_lvl = wv_coef * uu
+
+                # scan wv_x_dx in [ii_z_current - n_ker/2, ii_z_current + n_ker/2]. Remove points out of [0,n_coef]
+                ind_min = int(max(n_start_wvdx_lvl, ii_z_current - n_ker2))
+                ind_max = int(min(n_start_wvdx_lvl+n_coef, ii_z_current - n_ker2 + n_ker))
+
+                # print("ind_min = ", ind_min)
+                # print("ind_max = ", ind_max)
+                # loop on the propagators coefficients
+                for ii_ind in range(ind_min, ind_max):
+                    wv_x_dx[ii_ind] += propagator_lvl[ii_ind-ind_min]
+
+    return wv_x_dx

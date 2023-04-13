@@ -54,6 +54,12 @@
          <height>393</height>
         </rect>
        </property>
+       <property name="font">
+        <font>
+         <family>DejaVu Serif</family>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
       </widget>
       <zorder>field_window</zorder>
       <zorder>pushButtonField</zorder>
@@ -2110,8 +2116,8 @@
       <widget class="QComboBox" name="methodComboBox">
        <property name="geometry">
         <rect>
-         <x>10</x>
-         <y>40</y>
+         <x>140</x>
+         <y>10</y>
          <width>131</width>
          <height>31</height>
         </rect>
@@ -2146,7 +2152,7 @@
        <property name="geometry">
         <rect>
          <x>20</x>
-         <y>10</y>
+         <y>20</y>
          <width>71</width>
          <height>17</height>
         </rect>
@@ -2159,6 +2165,49 @@
        <property name="text">
         <string>Method</string>
        </property>
+      </widget>
+      <widget class="QLabel" name="label_language">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>60</y>
+         <width>91</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Language</string>
+       </property>
+      </widget>
+      <widget class="QComboBox" name="languageComboBox">
+       <property name="geometry">
+        <rect>
+         <x>140</x>
+         <y>50</y>
+         <width>131</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>17</pointsize>
+        </font>
+       </property>
+       <item>
+        <property name="text">
+         <string>Python</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Cython</string>
+        </property>
+       </item>
       </widget>
      </widget>
     </item>

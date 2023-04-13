@@ -374,9 +374,9 @@ def plot_dictionary(config, config_plot):
             fig = plt.figure(figsize=(3.0, 5.0), )
             n_z = wavelet_field.size
             z_vect = np.linspace(0, config.z_step * n_z, n_z, endpoint=False)
-            wavelet_dB = 20 * np.log(np.abs(wavelet_field))
-            plt.plot(wavelet_dB, z_vect)
-            plt.xlim(wavelet_dB.max()-config_plot.dynamic, wavelet_dB.max())
+            wavelet_db = 20 * np.log(np.abs(wavelet_field))
+            plt.plot(wavelet_db, z_vect)
+            plt.xlim(wavelet_db.max()-config_plot.dynamic, wavelet_db.max())
             plt.grid('on')
             plt.ylabel('Altitude (m)', fontsize=12)
             plt.xlabel('E (dBV/m)', fontsize=12)

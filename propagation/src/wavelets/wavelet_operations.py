@@ -23,7 +23,7 @@
 
 import pywt
 import numpy as np
-from scipy.sparse import coo_matrix  # for sparsify
+from scipy.sparse import coo_matrix, dok_array  # for sparsify
 
 
 # from scipy.sparse import dok, dok_matrix
@@ -90,6 +90,55 @@ def sparsify(wv_x):
 
 
 ##
+# @package: sparsify_dok
+# @author: R. Douvenot
+# @date: 24/03/2023
+# @version: V1.0
+#
+# @brief Put a wavelet decomposition in a sparse shape (dok format)
+# @param[in] wv_x Wavelet decomposition
+# @param[out] wv_x_sparse Sparse wavelet decomposition
+##
+
+
+def sparsify_dok(wv_x):
+    # max level of decomposition
+    ll = len(wv_x) - 1
+    # creation of the empty list
+    wv_x_sparse = [[]] * (ll + 1)
+    # fill the scaling function
+    # fill the wavelet levels
+    for ii_lvl in np.arange(0, ll + 1):
+        uu = np.asmatrix(wv_x[ii_lvl])
+        wv_x_sparse[ii_lvl] = dok_array(uu)
+    return wv_x_sparse
+
+
+##
+# @package: unsparsify_dok
+# @author: R. Douvenot
+# @date: 09/06/2021
+# @version: V1.0
+#
+# @brief Put a wavelet decomposition in a sparse shape (coo format)
+# @param[in] wv_x Wavelet decomposition
+# @param[out] wv_x_sparse Sparse wavelet decomposition
+##
+
+
+def unsparsify_dok(wv_x_sparse):
+    # max level of decomposition
+    ll = len(wv_x_sparse) - 1
+    # creation of the empty list
+    wv_x = [[]] * (ll + 1)
+    # fill the scaling function
+    # fill the wavelet levels
+    for ii_lvl in np.arange(0, ll + 1):
+        wv_x[ii_lvl] = np.squeeze(np.asarray(wv_x_sparse[ii_lvl].todense()))
+    return wv_x
+
+
+##
 # @package compute_threshold
 # @author T. Bonnafont
 # @author Remi Douvenot
@@ -104,7 +153,6 @@ def sparsify(wv_x):
 #
 # @param[out] threshold_V_s Compression threshold we apply on the signal
 # @param[out] threshold_V_p Compression threshold on the propagator
-#
 ##
 
 

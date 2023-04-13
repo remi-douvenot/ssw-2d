@@ -80,8 +80,9 @@ III/ Documentation
 SSW is composed of 4 independent modules.
 1/ source module calculates the source (initial field in SSW)
 2/ terrain generates the relief
-3/ propagation is the core of SSW and SSW. It calculates the total electromagnetic field using SSW or WWP.
-4/ post-processing plots the result. It is not operational (04/2022)
+3/ propagation is the core of SSW and SSW. It calculates the total electromagnetic field using SSF, SSW or WWP. (WWP-H is the hybridization of SSW and WWP)
+SSW is also avalaible in cython (tested on Linux the 2023/04/13). Please see the documentation for compiling.
+4/ post-processing plots the result.
 5/ GUI contains the graphical user interface. It calls 1/, 2/ and 3/ and plots the results on the GUI directly.
 
 The modules can be called from the GUI (user-friendly mode) or each one independently using the csv files in the inputs directories (expert modes).

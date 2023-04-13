@@ -87,7 +87,7 @@ import shutil  # to make file copies
 # where config is defined
 from src.classes_and_files.read_files import read_config, read_source, read_relief
 from src.atmosphere.genere_n_profile import generate_n_profile
-
+import pywt
 import matplotlib.pyplot as plt
 
 # -------------------------------------------------- #
@@ -138,10 +138,10 @@ u_0 /= u_infty  # put max at 1 to avoid numerical errors
 
 '''# Wavelet test
 u_0 *= 0
-UU_0 = pywt.wavedec2(u_0,config.wv_family,'per',config.wv_L)
+UU_0 = pywt.wavedec(u_0, config.wv_family, 'per', config.wv_L)
 # --- 2 wavelets field --- #
-UU_0[0][23,12] = 1.0
-u_0 = pywt.waverec2(UU_0, config.wv_family, 'per')'''
+UU_0[0][10] = 1.0
+u_0 = pywt.waverec(UU_0, config.wv_family, 'per')'''
 
 # ----------------------------------------- #
 # --- Creating refraction phase screens --- #
@@ -179,7 +179,7 @@ else:
     raise ValueError('Unknown propagation method.')
 
 t_propa_f = time.process_time()
-print('Total '+config.method+' (ms)', np.round(t_propa_f-t_propa_s, 5)*1e3)
+print('Total '+config.method+' (ms)', np.round((t_propa_f-t_propa_s)*1e3))
 
 # --- de-normalise in infinity norm --- #
 # field: simple multiplication

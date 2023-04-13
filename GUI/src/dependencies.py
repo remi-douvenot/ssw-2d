@@ -22,8 +22,15 @@ class Dependencies(object):
         method = self.methodComboBox.currentText()
         # write the polarisation value in files
         update_file('method', method, 'propa')
-    # --- frequency --- #
 
+    # --- language --- #
+    def language_changed(self):
+        # --- get method --- #
+        py_or_cy = self.languageComboBox.currentText()
+        # write the polarisation value in files
+        update_file('py_or_cy', py_or_cy, 'propa')
+
+    # --- frequency --- #
     def frequency_clicked(self):
         # update lambda #
         freq = self.frequencyMHzDoubleSpinBox.value()
@@ -484,6 +491,8 @@ class Dependencies(object):
         serie = pd.Series(data=dataframe.iloc[:, 1].values, index=dataframe.iloc[:, 0].values)
         # method
         self.methodComboBox.setCurrentText(serie.loc['method'])
+        # language
+        self.languageComboBox.setCurrentText(serie.loc['py_or_cy'])
         # N_x
         self.nXSpinBox.setProperty("value", serie.loc['N_x'])
         # N_z

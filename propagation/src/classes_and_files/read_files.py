@@ -29,7 +29,7 @@ def read_config(file_configuration):
     f_config = open(file_configuration, newline='')
     file_tmp = csv.reader(f_config)
     for row in file_tmp:
-        if row[0] == 'method':  # SSW or WWP or WWP-H
+        if row[0] == 'method':  # SSF or SSW or WWP or WWP-H
             Config.method = row[1]
         elif row[0] == 'N_z':
             Config.N_z = np.int(row[1])
@@ -81,6 +81,8 @@ def read_config(file_configuration):
             Config.Cn2 = np.float(row[1])
         elif row[0] == 'L0':
             Config.L0 = np.float(row[1])
+        elif row[0] == 'py_or_cy':
+            Config.py_or_cy = row[1]
         elif row[0] == 'Property':
             pass  # first line
         elif row[0] == 'dynamic':  # only used for HMI plots

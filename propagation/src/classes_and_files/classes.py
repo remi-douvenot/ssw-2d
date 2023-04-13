@@ -53,6 +53,7 @@ class Config:
         self.turbulence = 'N'
         self.Cn2 = 0
         self.L0 = 0
+        self.py_or_cy = 'None'  # ='Py' for Python code, and = 'Cy' for Cython code
 # ---------- END --------- #
 # --- Defining classes --- #
 # ------------------------ #

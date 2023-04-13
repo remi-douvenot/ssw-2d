@@ -84,6 +84,8 @@ def read_config(file_configuration, file_source_config):
             pass  # first line
         elif row[0] == 'dynamic':  # only used for HMI plots
             pass  # first line
+        elif row[0] == 'py_or_cy':  # only used for field calculation. Does not change the result
+            pass  # first line
         else:
             raise ValueError(['Input file of the configuration is not valid. Input "' + row[0] + '" not valid'])
     # check for some values

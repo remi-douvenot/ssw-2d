@@ -52,7 +52,7 @@ from src.wavelets.wavelet_operations import thresholding, q_max_calculation
 # from src.maths import convolution  # for add_propagator_at_once
 from scipy.signal import convolve
 
-
+#todo: Cython for WWP
 def wwp_2d_one_step(wv_x, dictionary, config):
 
     # Propagate the field in the wavelet domain
