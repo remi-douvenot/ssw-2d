@@ -30,10 +30,6 @@
 # @warning Put lengths = multiple of 2^l
 ##
 
-# u_x_dx = SSW(u_0,simulation_parameters)
-#
-#######################################################################################################################
-
 import numpy as np
 import time
 import scipy.constants as cst
@@ -42,27 +38,9 @@ from src.propagation.ssw_2d_one_step import ssw_2d_one_step
 from src.propagation.apodisation import apply_apodisation, apodisation_window
 from src.atmosphere.genere_n_profile import genere_phi_turbulent
 from src.DSSF.dmft import dmft_parameters, u2w, w2u, surface_wave_propagation
-from src.propagation.refraction import apply_refractive_index
+from src.propagation.refraction import apply_refractive_index, apply_phi_turbulent
 from src.propagation.image_field import compute_image_field, compute_image_field_tm_pec
 from src.wavelets.wavelet_operations import sparsify
-
-# import cProfile, pstats, io
-# def profile(fnc):
-#     def inner(*args, **kwargs):
-#         pr = cProfile.Profile()
-#         pr.enable()
-#         retval = fnc(*args, **kwargs)
-#         pr.disable()
-#         s = io.StringIO()
-#         sortby = 'cumulative'
-#         ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
-#         ps.print_stats()
-#         print(s.getvalue())
-#         return retval
-#
-#     return inner
-#
-# @profile
 
 
 def ssw_2d(u_0, config, n_refraction, ii_vect_relief):
@@ -212,15 +190,6 @@ def ssw_2d(u_0, config, n_refraction, ii_vect_relief):
 
     return u_x_dx, wv_total
 
-
-def apply_phi_turbulent(u_x, phi_turbulent,config):
-
-    # apply the turbulent phase screen of one step delta_x
-    # half the refraction applied before and after propagation
-    k0 = 2 * cst.pi * config.freq / cst.c
-    u_x *= np.exp(-1j * phi_turbulent)
-
-    return u_x
 
 ##
 # @brief function that shifts a field (upwards or downwards)

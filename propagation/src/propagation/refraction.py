@@ -63,3 +63,28 @@ def apply_refractive_index_wavelet(w_x, n_index, config):
         w_x[ii_l] = w_x_ll
 
     return w_x
+
+
+##
+# @brief function that applies a turbulent phase screen (defined in phase directly)
+# @author V. Darchy
+# @package apply_phi_turbulent
+# @date 10/09/21
+# @version OK
+#
+# @details function that applies a turbulent phase screen (defined in phase directly)
+# def apply_phi_turbulent(u_x, phi_turbulent, config):
+#
+# @params[in,out] u_x : electric field (complex array)
+# @params[in] phi_turbulent : turbulent phase screen (real array)
+# @params[in] config : class with the parameters
+##
+def apply_phi_turbulent(u_x, phi_turbulent, config):
+
+    # apply the turbulent phase screen of one step delta_x
+    # half the refraction applied before and after propagation
+    k0 = 2 * cst.pi * config.freq / cst.c
+    u_x *= np.exp(-1j * phi_turbulent)
+
+    return u_x
+

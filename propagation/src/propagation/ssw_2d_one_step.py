@@ -55,7 +55,7 @@ from src.wavelets_cython.wavelets_operations import normalized_indices, calculat
 import timeit
 
 
-def ssw_2d_one_step(u_x, library, config):
+def ssw_2d_one_step(u_x, dictionary, config):
 
     # Simulation parameters
     n_z = u_x.shape[0]
@@ -74,29 +74,28 @@ def ssw_2d_one_step(u_x, library, config):
     if config.py_or_cy == 'Python':
 
         # Propagate the field in the wavelet domain
-        wv_x_dx = wavelet_propag_one_step(wv_x, library, config)
+        wv_x_dx = wavelet_propag_one_step(wv_x, dictionary, config)
 
     # Propagation with the Cython code
     elif config.py_or_cy == 'Cython':
-        # TODO: calculate library and nonzero coefficients at the beginning of the code
-        library2 = []
+        # TODO: calculate dictionary and nonzero coefficients at the beginning of the code
+        dictionary2 = []
         q_list = q_max_calculation(config.wv_L)
         # Index at which the propagators of the level begin
         n_propa_lib = np.zeros(config.wv_L + 2, dtype='int32')
-        # put the library in the shape of a vector. Useful for Cython version
+        # put the dictionary in the shape of a vector. Useful for Cython version
         for ii_lvl in range(0, config.wv_L + 1):
             n_propa_lib[ii_lvl + 1] += n_propa_lib[ii_lvl]  # add previous level
             for ii_q in range(0, q_list[ii_lvl]):
-                toto = library[ii_lvl][ii_q]
-                tata = pywt.coeffs_to_array(toto)[0]
-                n_propa_lib[ii_lvl+1] += len(tata)  # add the size of each propagator
-                library2 = np.append(library2, tata)
-        wx_x_coeffs = pywt.coeffs_to_array(wv_x)
-        wv_x = wx_x_coeffs[0]
-        wv_x_dx_array = wavelet_propag_one_step_cy(n_z, wv_x, library2, config.wv_L, n_propa_lib, config.V_p)
+                dict_coef_list = dictionary[ii_lvl][ii_q]
+                dict_coef_array = pywt.coeffs_to_array(dict_coef_list)[0]
+                n_propa_lib[ii_lvl+1] += len(dict_coef_array)  # add the size of each propagator
+                dictionary2 = np.append(dictionary2, dict_coef_array)
+        wv_x_coeffs, wv_x_shape = pywt.coeffs_to_array(wv_x)
+        wv_x_dx_array = wavelet_propag_one_step_cy(n_z, wv_x_coeffs, dictionary2, config.wv_L, n_propa_lib, config.V_p)
 
         # wv_x_dx2 = unsparsify_dok(wv_x_dx2_sparse)
-        wv_x_dx = pywt.array_to_coeffs(wv_x_dx_array, wx_x_coeffs[1], output_format='wavedec')
+        wv_x_dx = pywt.array_to_coeffs(wv_x_dx_array, wv_x_shape, output_format='wavedec')
     else:
         raise ValueError('py_or_cy variable can be ''Cython'' or ''Python'' only')
 
@@ -117,7 +116,7 @@ def ssw_2d_one_step(u_x, library, config):
 #
 # @brief One step of the SSW 2D free-space propagation
 # @param[in] wv_x Wavelet decomposition of the field before the free-space propagation
-# @param[in] library Pre-generated wavelet propagators.
+# @param[in] dictionary Pre-generated wavelet propagators.
 # @param[in] config Structure containing the parameters of the simulation.
 # @param[out] wv_x_dx Wavelet decomposition of the field after the free-space propagation
 # @details Apply the free-space propagators to all the nonzero wavelet coefficients
@@ -125,7 +124,7 @@ def ssw_2d_one_step(u_x, library, config):
 # import scipy
 
 
-def wavelet_propag_one_step(wv_x, library, config):
+def wavelet_propag_one_step(wv_x, dictionary, config):
 
     # Wavelet parameters
     family = config.wv_family
@@ -164,7 +163,7 @@ def wavelet_propag_one_step(wv_x, library, config):
         # loop on the propagators at level ii_lvl
         for ii_z in np.arange(0, q_max):
             # choose the propagator
-            propagator = library[ii_lvl][ii_z]
+            propagator = dictionary[ii_lvl][ii_z]
             # extract the wavelets that match this propagator
             wv_x_lvl_z = wv_x_lvl[ii_z::q_max]
             wv_x_dx = add_propagator_at_once(wv_x_lvl_z, propagator, ll, wv_x_dx)
@@ -314,7 +313,7 @@ def fortran_type(wv_u):
     return wv_u_fortran
 
 
-def wavelet_propag_one_step3(wv_x, library, wv_ll, n_start_propa):
+def wavelet_propag_one_step3(wv_x, dictionary, wv_ll, n_start_propa):
 
     # --- Init the propagated wavelet coefficient --- #
     # OUTPUT: matrix full of zeros: wavelet decomposition after propagation
@@ -394,7 +393,7 @@ def wavelet_propag_one_step3(wv_x, library, wv_ll, n_start_propa):
 
                 # we propagate the level ii_lvl_pr
                 # the coef is included in the propagator
-                uu = np.array(library[n_start_propa_lvl_q_lvl:n_stop_propa_lvl_q_lvl])
+                uu = np.array(dictionary[n_start_propa_lvl_q_lvl:n_stop_propa_lvl_q_lvl])
                 propagator_lvl = wv_coef * uu
 
                 # scan wv_x_dx in [ii_z_current - n_ker/2, ii_z_current + n_ker/2]. Remove points out of [0,n_coef]

@@ -50,9 +50,11 @@ import pywt
 import time
 from src.wavelets.wavelet_operations import thresholding, q_max_calculation
 # from src.maths import convolution  # for add_propagator_at_once
+from src.propagation.ssw_2d_one_step import add_propagator_at_once
 from scipy.signal import convolve
 
-#todo: Cython for WWP
+
+# todo: Cython for WWP
 def wwp_2d_one_step(wv_x, dictionary, config):
 
     # Propagate the field in the wavelet domain
@@ -136,133 +138,3 @@ def wavelet_propag_one_step(wv_x, dictionary, config):
 
     return wv_x_dx
 
-##
-# @package: add_propagator_at_once
-# @author: Remi Douvenot
-# @date: 20/07/2021
-# @version: V1.0
-#
-# @brief Add to wv_x_dx all the propagated wavelets corresponding to one propagator
-# @param[in] wv_x_lvl Wavelet parameters that correspond to the propagator (chosen level and propagator number)
-# @param[in] propagator Pre-generated wavelet propagator
-# @param[in] ll Max level of the multiscale decomposition
-# @param[in] wv_x_dx Wavelet coefficients calculated for wv_x_dx so far
-# @param[out] wv_x_dx Wavelet coefficients calculated for wv_x_dx with the inputted "propagator" taken into account
-# @details Add to wv_x_dx all the propagated wavelets corresponding to one propagator. For scaling function, the
-# propagator is chosen wrt. level and translation. Then convolved by the approx or detail parameters of wv_x_dx
-##
-
-
-def add_propagator_at_once(wv_x_lvl, propagator, ll, wv_x_dx):
-
-    # calculation of the dilation levels
-    list_q = q_max_calculation(ll)
-    # we add to U_d_dx the propagator affected with the coefficient
-    # loop on the levels of the propagator
-    for ii_lvl in range(0, ll + 1):
-        # print('ii_lvl2 = ', ii_lvl)
-
-        # Dilation level (the same for all orientations)
-        t_level_prime = list_q[ii_lvl]
-        # Size of the vector after dilation
-        n_z_dilate = t_level_prime * wv_x_lvl.size
-
-        # loop on wavelet orientations: one convolution of each orientation
-
-        # initialisation of the input signal for convolution
-        wv_x_lvl_dilate = np.zeros(n_z_dilate, dtype='complex')
-
-        # first wavelet of each level corresponds to the input of the propagator
-        wv_x_lvl_dilate[::t_level_prime] = wv_x_lvl
-
-        # --- Python Convolution in Python --- #
-        # @note This shift is necessary to "center" the convolution "convolve"
-        propagator_lvl_or = np.zeros_like(propagator[ii_lvl])
-        propagator_lvl_or[0:-1:] = propagator[ii_lvl][1::]
-        # the output is the convolution of each nonzero parameter with the propagator
-        wv_x_dx[ii_lvl] += convolve(wv_x_lvl_dilate, propagator_lvl_or, mode='same')
-
-        # print('convolution is ',t_end-t_start, 's')
-
-    return wv_x_dx
-
-##
-# @package: eliminate_top_field
-# @author: R. Douvenot
-# @date: 07/09/2021
-# @version: V1.0
-#
-# @brief Eliminate the top field in the apodisation layer due to perdiodic decomposition
-# @param[in] u_x Field
-# @param[out] u_x Field with top wavelets = 0
-##
-
-
-# @ todo Code it in Fortran
-def eliminate_top_field(u_x):
-
-    # find the last zero
-    zeros_indices = np.where(u_x == 0)[0]  # [0] because where gives a 1-dimensional tuple
-    # print(len(zeros_indices))
-    if len(zeros_indices) == 0:
-        # @todo Print a warning!
-        ii_zero = u_x.size
-    else:
-        # print(zeros_indices)
-        # fill zeros up to this last value
-        ii_zero = np.max(zeros_indices)
-    u_x[ii_zero:-1] = 0
-
-    return u_x
-
-
-##
-# @package: eliminate_top_wavelets
-# @author: R. Douvenot
-# @date: 09/06/2021
-# @version: V1.0
-#
-# @brief Eliminate the top wavelets in the apodisation layer due to perdiodic decomposition
-# @param[in] wv_x Wavelet decomposition
-# @param[out] wv_x Sparse wavelet decomposition with top wavelets = 0
-##
-
-# @ todo Code it in Fortran
-def eliminate_top_wavelets(wv_x):
-
-    # max level of decomposition
-    ll = len(wv_x)-1
-    # on each level
-    for ii_lvl in np.arange(0, ll+1):
-        # array of wavelet coefs
-        wv_x_lvl = wv_x[ii_lvl]
-        # find the last zero
-        ii_zero = np.max(np.where(wv_x_lvl == 0))
-        # fill zeros up to this last value
-        wv_x[ii_lvl][ii_zero:-1] = 0
-
-    return wv_x
-
-##
-# @package: fortran_type
-# @author: R. Douvenot
-# @date: 09/06/2021
-# @version: V1.0
-#
-# @brief Put a wavelet decomposition in a Fortran format
-# @param[in] wv_x Wavelet decomposition
-# @param[out] wv_x_fortran Wavelet decomposition
-##
-
-
-def fortran_type(wv_u):
-
-    # max level of decomposition
-    ll = len(wv_u)-1
-    # creation of the empty list
-    wv_u_fortran = [[]] * (ll+1)
-    # fill the wavelet levels
-    for ii_lvl in np.arange(0, ll+1):
-        wv_u_fortran[ii_lvl] = wv_u[ii_lvl]
-
-    return wv_u_fortran

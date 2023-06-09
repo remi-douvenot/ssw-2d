@@ -318,11 +318,9 @@ def plot_wavelet_cut(config, x_cut, wv_x, z_max, dynamic, title):
         plt.vlines(ii, 0, z_max, linestyles='--', linewidth=1, colors='k')
 
     # save figure
-    fig.savefig('./outputs/'+title+'png')
+    fig.savefig('./outputs/'+title+'.png')
 
     plt.show()
-
-    return 0
 
 
 ##
@@ -381,5 +379,3 @@ def plot_dictionary(config, config_plot):
             plt.ylabel('Altitude (m)', fontsize=12)
             plt.xlabel('E (dBV/m)', fontsize=12)
             plt.tight_layout()  # pad=0.4, w_pad=0.5, h_pad=1.0)
-
-    return 0

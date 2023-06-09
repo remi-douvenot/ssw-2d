@@ -184,6 +184,8 @@ def wwp_h_2d(u_0, config, n_refraction, ii_vect_relief):
             w_x = apply_apodisation_wavelet(w_x, apo_window_z, config)
             # config.N_z = n_ssw
             w_x_dx = wavelet_propag_one_step(w_x, dictionary, config)
+            # Threshold V_s on the signal
+            w_x_dx = thresholding(w_x_dx, config.V_s)
 
             # ascending relief
             if diff_relief[ii_x - 1] > 0:
