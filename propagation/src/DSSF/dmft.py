@@ -23,7 +23,7 @@ import scipy.constants as cst
 
 def u2w(alpha, u_field, n_z, z_step):
     # initialisation
-    w_field = np.zeros(n_z, dtype=np.complex)  # index from 1 to n_z-2
+    w_field = np.zeros(n_z, dtype=np.complex128)  # index from 1 to n_z-2                                                  change
     # gradient function does ( u[n+1] - u[n-1] ) / 2
     # w_field[1:n_z - 1] = np.gradient(u_field_2d)[1:n_z - 1] / z_step + alpha * u_field_2d[1:n_z - 1]
     w_field[1:n_z - 1] = (u_field[2:n_z] - u_field[0:n_z - 2]) / (2*z_step) + alpha * u_field[1:n_z - 1]
@@ -41,8 +41,8 @@ def u2w(alpha, u_field, n_z, z_step):
 def w2u(spectre_w_0, spectre_w_n_z, w_field, n_z, z_step, r0, aa):
 
     # initialisation of the variables
-    yy = np.zeros(n_z, dtype=np.complex)  # intermediate variables for diff equation (from w to u)
-    fp_field = np.zeros(n_z, dtype=np.complex)  # intermediate variables for diff equation (from w to u)
+    yy = np.zeros(n_z, dtype=np.complex128)  # intermediate variables for diff equation (from w to u)                   change
+    fp_field = np.zeros(n_z, dtype=np.complex128)  # intermediate variables for diff equation (from w to u)               change
 
     # ----------------------------------------------------------------------- #
     # --- calculate fp_field the particular solution of the diff equation --- #

@@ -45,19 +45,19 @@ def read_config(file_configuration):
     file_tmp = csv.reader(f_config)
     for row in file_tmp:
         if row[0] == 'N_x':
-            Config.N_x = np.int(row[1])
+            Config.N_x = np.int64(row[1])                                                                         #change
         elif row[0] == 'x_step':
-            Config.x_step = np.float(row[1])
+            Config.x_step = np.float64(row[1])                                                                   #change
         elif row[0] == 'z_max_relief':
-            Config.z_max_relief = np.float(row[1])
+            Config.z_max_relief = np.float64(row[1])                                                             #change
         elif row[0] == 'type':
             Config.type = row[1]
         elif row[0] == 'iterations':
-            Config.iterations = np.int(row[1])
+            Config.iterations = np.int64(row[1])                                                                  #change
         elif row[0] == 'width':  # width of the triangle relief
-            Config.width = np.float(row[1])
+            Config.width = np.float64(row[1])                                                                    #change
         elif row[0] == 'center':  # center of the triangle relief
-            Config.center = np.float(row[1])
+            Config.center = np.float64(row[1])                                                                   #change
         elif row[0] == 'Property':
             pass  # first line
         else:

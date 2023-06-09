@@ -146,12 +146,12 @@ def create_dssf_wavelet(n_u_top, n_u_bottom, family, ii_lvl, ll):
     wv_dec = pywt.wavedec(u_wavelet, family, 'per', ll)
 
     # 2/ median wavelet = 1
-    ii_one = np.int(n_u_bottom / 2 ** (ll - ii_lvl + 1))
+    ii_one = np.int64(n_u_bottom / 2 ** (ll - ii_lvl + 1))                                                          #change
     wv_dec[ii_lvl][ii_one] = 1
     # tests to print the sizes of the wavelets
-    '''print('In dictionary_generation.py: level =', np.str(ii_lvl))
-    print('In dictionary_generation.py: size signal top = ', np.str(N_u_top), 'size signal bottom = ', np.str(N_u_bottom), 'size signal = ', np.str(N_u_top+N_u_bottom))
-    print('In dictionary_generation.py: size wavelet = ', np.str(wv_dec[ii_lvl].size), ' position = ', ii_one)'''
+    '''print('In dictionary_generation.py: level =', np.str_(ii_lvl))                                               
+    print('In dictionary_generation.py: size signal top = ', np.str_(N_u_top), 'size signal bottom = ', np.str_(N_u_bottom), 'size signal = ', np.str_(N_u_top+N_u_bottom))
+    print('In dictionary_generation.py: size wavelet = ', np.str_(wv_dec[ii_lvl].size), ' position = ', ii_one)'''
 
     # 3/ wavelet signal = IFWT of this wavelet decomposition
     u_wavelet_out = pywt.waverec(wv_dec, family, mode='per')
@@ -181,13 +181,13 @@ def create_dssf_scaling_fct(n_u_top, n_u_bottom, family, ii_lvl, ll):
     wv_dec = pywt.wavedec(u_wavelet, family, 'per', ll - ii_lvl + 1)
 
     # 2/ median wavelet = 1
-    ii_one = np.int(n_u_bottom / 2 ** (ll - ii_lvl + 1))
+    ii_one = np.int64(n_u_bottom / 2 ** (ll - ii_lvl + 1))                                                            #change
     wv_dec[0][ii_one] = 1
 
     # tests to print the sizes of the wavelets
-    '''print('In dictionary_generation.py: level =', np.str(ii_lvl))
-    print('In dictionary_generation.py: size signal top = ', np.str(N_u_top), 'size signal bottom = ', np.str(N_u_bottom), 'size signal = ', np.str(N_u_top+N_u_bottom))
-    print('In dictionary_generation.py: size wavelet = ', np.str(wv_dec[0].size), ' position = ', ii_one)'''
+    '''print('In dictionary_generation.py: level =', np.str_(ii_lvl))
+    print('In dictionary_generation.py: size signal top = ', np.str_(N_u_top), 'size signal bottom = ', np.str_(N_u_bottom), 'size signal = ', np.str_(N_u_top+N_u_bottom))
+    print('In dictionary_generation.py: size wavelet = ', np.str_(wv_dec[0].size), ' position = ', ii_one)'''
 
     # 3/ wavelet signal = IFWT of this wavelet decomposition
     u_wavelet_out = pywt.waverec(wv_dec, family, mode='per')
@@ -255,7 +255,7 @@ def wavelet_size(family, ii_lvl):
 def wavelet_propa_size(n_bottom, x_step, z_step, ll):
 
     # number of points to add before propagation (at the top AND at the bottom)
-    n_add = np.int(np.ceil(x_step * np.sin(np.pi / 4) / z_step))
+    n_add = np.int64(np.ceil(x_step * np.sin(np.pi / 4) / z_step))                                                   #change
     # make N_u_bottom a multiple of 2^L
     n_u_bottom = n_bottom + n_add
     remaining = n_u_bottom % (2 ** ll)
@@ -268,9 +268,9 @@ def wavelet_propa_size(n_bottom, x_step, z_step, ll):
     if remaining: # if not zero
         N_u_top += (2 ** ll) - remaining'''
     # you force this way to have an odd number of wavelet coefficients: make convolutions easier to deal with
-    # N_u_top = np.int(N_u_bottom + 2 ** ll)
+    # N_u_top = np.int64(N_u_bottom + 2 ** ll)                                                                   change
     # N_u_bottom = N_u_top
-    n_u_top = np.int(n_u_bottom)
+    n_u_top = np.int64(n_u_bottom)                                                                               #change
     # take margins @todo Choose this margin wrt. desired accuracy
     n_u_bottom *= 1
     n_u_top *= 1

@@ -188,7 +188,7 @@ class Dependencies(object):
 
     # --- size apodisation (in %) --- #
     def size_apo_clicked(self):
-        apo_size = np.float(self.sizeApoSpinBox.value()) / 100
+        apo_size = np.float64(self.sizeApoSpinBox.value()) / 100                                             #change
         # write the apodisation size
         update_file('apodisation size', apo_size, 'propa')
 
@@ -456,7 +456,7 @@ class Dependencies(object):
         x_step = self.deltaXMDoubleSpinBox.value()
         # @TODO Center and width defined in meters in the csv file
         # --- update relief center expressed in number of points (not in m) --- #
-        relief_center = np.float(self.centerReliefDoubleSpinBox.value())
+        relief_center = np.float64(self.centerReliefDoubleSpinBox.value())                                            #change
         # write the center relief value in terrain file
         update_file('center', relief_center, 'terrain')
 
@@ -465,7 +465,7 @@ class Dependencies(object):
         # --- read Delta_x --- #
         x_step = self.deltaXMDoubleSpinBox.value()
         # --- update relief width expressed in number of points (not in m) --- #
-        relief_width = np.float(self.widthReliefDoubleSpinBox.value())
+        relief_width = np.float64(self.widthReliefDoubleSpinBox.value())                                             #change
         # write the max_relief value in terrain file
         update_file('width', relief_width, 'terrain')
         update_file('x_step', x_step, 'terrain')
@@ -502,15 +502,15 @@ class Dependencies(object):
         # z_step
         self.deltaZMDoubleSpinBox.setProperty("value", serie.loc['z_step'])
         # x_max
-        x_max = np.float(serie.loc['x_step']) * np.float(serie.loc['N_x']) * 1e-3  # in km
+        x_max = np.float64(serie.loc['x_step']) * np.float64(serie.loc['N_x']) * 1e-3  # in km                              change
         self.xMaxKmDoubleSpinBox.setProperty("value", str(x_max))
         # z_max
-        z_max = np.float(serie.loc['z_step']) * np.int(serie.loc['N_z'])
+        z_max = np.float64(serie.loc['z_step']) * np.int64(serie.loc['N_z'])                                                  #change
         self.zMaxMDoubleSpinBox.setProperty("value", z_max)
         # frequency
         self.frequencyMHzDoubleSpinBox.setProperty("value", serie.loc['frequency'])
         # lambda
-        lambda0 = cst.c/np.float(serie.loc['frequency'])*1e-6  # freq in MHz
+        lambda0 = cst.c/np.float64(serie.loc['frequency'])*1e-6  # freq in MHz                                                   change
         self.lambdaMDoubleSpinBox.setProperty("value", lambda0)
         # ground
         self.polarisationComboBox.setCurrentText(serie.loc['polarisation'])
@@ -523,9 +523,9 @@ class Dependencies(object):
         # apodisation window
         self.apodisationComboBox.setProperty("value", serie.loc['apodisation window'])
         # apodisation % in z
-        self.sizeApoSpinBox.setProperty("value",  np.float(serie.loc['apodisation size'])*100)  # from value to %
+        self.sizeApoSpinBox.setProperty("value",  np.float64(serie.loc['apodisation size'])*100)  # from value to %               change
         # image layer % in z
-        self.sizeImageSpinBox.setProperty("value", np.float(serie.loc['image size'])*100)  # from value to %
+        self.sizeImageSpinBox.setProperty("value", np.float64(serie.loc['image size'])*100)  # from value to %                    change
         self.image_clicked()  # initialise nb points in image layer
         # ground
         self.groundTypeComboBox.setCurrentText(serie.loc['ground'])
@@ -567,9 +567,9 @@ class Dependencies(object):
         x_s = serie.loc['x_s']  # then remove the "-"
         self.x_sDoubleSpinBox.setProperty("value", x_s[1:])
         # z_s
-        self.z_sDoubleSpinBox.setProperty("value", np.float(serie.loc['z_s']))
+        self.z_sDoubleSpinBox.setProperty("value", np.float64(serie.loc['z_s']))                                      #change
         # W0 (width of the belt for CSP source)
-        w0_lambda = np.float(serie.loc['W0']) / lambda0
+        w0_lambda = np.float64(serie.loc['W0']) / lambda0                                                             #change
         # print('W0_lambda', w0_lambda)
         self.widthDoubleSpinBox.setProperty("value", w0_lambda)
         # @todo P_Tx
@@ -587,10 +587,10 @@ class Dependencies(object):
         # type
         self.reliefTypeComboBox.setCurrentText(serie.loc['type'])
         # max relief
-        self.maxReliefDoubleSpinBox.setProperty("value", np.float(serie.loc['z_max_relief']))
+        self.maxReliefDoubleSpinBox.setProperty("value", np.float64(serie.loc['z_max_relief']))                           #change
         # number of iterations
         self.nIterationsSpinBox.setProperty("value", int(serie.loc['iterations']))
         # width of the relief
-        self.widthReliefDoubleSpinBox.setProperty("value", np.float(serie.loc['width']))
+        self.widthReliefDoubleSpinBox.setProperty("value", np.float64(serie.loc['width']))                                #change
         # center of the relief
-        self.centerReliefDoubleSpinBox.setProperty("value", np.float(serie.loc['center']))
+        self.centerReliefDoubleSpinBox.setProperty("value", np.float64(serie.loc['center']))                              #change

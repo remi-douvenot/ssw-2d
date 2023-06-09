@@ -73,8 +73,8 @@ def ssf_2d(u_0, config, n_refraction, ii_vect_relief):
 
     # --- Creation of the apodisation window --- # @todo Code other apodisation windows
     # along z
-    n_apo_z = np.int(config.apo_z * config.N_z)
-    apo_window_z = apodisation_window(config.apo_window, n_apo_z)
+    n_apo_z = np.int64(config.apo_z * config.N_z)                                                                                       # change
+    apo_window_z = apodisation_window(config.apo_window, n_apo_z) #Ex : congig.apo_window = "Hanning" /// n_apo_z = zmax
     # ------------------------------------------ #
 
     # --- Initialisations --- #

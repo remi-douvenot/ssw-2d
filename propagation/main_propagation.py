@@ -131,7 +131,7 @@ ii_vect_relief = np.round(z_relief/config.z_step).astype('int')  # relief indice
 # --- Calculate u_0 from E_init (normalised in infinity norm to have max(|u_0|) = 1) --- #
 k0 = 2*np.pi*config.freq/cst.c
 u_0 = e_field * np.sqrt(k0*(-config.x_s)) * np.exp(1j * k0 * (-config.x_s))
-#u_0 = e_field / np.sqrt(k0*(-config.x_s))
+# u_0 = e_field / np.sqrt(k0*(-config.x_s))
 u_infty = np.max(np.abs(u_0))  # norm infinity of the initial field
 u_0 /= u_infty  # put max at 1 to avoid numerical errors
 # -------------------------------------------------------------------------------------- #
@@ -234,4 +234,3 @@ u_infty = np.max(np.abs(e_field2))
 E_diff = (e_field - e_field2)/u_infty
 
 np.save('./outputs/e_field', e_field2)'''
-

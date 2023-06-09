@@ -31,55 +31,55 @@ def read_config(file_configuration, file_source_config):
         if row[0] == 'method':
             Config.method = row[1]
         elif row[0] == 'N_z':
-            Config.N_z = np.int(row[1])
+            Config.N_z = np.int64(row[1])                                                                            #change
         elif row[0] == 'N_x':
-            Config.N_x = np.int(row[1])
+            Config.N_x = np.int64(row[1])                                                                            #change
         elif row[0] == 'x_step':
-            Config.x_step = np.float(row[1])
+            Config.x_step = np.float64(row[1])                                                                      #change
         elif row[0] == 'z_step':
-            Config.z_step = np.float(row[1])
+            Config.z_step = np.float64(row[1])                                                                      #change
         elif row[0] == 'frequency':
-            Config.freq = np.float(row[1]) * 1e6  # freq in MHz
+            Config.freq = np.float64(row[1]) * 1e6  # freq in MHz                                                   change
         elif row[0] == 'polarisation':
             Config.polar = row[1]  # 'TE' or 'TM'
         elif row[0] == 'Max compression error':
-            Config.max_compression_err = np.float(row[1])  # Max compression error
+            Config.max_compression_err = np.float64(row[1])  # Max compression error                                change
         elif row[0] == 'wavelet level':
-            Config.wv_L = np.int(row[1])  # Max compression error
+            Config.wv_L = np.int64(row[1])  # Max compression error                                                   change
         elif row[0] == 'wavelet family':
             Config.wv_family = row[1]  # Max compression error
         elif row[0] == 'apodisation window':
             Config.apo_window = row[1]  # Type of the apodisation window
         elif row[0] == 'apodisation size':
-            Config.apo_z = np.float(row[1])  # apodisation size along z
+            Config.apo_z = np.float64(row[1])  # apodisation size along z                                            change
         elif row[0] == 'image size':
-            Config.image_layer = np.float(row[1])  # image layer size (in ground) along z
+            Config.image_layer = np.float64(row[1])  # image layer size (in ground) along z                           change
         elif row[0] == 'ground':
             Config.ground = row[1]  # ground type
         elif row[0] == 'epsr':
-            Config.epsr = np.float(row[1])  # ground relative permittivity
+            Config.epsr = np.float64(row[1])  # ground relative permittivity                                           change
         elif row[0] == 'sigma':
-            Config.sigma = np.float(row[1])  # ground conductivity
+            Config.sigma = np.float64(row[1])  # ground conductivity                                                   change
         elif row[0] == 'atmosphere':
             Config.atmosphere = row[1]  # atmospheric profile type
         elif row[0] == 'c0':
-            Config.c0 = np.float(row[1])  # standard atm gradient
+            Config.c0 = np.float64(row[1])  # standard atm gradient                                                    change
         elif row[0] == 'delta':
-            Config.delta = np.float(row[1])  # evaporation duct height
+            Config.delta = np.float64(row[1])  # evaporation duct height                                               change
         elif row[0] == 'zb':
-            Config.zb = np.float(row[1])  # base height of a trilinear duct
+            Config.zb = np.float64(row[1])  # base height of a trilinear duct                                          change
         elif row[0] == 'c2':
-            Config.c2 = np.float(row[1])  # gradient in a trilinear duct
+            Config.c2 = np.float64(row[1])  # gradient in a trilinear duct                                             change
         elif row[0] == 'zt':
-            Config.zt = np.float(row[1])  # thickness of a trilinear duct
+            Config.zt = np.float64(row[1])  # thickness of a trilinear duct                                            change
         elif row[0] == 'atm filename':
             Config.atm_filename = row[1]  # file for a hand-generated atmospheric profile
         elif row[0] == 'turbulence':
             Config.turbulence = row[1]
         elif row[0] == 'Cn2':
-            Config.Cn2 = np.float(row[1])
+            Config.Cn2 = np.float64(row[1])                                                                            #change
         elif row[0] == 'L0':
-            Config.L0 = np.float(row[1])
+            Config.L0 = np.float64(row[1])                                                                             #change
         elif row[0] == 'Property':
             pass  # first line
         elif row[0] == 'dynamic':  # only used for HMI plots
@@ -116,7 +116,7 @@ def read_config(file_configuration, file_source_config):
     for row in file_tmp:
         # geometry must match with the source generation
         if row[0] == 'x_s':
-            Config.x_s = np.float(row[1])  # distance in m
+            Config.x_s = np.float64(row[1])  # distance in m                                                          change
             if Config.x_s >= 0:
                 raise ValueError(['Source position along x must be <0'])
 
@@ -136,22 +136,22 @@ def read_source(config, file_source_config, file_e_init):
     for row in file_tmp:
         # geometry must match with the source generation
         if row[0] == 'N_z':
-            n_z = np.int(row[1])
+            n_z = np.int64(row[1])                                                                                    #change
             if n_z != config.N_z:
                 raise ValueError(['n_z value does not match with source generation'])
         elif row[0] == 'z_step':
-            z_step = np.float(row[1])
+            z_step = np.float64(row[1])                                                                              #change
             if z_step != config.z_step:
                 raise ValueError(['z_step value does not match with source generation'])
         # geometry must match with the source generation
         elif row[0] == 'frequency':
-            freq = np.float(row[1]) * 1e6  # freq in MHz
+            freq = np.float64(row[1]) * 1e6  # freq in MHz                                                           change
             if freq != config.freq:
                 raise ValueError(['frequency ', freq, ' MHz value does not match with source generation',
                                   config.freq, ' MHz'])
         # x_s is the source position in the x direction (must be <0)
         elif row[0] == 'x_s':
-            config.x_s = np.float(row[1])  # distance in m
+            config.x_s = np.float64(row[1])  # distance in m                                                         change
             if config.x_s >= 0:
                 raise ValueError(['Source position along x must be <0'])
         elif row[0] == 'Property':
@@ -185,14 +185,14 @@ def read_relief(config, file_relief_config, file_relief):
     for row in file_tmp:
         # geometry must match with the relief generation
         if row[0] == 'N_x':
-            n_x = np.int(row[1])
+            n_x = np.int64(row[1])                                                                             #change
             if n_x != config.N_x:
                 raise ValueError(['n_x value does not match with relief'])
         # geometry must match with the source generation
         elif row[0] == 'x_step':
-            x_step = np.float(row[1])  # horizontal step in m
+            x_step = np.float64(row[1])  # horizontal step in m                                                change
         elif row[0] == 'z_max_relief':
-            z_max_relief = np.float(row[1])  # max relief in m
+            z_max_relief = np.float64(row[1])  # max relief in m                                               change
             if z_max_relief > config.z_step*config.N_z:
                 raise ValueError(['Relief is higher than the computation domain!'])
         # x_s is the source position in the x direction (must be <0)
@@ -201,9 +201,9 @@ def read_relief(config, file_relief_config, file_relief):
         elif row[0] == 'iterations':
             config.iterations = int(row[1])  #
         elif row[0] == 'center':
-            config.center = np.float(row[1])  #
+            config.center = np.float64(row[1])  #                                                               change
         elif row[0] == 'width':
-            config.width = np.float(row[1])  #
+            config.width = np.float64(row[1])  #                                                                 change
         elif row[0] == 'Property':
             pass  # first line
         else:
@@ -247,13 +247,13 @@ def read_config_plot(file_config_plot):
             Config_plot.total_flag = row[1]  # Y or N
         # dynamic (difference between min and max plotted)
         elif row[0] == 'Dynamic':
-            Config_plot.dynamic = np.float(row[1])  #
+            Config_plot.dynamic = np.float64(row[1])  #                                                           change
         # plot a wavelet representation (Y or N)
         elif row[0] == 'Wavelet decomposition':
             Config_plot.wavelets = row[1]  #
         # Distance of the vertical cut (wavelet representation)
         elif row[0] == 'Cut':
-            Config_plot.cut = np.float(row[1])  #
+            Config_plot.cut = np.float64(row[1])  #                                                               change
         # Plot the dictionary of wavelet propagators?
         elif row[0] == 'Dictionary':
             Config_plot.library = row[1]  #

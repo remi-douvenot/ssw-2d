@@ -74,7 +74,7 @@ def plot_field(config, config_plot):
         n_im = 0
     else:  # ground, therefore an image layer different from 0
         image_layer = config.image_layer  # image_layer in % of the total size n_z
-        n_im = np.int(np.round(n_z * image_layer))
+        n_im = np.int64(np.round(n_z * image_layer))                                                                    #change
         remain_im = n_im % 2 ** wv_l
         if remain_im != 0:
             n_im += 2 ** wv_l - remain_im
