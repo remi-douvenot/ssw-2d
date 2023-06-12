@@ -49,7 +49,6 @@ import multiprocessing as mp
 import pywt
 import time
 from src.wavelets.wavelet_operations import thresholding, q_max_calculation
-# from src.maths import convolution  # for add_propagator_at_once
 from src.propagation.ssw_2d_one_step import add_propagator_at_once
 from scipy.signal import convolve
 
@@ -138,3 +137,43 @@ def wavelet_propag_one_step(wv_x, dictionary, config):
 
     return wv_x_dx
 
+##
+# @package: add_propagator_at_once
+# @author: Remi Douvenot
+# @date: 20/07/2021
+# @version: V1.0
+#
+# @brief Add to wv_x_dx all the propagated wavelets corresponding to one propagator
+# @param[in] wv_x_lvl Wavelet parameters that correspond to the propagator (chosen level and propagator number)
+# @param[in] propagator Pre-generated wavelet propagator
+# @param[in] ll Max level of the multiscale decomposition
+# @param[in] wv_x_dx Wavelet coefficients calculated for wv_x_dx so far
+# @param[out] wv_x_dx Wavelet coefficients calculated for wv_x_dx with the inputted "propagator" taken into account
+# @details Add to wv_x_dx all the propagated wavelets corresponding to one propagator. For scaling function, the
+# propagator is chosen wrt. level and translation. Then convolved by the approx or detail parameters of wv_x_dx
+##
+
+
+##
+# @package: fortran_type
+# @author: R. Douvenot
+# @date: 09/06/2021
+# @version: V1.0
+#
+# @brief Put a wavelet decomposition in a Fortran format
+# @param[in] wv_x Wavelet decomposition
+# @param[out] wv_x_fortran Wavelet decomposition
+##
+
+
+def fortran_type(wv_u):
+
+    # max level of decomposition
+    ll = len(wv_u)-1
+    # creation of the empty list
+    wv_u_fortran = [[]] * (ll+1)
+    # fill the wavelet levels
+    for ii_lvl in np.arange(0, ll+1):
+        wv_u_fortran[ii_lvl] = wv_u[ii_lvl]
+
+    return wv_u_fortran
