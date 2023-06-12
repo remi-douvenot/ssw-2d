@@ -88,7 +88,6 @@ def ssw_2d(u_0, config, n_refraction, ii_vect_relief):
         dictionary = dictionary2
 
 
-
     # --- Sizes of the apodisation and image layers --- #
     if config.ground == 'PEC' or config.ground == 'Dielectric':
         n_im = np.int(np.round(config.N_z * config.image_layer))
