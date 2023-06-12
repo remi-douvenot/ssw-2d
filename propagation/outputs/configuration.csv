@@ -1,7 +1,7 @@
 Property,Value,Unit
 method,SSW,
-N_x,60,Unnamed: 2
-N_z,2500,
+N_x,200,Unnamed: 2
+N_z,5000,
 x_step,50.0,m
 z_step,0.4,m
 frequency,1000.0,MHz
