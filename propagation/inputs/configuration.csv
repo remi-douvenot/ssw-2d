@@ -1,5 +1,5 @@
 Property,Value,Unit
-method,WWP-H,
+method,SSW,
 N_x,60,Unnamed: 2
 N_z,2500,
 x_step,50.0,m
@@ -26,4 +26,4 @@ c2,-0.8,M-unit/m
 zt,200.0,m
 atm filename,toto.atm,
 dynamic,80,dB
-py_or_cy,Python,'Python' or 'Cython'
+py_or_cy,Cython,'Python' or 'Cython'

@@ -37,6 +37,7 @@
 import numpy as np
 import time
 import scipy.constants as cst
+import pywt
 from src.propagators.dictionary_generation import dictionary_generation
 from src.propagation.ssw_2d_one_step import ssw_2d_one_step
 from src.propagation.apodisation import apply_apodisation, apodisation_window
@@ -44,25 +45,7 @@ from src.atmosphere.genere_n_profile import genere_phi_turbulent
 from src.DSSF.dmft import dmft_parameters, u2w, w2u, surface_wave_propagation
 from src.propagation.refraction import apply_refractive_index
 from src.propagation.image_field import compute_image_field, compute_image_field_tm_pec
-from src.wavelets.wavelet_operations import sparsify
-
-# import cProfile, pstats, io
-# def profile(fnc):
-#     def inner(*args, **kwargs):
-#         pr = cProfile.Profile()
-#         pr.enable()
-#         retval = fnc(*args, **kwargs)
-#         pr.disable()
-#         s = io.StringIO()
-#         sortby = 'cumulative'
-#         ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
-#         ps.print_stats()
-#         print(s.getvalue())
-#         return retval
-#
-#     return inner
-#
-# @profile
+from src.wavelets.wavelet_operations import sparsify, q_max_calculation
 
 
 def ssw_2d(u_0, config, n_refraction, ii_vect_relief):
@@ -87,6 +70,25 @@ def ssw_2d(u_0, config, n_refraction, ii_vect_relief):
     print(' ')
     # save the final electric field
     np.save('./outputs/dictionary', dictionary)
+    n_propa_lib = 0  # not used in Python code
+    # if Cython, the dictionary is stored in the shape of one unique vector.
+    if config.py_or_cy == 'Cython':
+        dictionary2 = []
+        q_list = q_max_calculation(config.wv_L)
+        # Index at which the propagators of the level begin
+        n_propa_lib = np.zeros(config.wv_L + 2, dtype='int32')
+        # put the library in the shape of a vector. Useful for Cython version
+        for ii_lvl in range(0, config.wv_L + 1):
+            n_propa_lib[ii_lvl + 1] += n_propa_lib[ii_lvl]  # add previous level
+            for ii_q in range(0, q_list[ii_lvl]):
+                toto = dictionary[ii_lvl][ii_q]
+                tata = pywt.coeffs_to_array(toto)[0]
+                n_propa_lib[ii_lvl + 1] += len(tata)  # add the size of each propagator
+                dictionary2 = np.append(dictionary2, tata)
+        dictionary = dictionary2
+
+
+
     # --- Sizes of the apodisation and image layers --- #
     if config.ground == 'PEC' or config.ground == 'Dielectric':
         n_im = np.int(np.round(config.N_z * config.image_layer))
@@ -97,6 +99,7 @@ def ssw_2d(u_0, config, n_refraction, ii_vect_relief):
         print('--- Main loop. No ground ---')
         n_im = 0
     config.N_im = n_im
+
     # ------------------------------------------------- #
 
     # --- Initialisations --- #
@@ -143,7 +146,7 @@ def ssw_2d(u_0, config, n_refraction, ii_vect_relief):
             w_x = compute_image_field(w_x, n_im)
 
             # Propagate using SSW
-            w_x_dx, wavelets_x_dx = ssw_2d_one_step(w_x, dictionary, config)
+            w_x_dx, wavelets_x_dx = ssw_2d_one_step(w_x, dictionary, n_propa_lib, config)
 
             # Pop image field: remove the image points
             w_x_dx = w_x_dx[n_im:n_im + config.N_z]
@@ -173,7 +176,7 @@ def ssw_2d(u_0, config, n_refraction, ii_vect_relief):
             elif config.polar == 'TM':
                 u_x = compute_image_field_tm_pec(u_x, n_im)
             # Propagate using SSW
-            u_x_dx, wavelets_x_dx = ssw_2d_one_step(u_x, dictionary, config)
+            u_x_dx, wavelets_x_dx = ssw_2d_one_step(u_x, dictionary, n_propa_lib, config)
             # Pop image field: remove the image points
             u_x_dx = u_x_dx[n_im:n_im + config.N_z]
             # ascending relief
@@ -187,7 +190,7 @@ def ssw_2d(u_0, config, n_refraction, ii_vect_relief):
             # print('No ground')
 
             # Propagate using SSW
-            u_x_dx, wavelets_x_dx = ssw_2d_one_step(u_x, dictionary, config)
+            u_x_dx, wavelets_x_dx = ssw_2d_one_step(u_x, dictionary, n_propa_lib, config)
 
         else:
             raise ValueError(['Ground condition should be dielectric, PEC, or None'])

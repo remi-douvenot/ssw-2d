@@ -55,7 +55,7 @@ from src.wavelets_cython.wavelets_operations import normalized_indices, calculat
 import timeit
 
 
-def ssw_2d_one_step(u_x, library, config):
+def ssw_2d_one_step(u_x, library, n_propa_lib, config):
 
     # Simulation parameters
     n_z = u_x.shape[0]
@@ -78,25 +78,24 @@ def ssw_2d_one_step(u_x, library, config):
 
     # Propagation with the Cython code
     elif config.py_or_cy == 'Cython':
-        # TODO: calculate library and nonzero coefficients at the beginning of the code
-        library2 = []
-        q_list = q_max_calculation(config.wv_L)
-        # Index at which the propagators of the level begin
-        n_propa_lib = np.zeros(config.wv_L + 2, dtype='int32')
-        # put the library in the shape of a vector. Useful for Cython version
-        for ii_lvl in range(0, config.wv_L + 1):
-            n_propa_lib[ii_lvl + 1] += n_propa_lib[ii_lvl]  # add previous level
-            for ii_q in range(0, q_list[ii_lvl]):
-                toto = library[ii_lvl][ii_q]
-                tata = pywt.coeffs_to_array(toto)[0]
-                n_propa_lib[ii_lvl+1] += len(tata)  # add the size of each propagator
-                library2 = np.append(library2, tata)
-        wx_x_coeffs = pywt.coeffs_to_array(wv_x)
-        wv_x = wx_x_coeffs[0]
-        wv_x_dx_array = wavelet_propag_one_step_cy(n_z, wv_x, library2, config.wv_L, n_propa_lib, config.V_p)
+        # # TODO: calculate library and nonzero coefficients at the beginning of the code
+        # library2 = []
+        # q_list = q_max_calculation(config.wv_L)
+        # # Index at which the propagators of the level begin
+        # n_propa_lib = np.zeros(config.wv_L + 2, dtype='int32')
+        # # put the library in the shape of a vector. Useful for Cython version
+        # for ii_lvl in range(0, config.wv_L + 1):
+        #     n_propa_lib[ii_lvl + 1] += n_propa_lib[ii_lvl]  # add previous level
+        #     for ii_q in range(0, q_list[ii_lvl]):
+        #         toto = library[ii_lvl][ii_q]
+        #         tata = pywt.coeffs_to_array(toto)[0]
+        #         n_propa_lib[ii_lvl+1] += len(tata)  # add the size of each propagator
+        #         library2 = np.append(library2, tata)
+        wv_x, wx_x_shape = pywt.coeffs_to_array(wv_x)
+        wv_x_dx_array = wavelet_propag_one_step_cy(n_z, wv_x, library, config.wv_L, n_propa_lib, config.V_p)
 
         # wv_x_dx2 = unsparsify_dok(wv_x_dx2_sparse)
-        wv_x_dx = pywt.array_to_coeffs(wv_x_dx_array, wx_x_coeffs[1], output_format='wavedec')
+        wv_x_dx = pywt.array_to_coeffs(wv_x_dx_array, wx_x_shape, output_format='wavedec')
     else:
         raise ValueError('py_or_cy variable can be ''Cython'' or ''Python'' only')
 
