@@ -91,7 +91,6 @@ def wavelet_propag_one_step_cy(const int n_z, const double complex[:] wv_x, doub
 
     # current wavelet coefficient in the loop
     cdef double complex wv_coef, lib_coef
-    cdef double complex[:] propagator_lvl
     # number of coefficients on the highest levels (scaling function) of the SIGNAL vectors (wv_x and wv_x_dx)
     cdef int n_scal = int(n_z / (2 ** wv_ll))
     # number of points with respect to the scaling function at each level
@@ -201,3 +200,6 @@ def wavelet_propag_one_step_cy(const int n_z, const double complex[:] wv_x, doub
                     wv_x_dx_cy[ii_ind + ind_min] += lib_coef
 
     return wv_x_dx_cy
+
+
+
