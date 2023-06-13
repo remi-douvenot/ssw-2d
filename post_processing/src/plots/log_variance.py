@@ -51,7 +51,7 @@ def log_variance(config, E_turbulent,E_reference):
         ln_amplitude = np.zeros(n_z-2*n_apo_z)
         #print(ii_x)
         for ii_z in range(n_apo_z, n_z - n_apo_z): #Field is true only in apo window
-            ln_amplitude[ii_z-n_apo_z]= Np2dB*np.log(np.abs(E_turbulent[ii_x][ii_z]/E_reference[ii_x][ii_z]))
+            ln_amplitude[ii_z-n_apo_z]= Np2dB*np.log(np.abs(E_turbulent[ii_x][ii_z])/np.abs(E_reference[ii_x][ii_z]))
         sigma2[ii_x]= np.var(ln_amplitude)
     # np.save('sigma2')
     print('max champ',np.max(20*np.log10(np.abs(E_turbulent[-1]))),np.max(20*np.log10(np.abs(E_reference[-1]))))
@@ -66,7 +66,7 @@ def logvar_analytic(config):
     k_0 = 2*np.pi*config.freq/3e8
     n_x = config.N_x
     R = n_x*config.x_step  #total range
-    N_ite = 40
+    N_ite = 10
     x_s = - config.x_s
     X = np.linspace(100,R,N_ite)
     sigma2 = np.zeros(N_ite)
@@ -83,3 +83,47 @@ def logvar_analytic(config):
     return sigma2
 
 
+def phase_variance(config,E_turbulent):
+    # --- set parameters --#
+    n_x = config.N_x
+    var_phi = np.zeros(n_x)
+    n_z = config.N_z
+    n_apo_z = np.int(config.apo_z * n_z)
+    print(n_apo_z)
+    # --- compute vertical phase variance at each range step --#
+    z = np.linspace(n_apo_z*config.z_step, (n_z-n_apo_z)*config.z_step, n_z - 2*n_apo_z)
+    for ii_x in range(0, n_x):
+        phi = np.unwrap(np.angle(E_turbulent[ii_x]))
+        #if ii_x >= 100 :
+        #    plt.plot(np.unwrap(phi[n_apo_z:n_z-n_apo_z]),z)
+        #    plt.show()
+        #    plt.xlabel('phase (rad)')
+        #    plt.ylabel('z (m)')
+        #print('size =',np.size(phi))
+        #print(phi)
+        var_phi[ii_x] = np.var(phi[n_apo_z:n_z-n_apo_z])
+    return  var_phi
+
+def diff_phase_variance(config,E_turbulent, E_reference):
+    # --- set parameters --#
+    n_x = config.N_x
+    var_phi = np.zeros(n_x)
+    n_z = config.N_z
+    n_apo_z = np.int(config.apo_z * n_z)
+    print(n_apo_z)
+    # --- compute vertical phase variance at each range step --#
+    z = np.linspace(n_apo_z*config.z_step, (n_z-n_apo_z)*config.z_step, n_z - 2*n_apo_z)
+    for ii_x in range(0, n_x):
+        phi = np.angle(E_turbulent[ii_x] / E_reference[ii_x])
+        # if ii_x == 20 or ii_x == 100 or ii_x == 200 or ii_x == 370 :
+        #     plt.plot(np.unwrap(phi[n_apo_z:n_z-n_apo_z]),z, label = 'unwrap')
+        #     plt.plot(phi[n_apo_z:n_z - n_apo_z], z, label = 'classic')
+        #     plt.xlabel('phase (rad)')
+        #     plt.ylabel('z (m)')
+        #     plt.legend()
+        #     plt.show()
+
+        #print('size =',np.size(phi))
+        #print(phi)
+        var_phi[ii_x] = np.var(phi[n_apo_z:n_z-n_apo_z])
+    return  var_phi

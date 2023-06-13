@@ -1,28 +1,28 @@
 Property,Value,Unit
 method,SSW,
-N_x,300,Unnamed: 2
-N_z,10000,
-x_step,200.0,m
-z_step,0.5,m
-frequency,300.0,MHz
+N_x,380,Unnamed: 2
+N_z,60000,
+x_step,250.0,m
+z_step,0.05,m
+frequency,10000.0,MHz
 polarisation,TE,
-Max compression error,-10.0,dB
+Max compression error,-30.0,dB
 wavelet level,2,
 wavelet family,sym6,
 apodisation window,Hanning,
-apodisation size,0.1,% of N_z
+apodisation size,0.05,% of N_z
 image size,0.15,% of N_z
 ground,None,
-epsr,15.0,
-sigma,0.5,S/m
+epsr,1.42,
+sigma,1.0,S/m
 atmosphere,Homogeneous,
-turbulence,N,Y or N
+turbulence,Y,Y or N
 Cn2,-12.0,Cn2 exponent
-L0,10.0,m
+L0,100.0,m
 c0,0.118,M-unit/m
 delta,15.0,m
 zb,600.0,m
 c2,-0.8,M-unit/m
 zt,200.0,m
 atm filename,toto.atm,
-dynamic,80,dB
+dynamic,50,dB

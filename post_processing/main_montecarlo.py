@@ -38,7 +38,7 @@ import sys
 import os
 import scipy.constants as cst
 
-from src.plots.log_variance import log_variance ,logvar_analytic
+from src.plots.log_variance import log_variance ,logvar_analytic, phase_variance, diff_phase_variance
 
 # where config is defined
 from src.classes_and_files.read_files import read_config
@@ -66,14 +66,14 @@ config = read_config(file_configuration, file_source_config)
 
 
 
-
-n_simu = 200 #number of monte carlo simulation
+n_simu = 500  #number of monte carlo simulation
 n_x = config.N_x
 n_z = config.N_z
 
 # --- Initialise tables --- #
 
 sigma2_table = [np.zeros(n_x)]*n_simu
+var_phase_table = [np.zeros(n_x)]*n_simu
 
 # --- Starting simulations --- #
 if config.turbulence == 'Y':
@@ -151,17 +151,39 @@ if config.turbulence == 'Y':
         #field_table[ii_simu]=e_field_total
 
         # --- Compute log-variance for each simulation  --- #
-        sigma2_table[ii_simu] = log_variance(config,e_field_total,e_reference)
-    sigma2_mean = np.mean(sigma2_table,axis=0)
-    sigma2_analytic = logvar_analytic(config)  # Analytic log amplitude variance
+        #sigma2_table[ii_simu] = log_variance(config,e_field_total,e_reference)
+        #var_phase_table[ii_simu] = phase_variance(config,e_field_total)
+        var_phase_table[ii_simu] = diff_phase_variance(config,e_field_total, e_reference)
+    #sigma2_mean = np.mean(sigma2_table,axis=0)
+    var_phase_mean = np.mean(var_phase_table,axis=0)
+    var_phase_std = np.std(var_phase_table, axis=0)
+    #np.save('./outputs/extended_LES_logvar_dz50_1GHz_Ns380_Cn023_12',sigma2_mean)
+    #np.save('./outputs/extended_LES_logvar_dz50_1GHz_Ns380_Cn023_12',sigma2_std)
+    np.save('./outputs/extended_LES_var_phase_dz10_10GHz_Ns380_Cn023_12', var_phase_mean)
+    np.save('./outputs/std_extended_LES_var_phase_dz10_10GHz_Ns380_Cn023_12', var_phase_std)
+    #sigma2_analytic = logvar_analytic(config)  # Analytic log amplitude variance
     x = np.linspace(x_step, config.N_x * config.x_step, config.N_x)
-    x_analytic = np.linspace(x_step, config.N_x*config.x_step, len(sigma2_analytic))
-    plt.plot(x/1000, sigma2_mean,'--', label='SSW')
-    plt.plot(x_analytic/1000, sigma2_analytic, label='Analytic')
+    #x_analytic = np.linspace(x_step, config.N_x*config.x_step, len(sigma2_analytic))
+    #plt.plot(x/1000, sigma2_mean,'--', label='SSW')
+    #plt.plot(x_analytic/1000, sigma2_analytic, label='Analytic')
+    #plt.xlabel('Distance (km)')
+    #plt.ylabel('\u03C3$^2$ (dB$^2$)')
+    #plt.xlim(7.5,40)
+    #plt.ylim(0, 0.12)
+    #plt.title('Log-amplitude variance at '+str(config.freq/1e9)+' GHz ; LES BOMEX LES atmosphere : dz = 50 m')
+    #plt.grid()
+    #plt.legend()
+    #plt.show()
+
+    plt.plot(x/1000, var_phase_mean,'-', label='SSW')
+    plt.plot(x / 1000, var_phase_mean+var_phase_std, '--')
+    plt.plot(x / 1000, var_phase_mean - var_phase_std, '--')
+    #plt.plot(x_analytic/1000, sigma2_analytic, label='Analytic')
     plt.xlabel('Distance (km)')
-    plt.ylabel('\u03C3$^2$ (dB$^2$)')
-    #plt.xlim(0,40)
-    plt.title('Log-amplitude variance : 10 GHz ; Los = 10 m ; Cn2 = 1e-12')
+    plt.ylabel('phase variance')
+    #plt.xlim(7.5,40)
+    #plt.ylim(0, 0.12)
+    plt.title('Phase variance at '+str(config.freq/1e9)+' GHz ; LES BOMEX LES atmosphere : dz = 50 m')
     plt.grid()
     plt.legend()
     plt.show()
@@ -235,6 +257,35 @@ else : #save non turbulent field
 
         e_field_total[ii_x, :] = u_field_total[ii_x, :] / np.sqrt(k0 * x_current) * np.exp(-1j * k0 * x_current)
         #e_field_total[ii_x, :] = u_field_total[ii_x, :]
+    var_phase_table = phase_variance(config,e_field_total)
+    #sigma2_mean = np.mean(sigma2_table,axis=0)
+    var_phase_mean = var_phase_table
+    #np.save('./outputs/extended_LES_logvar_dz50_1GHz_Ns380_Cn2_023',sigma2_mean)
+    np.save('./outputs/var_phase_1GHz', var_phase_mean)
+    #sigma2_analytic = logvar_analytic(config)  # Analytic log amplitude variance
+    x = np.linspace(x_step, config.N_x * config.x_step, config.N_x)
+    #x_analytic = np.linspace(x_step, config.N_x*config.x_step, len(sigma2_analytic))
+    #plt.plot(x/1000, sigma2_mean,'--', label='SSW')
+    #plt.plot(x_analytic/1000, sigma2_analytic, label='Analytic')
+    #plt.xlabel('Distance (km)')
+    #plt.ylabel('\u03C3$^2$ (dB$^2$)')
+    #plt.xlim(7.5,40)
+    #plt.ylim(0, 0.12)
+    #plt.title('Log-amplitude variance at '+str(config.freq/1e9)+' GHz ; LES BOMEX LES atmosphere : dz = 50 m')
+    #plt.grid()
+    #plt.legend()
+    #plt.show()
+
+    plt.plot(x[200:]/1000, var_phase_mean[200:],'--', label='SSW')
+    #plt.plot(x_analytic/1000, sigma2_analytic, label='Analytic')
+    plt.xlabel('Distance (km)')
+    plt.ylabel('phase variance')
+    #plt.xlim(7.5,40)
+    #plt.ylim(0, 0.12)
+    plt.title('Phase variance at '+str(config.freq/1e9)+' GHz ; LES BOMEX LES atmosphere : dz = 50 m')
+    plt.grid()
+    plt.legend()
+    plt.show()
     np.save('./outputs/E_reference', e_field_total)
     print('Reference field is saved for f =',config.freq*1e-6,'MHz and L0 =',config.L0, 'm')
     print('Launch turbulent simulation')

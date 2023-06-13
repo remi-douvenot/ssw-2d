@@ -35,12 +35,13 @@
 #######################################################################################################################
 
 import numpy as np
+import matplotlib.pyplot as plt
 import time
 import scipy.constants as cst
 from src.propagators.dictionary_generation import dictionary_generation
 from src.propagation.ssw_2d_one_step import ssw_2d_one_step
 from src.propagation.apodisation import apply_apodisation, apodisation_window
-from src.atmosphere.genere_n_profile import genere_phi_turbulent
+from src.atmosphere.genere_n_profile import genere_phi_turbulent, genere_phi_turbulent_LES
 from src.DSSF.dmft import dmft_parameters, u2w, w2u, surface_wave_propagation
 from src.propagation.refraction import apply_refractive_index
 from src.propagation.image_field import compute_image_field, compute_image_field_tm_pec
@@ -109,6 +110,9 @@ def ssw_2d(u_0, config, n_refraction, ii_vect_relief):
     u_x_dx = np.zeros_like(u_x)
     # total wavelet parameters (sparse coo matrix)
     wv_total = [[]] * n_x
+    # LES atmosphere
+    if config.turbulence == 'Y':
+        phi_LES_list= np.load('./src/atmosphere/phi_list_bomex_100_100_300.npy')
     # ----------------------- #
 
     # Loop over the x_axis
@@ -200,9 +204,17 @@ def ssw_2d(u_0, config, n_refraction, ii_vect_relief):
         # --- refractivity applied twice 2/2 --- #
         u_x_dx = apply_refractive_index(u_x_dx, n_refraction, config)
         if config.turbulence == 'Y':
-            phi_turbulent = genere_phi_turbulent(config)
-            u_x_dx = apply_phi_turbulent(u_x_dx,phi_turbulent,config)
+            ##-- MPS --##
+            #phi_turbulent = genere_phi_turbulent(config)
+            #u_x_dx = apply_phi_turbulent(u_x_dx,phi_turbulent,config)
+            ##-- LES --##
+            #print(phi_LES_list[ii_x - 1],np.size(phi_LES_list[ii_x - 1]))
 
+            i_screen = np.random.randint(0,np.size(phi_LES_list,0))
+            #print(i_screen)
+            phi_turbulent = genere_phi_turbulent_LES(config,phi_LES_list[i_screen])
+
+            u_x_dx = apply_phi_turbulent(u_x_dx, phi_turbulent, config)
         # -------------------------------------- #
 
         # store the wavelet parameters (in coo format)
@@ -222,9 +234,11 @@ def apply_phi_turbulent(u_x, phi_turbulent,config):
 
     # apply the turbulent phase screen of one step delta_x
     # half the refraction applied before and after propagation
-    k0 = 2 * cst.pi * config.freq / cst.c
+    #k0 = 2 * cst.pi * config.freq / cst.c
     u_x *= np.exp(-1j * phi_turbulent)
-
+    z = np.linspace(0,config.N_z*config.z_step,config.N_z)
+    #plt.plot(phi_turbulent,z)
+    #plt.show()
     return u_x
 
 ##
