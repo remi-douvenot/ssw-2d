@@ -168,7 +168,7 @@ def ssf_2d(u_0, config, n_refraction, ii_vect_relief):
                 # u_x_dx[0:diff_relief[ii_x - 1]] = 0.0
 
                 # end of the loop
-        elif config.ground == 'None':
+        elif config.ground == 'NoGround':
             # print('No ground')
 
             # Propagate using SSF

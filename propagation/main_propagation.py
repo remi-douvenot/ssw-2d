@@ -167,7 +167,7 @@ t_propa_s = time.process_time()
 if config.method == 'SSW':
     u_final, wv_total = ssw_2d(u_0, config, n_refraction, ii_vect_relief)
 # WWP  <-- if WW-H is chosen without ground then WWP is launched
-elif (config.method == 'WWP') or ((config.method == 'WWP-H') and (config.ground == 'None')):
+elif (config.method == 'WWP') or ((config.method == 'WWP-H') and (config.ground == 'NoGround')):
     u_final, wv_total = wwp_2d(u_0, config, n_refraction, ii_vect_relief)
 # WWP-H
 elif config.method == 'WWP-H':

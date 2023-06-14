@@ -5,21 +5,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b5a6572f-2cbb-45cc-aad0-8ebc0e965382" name="Changes" comment="Final correction of the computation of the log-amplitude variance">
-      <change afterPath="$PROJECT_DIR$/source/src/DME.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/ssw-2d.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ssw-2d.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/src/gui_ssw_2d.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/src/gui_ssw_2d.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/src/plots.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/src/plots.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/src_ui/gui_ssw_2d.ui" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/src_ui/gui_ssw_2d.ui" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/post_processing/main_montecarlo.py" beforeDir="false" afterPath="$PROJECT_DIR$/post_processing/main_montecarlo.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/post_processing/outputs/E_reference.npy" beforeDir="false" afterPath="$PROJECT_DIR$/post_processing/outputs/E_reference.npy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/post_processing/src/plots/log_variance.py" beforeDir="false" afterPath="$PROJECT_DIR$/post_processing/src/plots/log_variance.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/post_processing/outputs/post_pro.py" beforeDir="false" afterPath="$PROJECT_DIR$/post_processing/outputs/post_pro.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/post_processing/src/classes_and_files/read_files.py" beforeDir="false" afterPath="$PROJECT_DIR$/post_processing/src/classes_and_files/read_files.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/propagation/inputs/configuration.csv" beforeDir="false" afterPath="$PROJECT_DIR$/propagation/inputs/configuration.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/propagation/main_propagation.py" beforeDir="false" afterPath="$PROJECT_DIR$/propagation/main_propagation.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/propagation/outputs/configuration.csv" beforeDir="false" afterPath="$PROJECT_DIR$/propagation/outputs/configuration.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/propagation/outputs/dictionary.npy" beforeDir="false" afterPath="$PROJECT_DIR$/propagation/outputs/dictionary.npy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/propagation/src/atmosphere/genere_n_profile.py" beforeDir="false" afterPath="$PROJECT_DIR$/propagation/src/atmosphere/genere_n_profile.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/propagation/src/classes_and_files/read_files.py" beforeDir="false" afterPath="$PROJECT_DIR$/propagation/src/classes_and_files/read_files.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/propagation/src/propagation/apodisation.py" beforeDir="false" afterPath="$PROJECT_DIR$/propagation/src/propagation/apodisation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/propagation/src/propagation/ssf_2d.py" beforeDir="false" afterPath="$PROJECT_DIR$/propagation/src/propagation/ssf_2d.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/propagation/src/propagation/ssw_2d.py" beforeDir="false" afterPath="$PROJECT_DIR$/propagation/src/propagation/ssw_2d.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/propagation/src/propagation/wwp_2d.py" beforeDir="false" afterPath="$PROJECT_DIR$/propagation/src/propagation/wwp_2d.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/propagation/src/propagation/wwp_h_2d.py" beforeDir="false" afterPath="$PROJECT_DIR$/propagation/src/propagation/wwp_h_2d.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/inputs/configuration.csv" beforeDir="false" afterPath="$PROJECT_DIR$/source/inputs/configuration.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/source/outputs/configuration.csv" beforeDir="false" afterPath="$PROJECT_DIR$/source/outputs/configuration.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/src/complex_source_point.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/src/complex_source_point.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/terrain/inputs/conf_terrain.csv" beforeDir="false" afterPath="$PROJECT_DIR$/terrain/inputs/conf_terrain.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/terrain/outputs/z_relief.csv" beforeDir="false" afterPath="$PROJECT_DIR$/terrain/outputs/z_relief.csv" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,14 +56,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/victor/ssw-2d&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.customizations&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "/usr/bin/python3.10",
+    "run.code.analysis.last.selected.profile": "aDefault",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/propagation/src/atmosphere" />
@@ -70,9 +78,10 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="" />
+      <option name="SDK_HOME" value="/usr/bin/python3.10" />
+      <option name="SDK_NAME" value="Python 3.10 (2)" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/GUI" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/GUI/main_2d_ssw_gui.py" />
@@ -168,6 +177,13 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Python.main_2d_ssw_gui" />
+      <item itemvalue="Python.main_montecarlo" />
+      <item itemvalue="Python.main_post_processing" />
+      <item itemvalue="Python.main_propagation" />
+      <item itemvalue="Python.main_source" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.main_montecarlo" />

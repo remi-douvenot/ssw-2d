@@ -224,7 +224,7 @@ class Plots(object):
             ax.plot(x_vect, z_relief, 'k')
             ax.fill_between(x_vect, z_relief, where=z_relief > 0, facecolor='black')
             # print('n_z', n_z, 'e_field_db size', data_db_final.size)
-        elif ground_type == 'None':
+        elif ground_type == 'NoGround':
             pass
         else:
             raise ValueError('Ground type not recognized (plots.py)')
@@ -232,7 +232,7 @@ class Plots(object):
         # --- Apodisation plot ("top" or "bottom + top") --- #
         if ground_type == 'PEC' or ground_type == 'Dielectric':
             ax.hlines(z_max-z_apo, 0, x_max, colors='k', linestyles='dotted')
-        elif ground_type == 'None':
+        elif ground_type == 'NoGround':
             ax.hlines([z_apo, z_max - z_apo], 0, x_max, colors='k', linestyles='dotted')
 
         # ax.vlines(35, 0, z_max, colors='k', linestyles='dotted')

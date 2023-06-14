@@ -26,7 +26,7 @@ def apply_apodisation(u_x, apo_window_z, config):
     n_apo_z = apo_window_z.size
 
     # is there a ground?
-    if config.ground == 'None':
+    if config.ground == 'NoGround':
         # apply apodisation along z (top and bottom)
         u_x[-n_apo_z:] *= apo_window_z
         u_x[:n_apo_z] *= apo_window_z[::-1]
@@ -83,7 +83,7 @@ def apply_apodisation_wavelet(w_x, apo_window_z, config):
         # apply apodisation along z (top of the vector)
         w_x_ll[-n_apo_z_delta:] *= apo_window_z[::delta]
         # apply apodisation along z (bottom)
-        if config.ground == 'None':
+        if config.ground == 'NoGround':
             w_x_ll[:n_apo_z_delta] *= apo_window_z[::-delta]
         w_x[ii_l] = w_x_ll
 

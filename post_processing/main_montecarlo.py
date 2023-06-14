@@ -66,7 +66,7 @@ config = read_config(file_configuration, file_source_config)
 
 
 
-n_simu = 500  #number of monte carlo simulation
+n_simu = 1000  #number of monte carlo simulation
 n_x = config.N_x
 n_z = config.N_z
 
@@ -115,7 +115,7 @@ if config.turbulence == 'Y':
 
         # --- Image layer --- #
         ground_type = config.ground
-        if ground_type == 'None':  # No ground, no image layer
+        if ground_type == 'NoGround':  # No ground, no image layer
             n_im = 0
         else:  # ground, therefore an image layer different from 0
             image_layer = config.image_layer  # image_layer in % of the total size n_z
@@ -159,8 +159,8 @@ if config.turbulence == 'Y':
     var_phase_std = np.std(var_phase_table, axis=0)
     #np.save('./outputs/extended_LES_logvar_dz50_1GHz_Ns380_Cn023_12',sigma2_mean)
     #np.save('./outputs/extended_LES_logvar_dz50_1GHz_Ns380_Cn023_12',sigma2_std)
-    np.save('./outputs/extended_LES_var_phase_dz10_10GHz_Ns380_Cn023_12', var_phase_mean)
-    np.save('./outputs/std_extended_LES_var_phase_dz10_10GHz_Ns380_Cn023_12', var_phase_std)
+    np.save('./outputs/extended_LES_var_phase_dz25_1GHz_Ns380_Cn023_12', var_phase_mean)
+    np.save('./outputs/std_extended_LES_var_phase_dz25_1GHz_Ns380_Cn023_12', var_phase_std)
     #sigma2_analytic = logvar_analytic(config)  # Analytic log amplitude variance
     x = np.linspace(x_step, config.N_x * config.x_step, config.N_x)
     #x_analytic = np.linspace(x_step, config.N_x*config.x_step, len(sigma2_analytic))
@@ -224,11 +224,11 @@ else : #save non turbulent field
 
     # --- Image layer --- #
     ground_type = config.ground
-    if ground_type == 'None':  # No ground, no image layer
+    if ground_type == 'NoGround':  # No ground, no image layer
         n_im = 0
     else:  # ground, therefore an image layer different from 0
         image_layer = config.image_layer  # image_layer in % of the total size n_z
-        n_im = np.int(np.round(n_z * image_layer))
+        n_im = int(round(n_z * image_layer))
         remain_im = n_im % 2 ** wv_l
         if remain_im != 0:
             n_im += 2 ** wv_l - remain_im
@@ -261,7 +261,7 @@ else : #save non turbulent field
     #sigma2_mean = np.mean(sigma2_table,axis=0)
     var_phase_mean = var_phase_table
     #np.save('./outputs/extended_LES_logvar_dz50_1GHz_Ns380_Cn2_023',sigma2_mean)
-    np.save('./outputs/var_phase_1GHz', var_phase_mean)
+    #np.save('./outputs/var_phase_1GHz', var_phase_mean)
     #sigma2_analytic = logvar_analytic(config)  # Analytic log amplitude variance
     x = np.linspace(x_step, config.N_x * config.x_step, config.N_x)
     #x_analytic = np.linspace(x_step, config.N_x*config.x_step, len(sigma2_analytic))

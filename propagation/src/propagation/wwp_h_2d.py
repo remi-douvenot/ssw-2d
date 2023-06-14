@@ -212,7 +212,7 @@ def wwp_h_2d(u_0, config, n_refraction, ii_vect_relief):
             # config.N_im = n_im
             # w_x_dx = assemble_ssw_wwp(w_x, w_ssw_x_dx, w_wwp_x_dx, config)
 
-        elif config.ground == 'None':
+        elif config.ground == 'NoGround':
 
             raise ValueError(['If no ground, please use WWP instead of WWP-H'])
 

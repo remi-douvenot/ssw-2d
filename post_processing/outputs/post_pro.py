@@ -97,6 +97,9 @@ homo = np.load('var_phase_1GHz.npy')
 extend_dz10 = np.load('extended_LES_var_phase_dz10_1GHz_Ns380_Cn023_12.npy')
 extend_dz25 = np.load('extended_LES_var_phase_dz25_1GHz_Ns380_Cn023_12.npy')
 extend_dz50 = np.load('extended_LES_var_phase_dz50_1GHz_Ns380_Cn023_12.npy')
+std_extend_dz10 = np.load('std_extended_LES_var_phase_dz10_1GHz_Ns380_Cn023_12.npy')
+std_extend_dz25 = np.load('std_extended_LES_var_phase_dz25_1GHz_Ns380_Cn023_12.npy')
+std_extend_dz50 = np.load('std_extended_LES_var_phase_dz50_1GHz_Ns380_Cn023_12.npy')
 R = np.linspace(0,95,np.size(dz10))
 
 #plt.plot(R,dz10,'k--',label='$LES : dz = 10$ m')
@@ -107,6 +110,14 @@ plt.plot(R,np.sqrt(extend_dz10)*180/np.pi,'k-',label='$extended-LES : dz = 10$ m
 plt.plot(R,np.sqrt(extend_dz25)*180/np.pi,'b-',label='$extended-LES : dz = 25$ m')
 plt.plot(R,np.sqrt(extend_dz50)*180/np.pi,'r-',label='$extended-LES : dz = 50$ m')
 
+plt.plot(R,np.sqrt(extend_dz10)*180/np.pi+np.sqrt(std_extend_dz10)*180/np.pi,'k--')
+plt.plot(R,np.sqrt(extend_dz10)*180/np.pi-np.sqrt(std_extend_dz10)*180/np.pi,'k--')
+
+plt.plot(R,np.sqrt(extend_dz25)*180/np.pi+np.sqrt(std_extend_dz25)*180/np.pi,'b--')
+plt.plot(R,np.sqrt(extend_dz25)*180/np.pi-np.sqrt(std_extend_dz25)*180/np.pi,'b--')
+
+plt.plot(R,np.sqrt(extend_dz50)*180/np.pi+np.sqrt(std_extend_dz50)*180/np.pi,'r--')
+plt.plot(R,np.sqrt(extend_dz50)*180/np.pi-np.sqrt(std_extend_dz50)*180/np.pi,'r--')
 
 
 plt.title('phase variance comparison at f = 1 GHz')
@@ -125,6 +136,9 @@ plt.show()
 extend_dz10 = np.load('extended_LES_var_phase_dz10_10GHz_Ns380_Cn023_12.npy')
 extend_dz25 = np.load('extended_LES_var_phase_dz25_10GHz_Ns380_Cn023_12.npy')
 extend_dz50 = np.load('extended_LES_var_phase_dz50_10GHz_Ns380_Cn023_12.npy')
+std_extend_dz10 = np.load('std_extended_LES_var_phase_dz10_10GHz_Ns380_Cn023_12.npy')
+std_extend_dz25 = np.load('std_extended_LES_var_phase_dz25_10GHz_Ns380_Cn023_12.npy')
+std_extend_dz50 = np.load('std_extended_LES_var_phase_dz50_10GHz_Ns380_Cn023_12.npy')
 R = np.linspace(0,95,np.size(dz10))
 
 #plt.plot(R,dz10,'k--',label='$LES : dz = 10$ m')
@@ -134,6 +148,15 @@ R = np.linspace(0,95,np.size(dz10))
 plt.plot(R,np.sqrt(extend_dz10)*180/np.pi,'k-',label='$extended-LES : dz = 10$ m')
 plt.plot(R,np.sqrt(extend_dz25)*180/np.pi,'b-',label='$extended-LES : dz = 25$ m')
 plt.plot(R,np.sqrt(extend_dz50)*180/np.pi,'r-',label='$extended-LES : dz = 50$ m')
+
+plt.plot(R,np.sqrt(extend_dz10)*180/np.pi+np.sqrt(std_extend_dz10)*180/np.pi,'k--')
+plt.plot(R,np.sqrt(extend_dz10)*180/np.pi-np.sqrt(std_extend_dz10)*180/np.pi,'k--')
+
+plt.plot(R,np.sqrt(extend_dz25)*180/np.pi+np.sqrt(std_extend_dz25)*180/np.pi,'b--')
+plt.plot(R,np.sqrt(extend_dz25)*180/np.pi-np.sqrt(std_extend_dz25)*180/np.pi,'b--')
+
+plt.plot(R,np.sqrt(extend_dz50)*180/np.pi+np.sqrt(std_extend_dz50)*180/np.pi,'r--')
+plt.plot(R,np.sqrt(extend_dz50)*180/np.pi-np.sqrt(std_extend_dz50)*180/np.pi,'r--')
 
 #plt.xlim(50,95)
 #plt.ylim(3,3.8)

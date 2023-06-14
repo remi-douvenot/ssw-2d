@@ -140,7 +140,7 @@ def wwp_2d(u_0, config, n_refraction, ii_vect_relief):
 
             raise ValueError(['PEC ground not yet available in WWP'])
 
-        elif config.ground == 'None':
+        elif config.ground == 'NoGround':
 
             # Propagate using WWP
             w_x_dx = wwp_2d_one_step(w_x, dictionary, config)

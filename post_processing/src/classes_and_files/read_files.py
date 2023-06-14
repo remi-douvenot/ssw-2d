@@ -90,7 +90,7 @@ def read_config(file_configuration, file_source_config):
     if Config.apo_z < 0 or Config.image_layer < 0 or Config.apo_z > 0.5 or Config.image_layer > 0.5:
         raise ValueError(['Apodisation and image layer must be in [0,0.5] (percentage of the total field size'])
 
-    if (Config.ground != 'None') & (Config.ground != 'PEC') & (Config.ground != 'Dielectric'):
+    if (Config.ground != 'NoGround') & (Config.ground != 'PEC') & (Config.ground != 'Dielectric'):
         raise ValueError(['Ground must be chosen among: None, PEC, or Dielectric'])
     # ------------ END ------------ #
     # --- Reading configuration --- #
