@@ -1,5 +1,5 @@
 Property,Value,Unit
-method,SSW,
+method,SSF,
 N_x,60,Unnamed: 2
 N_z,2000,
 x_step,50.0,m
@@ -11,7 +11,7 @@ wavelet level,2,
 wavelet family,sym6,
 apodisation window,Hanning,
 apodisation size,0.3,% of N_z
-image size,0.1,% of N_z
+image size,0.2,% of N_z
 ground,PEC,
 epsr,15.0,
 sigma,0.5,S/m
