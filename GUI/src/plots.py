@@ -53,7 +53,7 @@ class Plots(object):
 
         # plot
         ground_type = self.groundTypeComboBox.currentText()
-        # if ground = None, no shift due to relief
+        # if ground = No Ground, no shift due to relief
         z_relief_init = 0
         # else, we shift the source and plot the ground
         if ground_type == 'PEC' or ground_type == 'Dielectric':
@@ -135,7 +135,7 @@ class Plots(object):
 
         # --- Image layer --- #
         ground_type = self.groundTypeComboBox.currentText()
-        if ground_type == 'None' or method == 'SSF':  # No ground or SSF -> no image layer
+        if ground_type == 'No Ground' or method == 'SSF':  # No ground or SSF -> no image layer
             n_im = 0
         else:  # n_im must be multiple of 2^L
             remain_im = n_im % 2 ** wv_l
@@ -232,7 +232,7 @@ class Plots(object):
             ax.plot(x_vect, z_relief, 'k')
             ax.fill_between(x_vect, z_relief, where=z_relief > 0, facecolor='black')
             # print('n_z', n_z, 'e_field_db size', data_db_final.size)
-        elif ground_type == 'None':
+        elif ground_type == 'No Ground':
             pass
         else:
             raise ValueError('Ground type not recognized (plots.py)')
@@ -240,7 +240,7 @@ class Plots(object):
         # --- Apodisation plot ("top" or "bottom + top") --- #
         if ground_type == 'PEC' or ground_type == 'Dielectric':
             ax.hlines(z_max-z_apo, 0, x_max, colors='k', linestyles='dotted')
-        elif ground_type == 'None':
+        elif ground_type == 'No Ground':
             ax.hlines([z_apo, z_max - z_apo], 0, x_max, colors='k', linestyles='dotted')
 
         # ax.vlines(35, 0, z_max, colors='k', linestyles='dotted')
@@ -256,7 +256,7 @@ class Plots(object):
         # --- Apodisation plot ("top" or "bottom + top") --- #
         if ground_type == 'PEC' or ground_type == 'Dielectric':
             ax.hlines(z_max-z_apo, v_min, v_max, colors='k', linestyles='dotted')
-        elif ground_type == 'None':
+        elif ground_type == 'No Ground':
             ax.hlines([z_apo, z_max - z_apo], v_min, v_max, colors='k', linestyles='dotted')
         # ax.set_ylabel('Altitude (m)', fontsize=12)
         ax.grid('on')
@@ -381,7 +381,7 @@ class Plots(object):
         # plot relief
         ax.clear()
         # ax = self.figure2.Axes
-        if ground_type != 'None':
+        if ground_type != 'No Ground':
             ax.plot(x_vect, z_relief, color='k', linewidth=2, label='relief')
             z_relief_1 = z_relief[int(n_x / 4)]
             z_relief_2 = z_relief[int(n_x / 2)]

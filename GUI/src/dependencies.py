@@ -120,7 +120,7 @@ class Dependencies(object):
             self.sizeImageSpinBox.setEnabled(True)
             self.epsrDoubleSpinBox.setEnabled(False)
             self.sigmaDoubleSpinBox.setEnabled(False)
-        elif groundtype == 'None':  # enable image only
+        elif groundtype == 'No Ground':  # enable image only
             self.sizeImageSpinBox.setEnabled(False)
             self.epsrDoubleSpinBox.setEnabled(False)
             self.sigmaDoubleSpinBox.setEnabled(False)

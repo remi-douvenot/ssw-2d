@@ -70,7 +70,7 @@ def plot_field(config, config_plot):
 
     # --- Image layer --- #
     ground_type = config.ground
-    if ground_type == 'None' or config.method == 'SSF':  # No ground, no image layer
+    if ground_type == 'No Ground' or config.method == 'SSF':  # No ground, no image layer
         n_im = 0
     else:  # ground, therefore an image layer different from 0
         image_layer = config.image_layer  # image_layer in % of the total size n_z
@@ -165,7 +165,7 @@ def plot_field(config, config_plot):
             ax.plot(x_vect, z_relief, 'k')
             ax.fill_between(x_vect, z_relief, where=z_relief > 0, facecolor='black')
             # print('n_z', n_z, 'e_field_db size', data_db_final.size)
-        elif ground_type == 'None':
+        elif ground_type == 'No Ground':
             pass
         else:
             raise ValueError('Ground type not recognized (plots.py)')
@@ -173,7 +173,7 @@ def plot_field(config, config_plot):
         # --- Apodisation plot ("top" or "bottom + top") --- #
         if ground_type == 'PEC' or ground_type == 'Dielectric':
             ax.hlines(z_max - z_apo, 0, x_max, colors='k', linestyles='dotted')
-        elif ground_type == 'None':
+        elif ground_type == 'No Ground':
             ax.hlines([z_apo, z_max - z_apo], 0, x_max, colors='k', linestyles='dotted')
 
         # save
@@ -200,7 +200,7 @@ def plot_field(config, config_plot):
         # --- Apodisation plot ("top" or "bottom + top") --- #
         if ground_type == 'PEC' or ground_type == 'Dielectric':
             ax.hlines(z_max - z_apo, v_min, v_max, colors='k', linestyles='dotted')
-        elif ground_type == 'None':
+        elif ground_type == 'No Ground':
             ax.hlines([z_apo, z_max - z_apo], v_min, v_max, colors='k', linestyles='dotted')
         # ax.set_ylabel('Altitude (m)', fontsize=12)
         ax.grid('on')
