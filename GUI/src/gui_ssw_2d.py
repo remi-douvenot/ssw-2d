@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'gui_ssw_2d.ui'
+# Form implementation generated from reading ui file 'GUI/src_ui/gui_ssw_2d.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.6
 #
@@ -193,6 +193,7 @@ class Ui_MainWindow(object):
         self.widthDoubleSpinBox = QtWidgets.QDoubleSpinBox(self.layoutWidget_2)
         self.widthDoubleSpinBox.setLocale(QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.UnitedStates))
         self.widthDoubleSpinBox.setKeyboardTracking(False)
+        self.widthDoubleSpinBox.setMinimum(1.0)
         self.widthDoubleSpinBox.setObjectName("widthDoubleSpinBox")
         self.formLayout_10.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.widthDoubleSpinBox)
         self.tabWidget.addTab(self.tab_4, "")
@@ -755,7 +756,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         self.polarisationComboBox.setCurrentIndex(0)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
         self.groundTypeComboBox.setCurrentIndex(0)
         self.sourceTypeComboBox.setCurrentIndex(0)
         self.atmTypeComboBox.setCurrentIndex(0)
