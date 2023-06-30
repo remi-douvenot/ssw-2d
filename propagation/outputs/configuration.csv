@@ -1,6 +1,6 @@
 Property,Value,Unit
 method,SSW,
-N_x,60,Unnamed: 2
+N_x,600,Unnamed: 2
 N_z,2000,
 x_step,50.0,m
 z_step,0.5,m
