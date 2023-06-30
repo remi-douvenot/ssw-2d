@@ -26,4 +26,4 @@ c2,-0.8,M-unit/m
 zt,200.0,m
 atm filename,toto.atm,
 dynamic,80,dB
-py_or_cy,Python,'Python' or 'Cython'
+py_or_cy,Cython,'Python' or 'Cython'

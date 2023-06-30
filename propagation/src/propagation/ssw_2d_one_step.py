@@ -51,7 +51,7 @@ import time
 from src.wavelets.wavelet_operations import thresholding, q_max_calculation
 from scipy.signal import convolve
 from src.propa_cython.wavelet_propag_one_step import wavelet_propag_one_step_cy
-from src.wavelets_cython.wavelets_operations import normalized_indices, calculate_dilation
+# from src.wavelets_cython.wavelets_operations import normalized_indices, calculate_dilation
 import timeit
 
 
@@ -162,9 +162,6 @@ def wavelet_propag_one_step(wv_x, library, config):
             # extract the wavelets that match this propagator
             wv_x_lvl_z = wv_x_lvl[ii_z::q_max]
             wv_x_dx = add_propagator_at_once(wv_x_lvl_z, propagator, ll, wv_x_dx)
-            # print('fill all orientation time for one coeff',t_end_or-t_start_or)
-            # t_end_orp = time.process_time()
-            # print('propagate all coeffs for one level one orientation time',t_end_orp-t_start_orp)
         # t_end_level = time.process_time()
         # print('propagate all coeffs for one level time',t_end_level-t_start_level)
 
