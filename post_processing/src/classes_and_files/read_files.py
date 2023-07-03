@@ -31,9 +31,9 @@ def read_config(file_configuration, file_source_config):
         if row[0] == 'method':
             Config.method = row[1]
         elif row[0] == 'N_z':
-            Config.N_z = np.int64(row[1])                                                                            #change
+            Config.N_z = np.int32(row[1])                                                                            #change
         elif row[0] == 'N_x':
-            Config.N_x = np.int64(row[1])                                                                            #change
+            Config.N_x = np.int32(row[1])                                                                            #change
         elif row[0] == 'x_step':
             Config.x_step = np.float64(row[1])                                                                      #change
         elif row[0] == 'z_step':
@@ -45,7 +45,7 @@ def read_config(file_configuration, file_source_config):
         elif row[0] == 'Max compression error':
             Config.max_compression_err = np.float64(row[1])  # Max compression error                                change
         elif row[0] == 'wavelet level':
-            Config.wv_L = np.int64(row[1])  # Max compression error                                                   change
+            Config.wv_L = np.int32(row[1])  # Max compression error                                                   change
         elif row[0] == 'wavelet family':
             Config.wv_family = row[1]  # Max compression error
         elif row[0] == 'apodisation window':
@@ -136,7 +136,7 @@ def read_source(config, file_source_config, file_e_init):
     for row in file_tmp:
         # geometry must match with the source generation
         if row[0] == 'N_z':
-            n_z = np.int64(row[1])                                                                                    #change
+            n_z = np.int32(row[1])                                                                                    #change
             if n_z != config.N_z:
                 raise ValueError(['n_z value does not match with source generation'])
         elif row[0] == 'z_step':
@@ -185,7 +185,7 @@ def read_relief(config, file_relief_config, file_relief):
     for row in file_tmp:
         # geometry must match with the relief generation
         if row[0] == 'N_x':
-            n_x = np.int64(row[1])                                                                             #change
+            n_x = np.int32(row[1])                                                                             #change
             if n_x != config.N_x:
                 raise ValueError(['n_x value does not match with relief'])
         # geometry must match with the source generation

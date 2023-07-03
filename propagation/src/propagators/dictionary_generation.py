@@ -146,7 +146,7 @@ def create_dssf_wavelet(n_u_top, n_u_bottom, family, ii_lvl, ll):
     wv_dec = pywt.wavedec(u_wavelet, family, 'per', ll)
 
     # 2/ median wavelet = 1
-    ii_one = np.int64(n_u_bottom / 2 ** (ll - ii_lvl + 1))                                                          #change
+    ii_one = np.int32(n_u_bottom / 2 ** (ll - ii_lvl + 1))                                                          #change
     wv_dec[ii_lvl][ii_one] = 1
     # tests to print the sizes of the wavelets
     '''print('In dictionary_generation.py: level =', np.str_(ii_lvl))                                               
@@ -181,7 +181,7 @@ def create_dssf_scaling_fct(n_u_top, n_u_bottom, family, ii_lvl, ll):
     wv_dec = pywt.wavedec(u_wavelet, family, 'per', ll - ii_lvl + 1)
 
     # 2/ median wavelet = 1
-    ii_one = np.int64(n_u_bottom / 2 ** (ll - ii_lvl + 1))                                                            #change
+    ii_one = np.int32(n_u_bottom / 2 ** (ll - ii_lvl + 1))                                                            #change
     wv_dec[0][ii_one] = 1
 
     # tests to print the sizes of the wavelets
@@ -255,7 +255,7 @@ def wavelet_size(family, ii_lvl):
 def wavelet_propa_size(n_bottom, x_step, z_step, ll):
 
     # number of points to add before propagation (at the top AND at the bottom)
-    n_add = np.int64(np.ceil(x_step * np.sin(np.pi / 4) / z_step))                                                   #change
+    n_add = np.int32(np.ceil(x_step * np.sin(np.pi / 4) / z_step))                                                   #change
     # make N_u_bottom a multiple of 2^L
     n_u_bottom = n_bottom + n_add
     remaining = n_u_bottom % (2 ** ll)
@@ -268,9 +268,9 @@ def wavelet_propa_size(n_bottom, x_step, z_step, ll):
     if remaining: # if not zero
         N_u_top += (2 ** ll) - remaining'''
     # you force this way to have an odd number of wavelet coefficients: make convolutions easier to deal with
-    # N_u_top = np.int64(N_u_bottom + 2 ** ll)                                                                   change
+    # N_u_top = np.int32(N_u_bottom + 2 ** ll)                                                                   change
     # N_u_bottom = N_u_top
-    n_u_top = np.int64(n_u_bottom)                                                                               #change
+    n_u_top = np.int32(n_u_bottom)                                                                               #change
     # take margins @todo Choose this margin wrt. desired accuracy
     n_u_bottom *= 1
     n_u_top *= 1

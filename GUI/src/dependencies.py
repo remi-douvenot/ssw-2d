@@ -505,7 +505,7 @@ class Dependencies(object):
         x_max = np.float64(serie.loc['x_step']) * np.float64(serie.loc['N_x']) * 1e-3  # in km                              change
         self.xMaxKmDoubleSpinBox.setProperty("value", str(x_max))
         # z_max
-        z_max = np.float64(serie.loc['z_step']) * np.int64(serie.loc['N_z'])                                                  #change
+        z_max = np.float64(serie.loc['z_step']) * np.int32(serie.loc['N_z'])                                                  #change
         self.zMaxMDoubleSpinBox.setProperty("value", z_max)
         # frequency
         self.frequencyMHzDoubleSpinBox.setProperty("value", serie.loc['frequency'])

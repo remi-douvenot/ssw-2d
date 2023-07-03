@@ -45,7 +45,7 @@ def read_config(file_configuration):
     file_tmp = csv.reader(f_config)
     for row in file_tmp:
         if row[0] == 'N_x':
-            Config.N_x = np.int64(row[1])                                                                         #change
+            Config.N_x = np.int32(row[1])                                                                         #change
         elif row[0] == 'x_step':
             Config.x_step = np.float64(row[1])                                                                   #change
         elif row[0] == 'z_max_relief':
@@ -53,7 +53,7 @@ def read_config(file_configuration):
         elif row[0] == 'type':
             Config.type = row[1]
         elif row[0] == 'iterations':
-            Config.iterations = np.int64(row[1])                                                                  #change
+            Config.iterations = np.int32(row[1])                                                                  #change
         elif row[0] == 'width':  # width of the triangle relief
             Config.width = np.float64(row[1])                                                                    #change
         elif row[0] == 'center':  # center of the triangle relief
