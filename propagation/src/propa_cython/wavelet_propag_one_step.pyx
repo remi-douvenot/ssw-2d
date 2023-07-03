@@ -37,21 +37,13 @@
 # >> gcc -shared -pthread -fPIC -fwrapv -O2 -Wall -fno-strict-aliasing -ffast-math -I/usr/include/python3.10 -o wavelet_propag_one_step.so wavelet_propag_one_step.c
 ##
 
-# import cProfile, pstats, io
 # import time
-# from pstats import SortKey
 from src.wavelets_cython.wavelets_operations import normalized_indices, calculate_dilation
 import numpy as np
 cimport numpy as np
 
 cdef extern from "complex.h":  # import complex number library
     pass
-
-
-# declare efficient arrays
-# from cython.view cimport array as cvarray
-
-# import line_profiler
 
 ##
 # @package: wavelet_propag_one_step_cy
@@ -81,9 +73,7 @@ def wavelet_propag_one_step_cy(const int n_z, const double complex[:] wv_x, doub
     # INPUTS (constants, defined in the function call)
     # OUTPUT: vector full of zeros, same structure as wv_x: wavelet decomposition after propagation
     wv_x_dx = np.zeros(n_z, dtype = np.complex128)
-    # wv_x_dx_i = cvarray(shape=(n_z,), itemsize=sizeof(double), format="Zd")
     cdef double complex[:] wv_x_dx_cy = wv_x_dx
-
 
     # -------- START --------- #
     # --- Define variables --- #
@@ -145,7 +135,7 @@ def wavelet_propag_one_step_cy(const int n_z, const double complex[:] wv_x, doub
 
             # Value of the wavelet coefficient
             wv_coef = wv_x[ii_wv]
-            # TOD optimize this?
+            # TODO optimize this?
             if wv_coef == 0:
                 continue
             # choose the right propagator for the coefficient at current level = modulo of q_wv
