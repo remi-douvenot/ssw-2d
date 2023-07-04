@@ -17,9 +17,13 @@
 import scipy.constants as cst
 import numpy as np
 cimport numpy as np
+from cython cimport boundscheck, wraparound, cdivision
 cdef extern from "complex.h":  # import complex number library
     double complex exp(double complex z)
     pass
+@boundscheck(False)
+@wraparound(False)
+@cdivision(True)
 
 def apply_refractive_index_cy(double complex[:] u_x, const double[:] n_index, const double freq, const double x_step):
 
@@ -28,7 +32,7 @@ def apply_refractive_index_cy(double complex[:] u_x, const double[:] n_index, co
     cdef double pi = np.pi
     cdef double complex phi
     cdef double k0 = 2*pi*freq / c0
-    cdef int n_u = len(u_x)
+    cdef int n_u = u_x.shape[0]
     # apply the phase screen of one step delta_x
     # half the refraction applied before and after propagation
 

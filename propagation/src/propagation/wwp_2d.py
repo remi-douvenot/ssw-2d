@@ -71,7 +71,7 @@ from src.wavelets.wavelet_operations import sparsify  # for sparsify
 # @profile
 
 
-def wwp_2d(u_0, config, n_refraction, ii_vect_relief):
+def wwp_2d(u_0, config, n_refraction):
 
     # Simulation parameters
     n_x = config.N_x

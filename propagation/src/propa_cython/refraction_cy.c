@@ -1609,9 +1609,6 @@ static PyObject *__Pyx__GetModuleGlobalName(PyObject *name, PY_UINT64_T *dict_ve
 static CYTHON_INLINE PyObject *__Pyx__GetModuleGlobalName(PyObject *name);
 #endif
 
-/* BufferIndexError.proto */
-static void __Pyx_RaiseBufferIndexError(int axis);
-
 /* MemviewSliceInit.proto */
 #define __Pyx_BUF_MAX_NDIMS %(BUF_MAX_NDIMS)d
 #define __Pyx_MEMVIEW_DIRECT   1
@@ -2144,6 +2141,11 @@ static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_ds___p
 /* ObjectToMemviewSlice.proto */
 static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_ds_double__const__(PyObject *, int writable_flag);
 
+/* GCCDiagnostics.proto */
+#if defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6))
+#define __Pyx_HAS_GCC_DIAGNOSTIC
+#endif
+
 /* ToPy.proto */
 #define __pyx_PyComplex_FromComplex(z)\
         PyComplex_FromDoubles((double)__Pyx_CREAL(z),\
@@ -2155,11 +2157,6 @@ static __pyx_t_double_complex __Pyx_PyComplex_As___pyx_t_double_complex(PyObject
 /* MemviewDtypeToObject.proto */
 static CYTHON_INLINE PyObject *__pyx_memview_get___pyx_t_double_complex(const char *itemp);
 static CYTHON_INLINE int __pyx_memview_set___pyx_t_double_complex(const char *itemp, PyObject *obj);
-
-/* GCCDiagnostics.proto */
-#if defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6))
-#define __Pyx_HAS_GCC_DIAGNOSTIC
-#endif
 
 /* Arithmetic.proto */
 #if CYTHON_CCOMPLEX
@@ -2634,8 +2631,8 @@ static PyObject *__pyx_codeobj__24;
 static PyObject *__pyx_codeobj__31;
 /* Late includes */
 
-/* "refraction_cy.pyx":24
- *     pass
+/* "refraction_cy.pyx":28
+ * @cdivision(True)
  * 
  * def apply_refractive_index_cy(double complex[:] u_x, const double[:] n_index, const double freq, const double x_step):             # <<<<<<<<<<<<<<
  * 
@@ -2683,23 +2680,23 @@ static PyObject *__pyx_pw_13refraction_cy_1apply_refractive_index_cy(PyObject *_
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_n_index)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("apply_refractive_index_cy", 1, 4, 4, 1); __PYX_ERR(0, 24, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("apply_refractive_index_cy", 1, 4, 4, 1); __PYX_ERR(0, 28, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_freq)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("apply_refractive_index_cy", 1, 4, 4, 2); __PYX_ERR(0, 24, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("apply_refractive_index_cy", 1, 4, 4, 2); __PYX_ERR(0, 28, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_x_step)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("apply_refractive_index_cy", 1, 4, 4, 3); __PYX_ERR(0, 24, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("apply_refractive_index_cy", 1, 4, 4, 3); __PYX_ERR(0, 28, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "apply_refractive_index_cy") < 0)) __PYX_ERR(0, 24, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "apply_refractive_index_cy") < 0)) __PYX_ERR(0, 28, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 4) {
       goto __pyx_L5_argtuple_error;
@@ -2709,14 +2706,14 @@ static PyObject *__pyx_pw_13refraction_cy_1apply_refractive_index_cy(PyObject *_
       values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
       values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
     }
-    __pyx_v_u_x = __Pyx_PyObject_to_MemoryviewSlice_ds___pyx_t_double_complex(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_u_x.memview)) __PYX_ERR(0, 24, __pyx_L3_error)
-    __pyx_v_n_index = __Pyx_PyObject_to_MemoryviewSlice_ds_double__const__(values[1], 0); if (unlikely(!__pyx_v_n_index.memview)) __PYX_ERR(0, 24, __pyx_L3_error)
-    __pyx_v_freq = __pyx_PyFloat_AsDouble(values[2]); if (unlikely((__pyx_v_freq == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 24, __pyx_L3_error)
-    __pyx_v_x_step = __pyx_PyFloat_AsDouble(values[3]); if (unlikely((__pyx_v_x_step == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 24, __pyx_L3_error)
+    __pyx_v_u_x = __Pyx_PyObject_to_MemoryviewSlice_ds___pyx_t_double_complex(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_u_x.memview)) __PYX_ERR(0, 28, __pyx_L3_error)
+    __pyx_v_n_index = __Pyx_PyObject_to_MemoryviewSlice_ds_double__const__(values[1], 0); if (unlikely(!__pyx_v_n_index.memview)) __PYX_ERR(0, 28, __pyx_L3_error)
+    __pyx_v_freq = __pyx_PyFloat_AsDouble(values[2]); if (unlikely((__pyx_v_freq == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 28, __pyx_L3_error)
+    __pyx_v_x_step = __pyx_PyFloat_AsDouble(values[3]); if (unlikely((__pyx_v_x_step == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 28, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("apply_refractive_index_cy", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 24, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("apply_refractive_index_cy", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 28, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("refraction_cy.apply_refractive_index_cy", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -2740,148 +2737,106 @@ static PyObject *__pyx_pf_13refraction_cy_apply_refractive_index_cy(CYTHON_UNUSE
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
   double __pyx_t_3;
-  size_t __pyx_t_4;
+  int __pyx_t_4;
   int __pyx_t_5;
-  int __pyx_t_6;
+  Py_ssize_t __pyx_t_6;
   Py_ssize_t __pyx_t_7;
   Py_ssize_t __pyx_t_8;
-  int __pyx_t_9;
-  Py_ssize_t __pyx_t_10;
-  __pyx_t_double_complex __pyx_t_11;
-  __pyx_t_double_complex __pyx_t_12;
+  Py_ssize_t __pyx_t_9;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("apply_refractive_index_cy", 0);
 
-  /* "refraction_cy.pyx":27
+  /* "refraction_cy.pyx":31
  * 
  *     cdef Py_ssize_t ii
  *     cdef double c0 = cst.c             # <<<<<<<<<<<<<<
  *     cdef double pi = np.pi
  *     cdef double complex phi
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_cst); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 27, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_cst); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 31, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_c); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 27, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_c); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 31, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_3 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_3 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 27, __pyx_L1_error)
+  __pyx_t_3 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_3 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 31, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_c0 = __pyx_t_3;
 
-  /* "refraction_cy.pyx":28
+  /* "refraction_cy.pyx":32
  *     cdef Py_ssize_t ii
  *     cdef double c0 = cst.c
  *     cdef double pi = np.pi             # <<<<<<<<<<<<<<
  *     cdef double complex phi
  *     cdef double k0 = 2*pi*freq / c0
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 28, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 32, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_pi); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 28, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_pi); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 32, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_3 = __pyx_PyFloat_AsDouble(__pyx_t_1); if (unlikely((__pyx_t_3 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 28, __pyx_L1_error)
+  __pyx_t_3 = __pyx_PyFloat_AsDouble(__pyx_t_1); if (unlikely((__pyx_t_3 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 32, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_pi = __pyx_t_3;
 
-  /* "refraction_cy.pyx":30
+  /* "refraction_cy.pyx":34
  *     cdef double pi = np.pi
  *     cdef double complex phi
  *     cdef double k0 = 2*pi*freq / c0             # <<<<<<<<<<<<<<
- *     cdef int n_u = len(u_x)
+ *     cdef int n_u = u_x.shape[0]
  *     # apply the phase screen of one step delta_x
  */
-  __pyx_t_3 = ((2.0 * __pyx_v_pi) * __pyx_v_freq);
-  if (unlikely(__pyx_v_c0 == 0)) {
-    PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-    __PYX_ERR(0, 30, __pyx_L1_error)
-  }
-  __pyx_v_k0 = (__pyx_t_3 / __pyx_v_c0);
+  __pyx_v_k0 = (((2.0 * __pyx_v_pi) * __pyx_v_freq) / __pyx_v_c0);
 
-  /* "refraction_cy.pyx":31
+  /* "refraction_cy.pyx":35
  *     cdef double complex phi
  *     cdef double k0 = 2*pi*freq / c0
- *     cdef int n_u = len(u_x)             # <<<<<<<<<<<<<<
+ *     cdef int n_u = u_x.shape[0]             # <<<<<<<<<<<<<<
  *     # apply the phase screen of one step delta_x
  *     # half the refraction applied before and after propagation
  */
-  __pyx_t_4 = __Pyx_MemoryView_Len(__pyx_v_u_x); 
-  __pyx_v_n_u = __pyx_t_4;
+  __pyx_v_n_u = (__pyx_v_u_x.shape[0]);
 
-  /* "refraction_cy.pyx":35
+  /* "refraction_cy.pyx":39
  *     # half the refraction applied before and after propagation
  * 
  *     for ii in range(0, n_u):             # <<<<<<<<<<<<<<
  *         u_x[ii] = u_x[ii] * exp(-1j * k0 * (n_index[ii]-1)/2 * x_step)
  * 
  */
-  __pyx_t_5 = __pyx_v_n_u;
-  __pyx_t_6 = __pyx_t_5;
-  for (__pyx_t_7 = 0; __pyx_t_7 < __pyx_t_6; __pyx_t_7+=1) {
-    __pyx_v_ii = __pyx_t_7;
+  __pyx_t_4 = __pyx_v_n_u;
+  __pyx_t_5 = __pyx_t_4;
+  for (__pyx_t_6 = 0; __pyx_t_6 < __pyx_t_5; __pyx_t_6+=1) {
+    __pyx_v_ii = __pyx_t_6;
 
-    /* "refraction_cy.pyx":36
+    /* "refraction_cy.pyx":40
  * 
  *     for ii in range(0, n_u):
  *         u_x[ii] = u_x[ii] * exp(-1j * k0 * (n_index[ii]-1)/2 * x_step)             # <<<<<<<<<<<<<<
  * 
- *     return u_x[:]
+ *     return u_x
  */
+    __pyx_t_7 = __pyx_v_ii;
     __pyx_t_8 = __pyx_v_ii;
-    __pyx_t_9 = -1;
-    if (__pyx_t_8 < 0) {
-      __pyx_t_8 += __pyx_v_u_x.shape[0];
-      if (unlikely(__pyx_t_8 < 0)) __pyx_t_9 = 0;
-    } else if (unlikely(__pyx_t_8 >= __pyx_v_u_x.shape[0])) __pyx_t_9 = 0;
-    if (unlikely(__pyx_t_9 != -1)) {
-      __Pyx_RaiseBufferIndexError(__pyx_t_9);
-      __PYX_ERR(0, 36, __pyx_L1_error)
-    }
-    __pyx_t_10 = __pyx_v_ii;
-    __pyx_t_9 = -1;
-    if (__pyx_t_10 < 0) {
-      __pyx_t_10 += __pyx_v_n_index.shape[0];
-      if (unlikely(__pyx_t_10 < 0)) __pyx_t_9 = 0;
-    } else if (unlikely(__pyx_t_10 >= __pyx_v_n_index.shape[0])) __pyx_t_9 = 0;
-    if (unlikely(__pyx_t_9 != -1)) {
-      __Pyx_RaiseBufferIndexError(__pyx_t_9);
-      __PYX_ERR(0, 36, __pyx_L1_error)
-    }
-    __pyx_t_11 = __Pyx_c_prod_double(__Pyx_c_prod_double(__Pyx_c_neg_double(__pyx_t_double_complex_from_parts(0, 1.0)), __pyx_t_double_complex_from_parts(__pyx_v_k0, 0)), __pyx_t_double_complex_from_parts(((*((double const  *) ( /* dim=0 */ (__pyx_v_n_index.data + __pyx_t_10 * __pyx_v_n_index.strides[0]) ))) - 1.0), 0));
-    __pyx_t_12 = __pyx_t_double_complex_from_parts(2, 0);
-    if (unlikely(__Pyx_c_is_zero_double(__pyx_t_12))) {
-      PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-      __PYX_ERR(0, 36, __pyx_L1_error)
-    }
-    __pyx_t_10 = __pyx_v_ii;
-    __pyx_t_9 = -1;
-    if (__pyx_t_10 < 0) {
-      __pyx_t_10 += __pyx_v_u_x.shape[0];
-      if (unlikely(__pyx_t_10 < 0)) __pyx_t_9 = 0;
-    } else if (unlikely(__pyx_t_10 >= __pyx_v_u_x.shape[0])) __pyx_t_9 = 0;
-    if (unlikely(__pyx_t_9 != -1)) {
-      __Pyx_RaiseBufferIndexError(__pyx_t_9);
-      __PYX_ERR(0, 36, __pyx_L1_error)
-    }
-    *((__pyx_t_double_complex *) ( /* dim=0 */ (__pyx_v_u_x.data + __pyx_t_10 * __pyx_v_u_x.strides[0]) )) = __Pyx_c_prod_double((*((__pyx_t_double_complex *) ( /* dim=0 */ (__pyx_v_u_x.data + __pyx_t_8 * __pyx_v_u_x.strides[0]) ))), exp(__Pyx_c_prod_double(__Pyx_c_quot_double(__pyx_t_11, __pyx_t_12), __pyx_t_double_complex_from_parts(__pyx_v_x_step, 0))));
+    __pyx_t_9 = __pyx_v_ii;
+    *((__pyx_t_double_complex *) ( /* dim=0 */ (__pyx_v_u_x.data + __pyx_t_9 * __pyx_v_u_x.strides[0]) )) = __Pyx_c_prod_double((*((__pyx_t_double_complex *) ( /* dim=0 */ (__pyx_v_u_x.data + __pyx_t_7 * __pyx_v_u_x.strides[0]) ))), exp(__Pyx_c_prod_double(__Pyx_c_quot_double(__Pyx_c_prod_double(__Pyx_c_prod_double(__Pyx_c_neg_double(__pyx_t_double_complex_from_parts(0, 1.0)), __pyx_t_double_complex_from_parts(__pyx_v_k0, 0)), __pyx_t_double_complex_from_parts(((*((double const  *) ( /* dim=0 */ (__pyx_v_n_index.data + __pyx_t_8 * __pyx_v_n_index.strides[0]) ))) - 1.0), 0)), __pyx_t_double_complex_from_parts(2, 0)), __pyx_t_double_complex_from_parts(__pyx_v_x_step, 0))));
   }
 
-  /* "refraction_cy.pyx":38
+  /* "refraction_cy.pyx":42
  *         u_x[ii] = u_x[ii] * exp(-1j * k0 * (n_index[ii]-1)/2 * x_step)
  * 
- *     return u_x[:]             # <<<<<<<<<<<<<<
+ *     return u_x             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_u_x, 1, (PyObject *(*)(char *)) __pyx_memview_get___pyx_t_double_complex, (int (*)(char *, PyObject *)) __pyx_memview_set___pyx_t_double_complex, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 38, __pyx_L1_error)
+  __pyx_t_1 = __pyx_memoryview_fromslice(__pyx_v_u_x, 1, (PyObject *(*)(char *)) __pyx_memview_get___pyx_t_double_complex, (int (*)(char *, PyObject *)) __pyx_memview_set___pyx_t_double_complex, 0);; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 42, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "refraction_cy.pyx":24
- *     pass
+  /* "refraction_cy.pyx":28
+ * @cdivision(True)
  * 
  * def apply_refractive_index_cy(double complex[:] u_x, const double[:] n_index, const double freq, const double x_step):             # <<<<<<<<<<<<<<
  * 
@@ -17843,7 +17798,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 35, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 39, __pyx_L1_error)
   __pyx_builtin_ImportError = __Pyx_GetBuiltinName(__pyx_n_s_ImportError); if (!__pyx_builtin_ImportError) __PYX_ERR(1, 944, __pyx_L1_error)
   __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(2, 134, __pyx_L1_error)
   __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) __PYX_ERR(2, 149, __pyx_L1_error)
@@ -18078,17 +18033,17 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__21);
   __Pyx_GIVEREF(__pyx_tuple__21);
 
-  /* "refraction_cy.pyx":24
- *     pass
+  /* "refraction_cy.pyx":28
+ * @cdivision(True)
  * 
  * def apply_refractive_index_cy(double complex[:] u_x, const double[:] n_index, const double freq, const double x_step):             # <<<<<<<<<<<<<<
  * 
  *     cdef Py_ssize_t ii
  */
-  __pyx_tuple__23 = PyTuple_Pack(10, __pyx_n_s_u_x, __pyx_n_s_n_index, __pyx_n_s_freq, __pyx_n_s_x_step, __pyx_n_s_ii, __pyx_n_s_c0, __pyx_n_s_pi, __pyx_n_s_phi, __pyx_n_s_k0, __pyx_n_s_n_u); if (unlikely(!__pyx_tuple__23)) __PYX_ERR(0, 24, __pyx_L1_error)
+  __pyx_tuple__23 = PyTuple_Pack(10, __pyx_n_s_u_x, __pyx_n_s_n_index, __pyx_n_s_freq, __pyx_n_s_x_step, __pyx_n_s_ii, __pyx_n_s_c0, __pyx_n_s_pi, __pyx_n_s_phi, __pyx_n_s_k0, __pyx_n_s_n_u); if (unlikely(!__pyx_tuple__23)) __PYX_ERR(0, 28, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__23);
   __Pyx_GIVEREF(__pyx_tuple__23);
-  __pyx_codeobj__24 = (PyObject*)__Pyx_PyCode_New(4, 0, 10, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__23, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_refraction_cy_pyx, __pyx_n_s_apply_refractive_index_cy, 24, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__24)) __PYX_ERR(0, 24, __pyx_L1_error)
+  __pyx_codeobj__24 = (PyObject*)__Pyx_PyCode_New(4, 0, 10, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__23, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_refraction_cy_pyx, __pyx_n_s_apply_refractive_index_cy, 28, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__24)) __PYX_ERR(0, 28, __pyx_L1_error)
 
   /* "View.MemoryView":287
  *         return self.name
@@ -18577,23 +18532,23 @@ if (!__Pyx_RefNanny) {
  * import scipy.constants as cst
  * import numpy as np             # <<<<<<<<<<<<<<
  * cimport numpy as np
- * cdef extern from "complex.h":  # import complex number library
+ * from cython cimport boundscheck, wraparound, cdivision
  */
   __pyx_t_2 = __Pyx_Import(__pyx_n_s_numpy, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 18, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_2) < 0) __PYX_ERR(0, 18, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "refraction_cy.pyx":24
- *     pass
+  /* "refraction_cy.pyx":28
+ * @cdivision(True)
  * 
  * def apply_refractive_index_cy(double complex[:] u_x, const double[:] n_index, const double freq, const double x_step):             # <<<<<<<<<<<<<<
  * 
  *     cdef Py_ssize_t ii
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_13refraction_cy_1apply_refractive_index_cy, NULL, __pyx_n_s_refraction_cy); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 24, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_13refraction_cy_1apply_refractive_index_cy, NULL, __pyx_n_s_refraction_cy); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 28, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_apply_refractive_index_cy, __pyx_t_2) < 0) __PYX_ERR(0, 24, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_apply_refractive_index_cy, __pyx_t_2) < 0) __PYX_ERR(0, 28, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "refraction_cy.pyx":1
@@ -19031,12 +18986,6 @@ static CYTHON_INLINE PyObject *__Pyx__GetModuleGlobalName(PyObject *name)
     PyErr_Clear();
 #endif
     return __Pyx_GetBuiltinName(name);
-}
-
-/* BufferIndexError */
-static void __Pyx_RaiseBufferIndexError(int axis) {
-  PyErr_Format(PyExc_IndexError,
-     "Out of bounds on buffer access (axis %d)", axis);
 }
 
 /* MemviewSliceInit */
