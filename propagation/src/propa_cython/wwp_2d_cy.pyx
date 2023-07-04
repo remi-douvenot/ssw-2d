@@ -7,13 +7,13 @@
 #
 # You should have received a copy of the GNU General Public License along with Foobar. If not, see
 # <https://www.gnu.org/licenses/>.
-
+import matplotlib.pyplot as plt
 ##
-# @file wwp_2d.py
+# @file wwp_2d_cy.py
 #
 # @author R. Douvenot
-# @package WWP_2D
-# @date 08/11/22
+# @package WWP_2D_CY
+# @date 04/07/23
 # @version In progress
 # @brief The core of the 2D WWP in Cython: propagates a 1D initial field with WWP in 2D.
 # @details This function is the core of the 2D WWP code. It propagates a 1D initial reduced field with WWP in 2D,
@@ -35,9 +35,7 @@
 # @warning Put lengths = multiple of 2^l
 ##
 
-# u_x_dx = SSW(u_0,simulation_parameters)
-#
-#######################################################################################################################
+
 
 import numpy as np
 import time
@@ -45,8 +43,7 @@ import scipy.constants as cst
 from src.propagators.dictionary_generation import dictionary_generation
 from src.propagation.apodisation import apply_apodisation, apodisation_window
 import pywt
-from src.wavelets.wavelet_operations import thresholding
-from src.propagation.refraction import apply_refractive_index_wavelet
+# from src.wavelets.wavelet_operations import thresholding
 from src.wavelets.wavelet_operations import sparsify  # for sparsify
 from src.wavelets_cython.wavelets_operations import calculate_dilation
 from src.propa_cython.wavelet_propag_one_step import wavelet_propag_one_step_cy
@@ -60,6 +57,8 @@ def wwp_2d_cy(const double complex[:] u_0, config, const double[:] n_refraction)
     cdef int wv_ll = config.wv_L
     cdef double v_p = config.V_p
     cdef double complex[:] dictionary_cy
+    cdef double k0 = 2*np.pi*config.freq/cst.c
+    cdef double complex[:] phase_screen_wavelets = np.zeros(n_z, dtype=np.complex128)
     # indices in loops
     cdef Py_ssize_t ii_lvl
     # vectors
@@ -68,7 +67,7 @@ def wwp_2d_cy(const double complex[:] u_0, config, const double[:] n_refraction)
     cdef double complex[:] wv_x_dx
     cdef int[:] shape_wv_x = np.zeros(wv_ll+1, dtype=np.int32)
 
-
+    print("frequence = ", config.freq)
     # Compute the dictionary of unit operators. Those operators correspond to the wavelet-to-wavelet propagation of
     # each basis wavelet.
     print('--- Creation of the dictionary of the free-space operators ---')
@@ -135,9 +134,11 @@ def wwp_2d_cy(const double complex[:] u_0, config, const double[:] n_refraction)
 
     # --- Put apodisation window in the wavelet domain --- #
     apo_window_wavelets = reshape_apodisation_on_wavelets(apo_window_z, config.ground, shape_wv_x)
-    print(np.array(apo_window_wavelets))
-
-
+    # --- Put refraction window in the wavelet domain --- #
+    n_refraction_wavelets = reshape_refraction_on_wavelets(n_refraction, shape_wv_x)
+    # --- From refraction to phase screen --- #
+    for ii_z in range(0,n_z):
+        phase_screen_wavelets[ii_z] = np.exp(-1j * k0 * (n_refraction_wavelets[ii_z]-1) * config.x_step)
 
     # saved total wavelet parameters (sparse coo matrix)
     wv_total = [[]] * n_x
@@ -148,7 +149,8 @@ def wwp_2d_cy(const double complex[:] u_0, config, const double[:] n_refraction)
         if ii_x % 100 == 0:
             print('Iteration', ii_x, '/', n_x, '. Distance =', ii_x*config.x_step)
         # --- apodisation applied on wavelets --- #
-        # wv_x = apply_apodisation_wavelet_array(wv_x, apo_window_z, wv_ll, config.ground)
+        for ii_z in range(0,n_z):
+            wv_x[ii_z] = wv_x[ii_z] * apo_window_wavelets[ii_z]
         # --------------------------------------- #
 
         # ------------------------------ #
@@ -164,7 +166,7 @@ def wwp_2d_cy(const double complex[:] u_0, config, const double[:] n_refraction)
             wv_x_dx = wavelet_propag_one_step_cy(n_z, wv_x, dictionary_cy, wv_ll, n_propa_lib, v_p)
 
             # Threshold V_s on the signal
-            # wv_x_dx = pywt.threshold(wv_x_dx, v_p, mode='hard')
+            wv_x_dx = pywt.threshold(wv_x_dx, v_p, mode='hard')
 
         else:
             raise ValueError(['Ground condition should be dielectric, PEC, or None'])
@@ -172,9 +174,10 @@ def wwp_2d_cy(const double complex[:] u_0, config, const double[:] n_refraction)
         # --- Free-space propagation --- #
         # ------------------------------ #
 
-        # --- refractivity applied on wavelets --- #
-        # wv_x_dx = apply_refractive_index_wavelet(wv_x_dx, n_refraction, config)
-        # ------------------------------__-------- #
+        # --- refraction applied on wavelets --- #
+        for ii_z in range(0, n_z):
+            wv_x_dx[ii_z] = wv_x_dx[ii_z] * phase_screen_wavelets[ii_z]
+        # --------------------------------------- #
 
         # update w_x
         for ii_z in range(0, n_z):
@@ -189,41 +192,87 @@ def wwp_2d_cy(const double complex[:] u_0, config, const double[:] n_refraction)
     return u_last, wv_total
 
 ##
-# @package apply_apodisation_wavelet
-# @author Remi Douvenot
-# @brief apply the vertical apodisation window on the wavelet coefficients directly
-# @warning apodisation type Hanning is the only one coded
-# @warning does nothing yet
+# @brief function that projects the apodization function on the wavelet basis
+# @author R. Douvenot
+# @package reshape_apodisation_on_wavelets
+# @date 04/07/23
+# @version OK
+#
+# @details Function that projects the apodization function on the wavelet basis when represented as a single array.
+#
+# def reshape_apodisation_on_wavelets(apo_window_z, ground, shape_wv_x):
+#
+# @params[in] apo_window_z : apodisation window wrt z
+# @params[in] ground : string of characters. No ground, PEC or Dielectric
+# @params[in] shape_wv_x : shape of the wavelet vector (position of the wavelet levels in the vector)
+# @params[out] apo_wavelets : apodisation window projected on the wavelet levels in the same shape on the wavelets vector
 ##
 
-
-cdef apply_apodisation_wavelet_array(double complex[:] w_x, const double[:] apo_window_z, const int wv_ll, ground):
-
-    # number of q_max per level
-    q_max = calculate_dilation(wv_ll)
-    # decimation coefficient per level
-    decimation = (2**wv_ll/q_max).astype(int)
-
-    # size of the apodisation windows
-    n_apo_z = apo_window_z.size
-
-    # apodisation on each level
-    for ii_l in np.arange(0, wv_ll + 1):
-        w_x_ll = w_x[ii_l]
-        delta = decimation[ii_l]
-        n_apo_z_delta = int(n_apo_z/delta)
-
-        # apply apodisation along z (top of the vector)
-        w_x_ll[-n_apo_z_delta:] *= apo_window_z[::delta]
-        # apply apodisation along z (bottom)
-        if ground == 'None':
-            w_x_ll[:n_apo_z_delta] *= apo_window_z[::-delta]
-        w_x[ii_l] = w_x_ll
-
-    return w_x
-
-
 cdef reshape_apodisation_on_wavelets(const double[:] apo_window_z, ground, const int[:] shape_wv_x):
+
+    # wavelet level
+    cdef int wv_ll = shape_wv_x.shape[0]-1
+    cdef int shape_prev = 0
+    # number of q_max per level
+    cdef int[:] q_max = calculate_dilation(wv_ll)
+    cdef int[:] decimation = np.zeros(wv_ll+2, dtype=np.int32)
+    cdef int delta
+    # decimation coefficient per level
+    for ii in range(0, wv_ll+1):
+        decimation[ii] = int(2 ** wv_ll / q_max[ii])
+    # total size of the vector
+    cdef int n_z = shape_wv_x[-1]
+    # size of the apodisation function
+    cdef int n_apo_z = apo_window_z.size
+    cdef double[:] apo_wavelets = np.ones(n_z, dtype=np.float64)
+    # size of the current level
+    cdef int n_lvl
+    # indices in loops
+    cdef Py_ssize_t ii_lvl, ii_wz
+
+    # on each level, apodize the edge(s)
+    for ii_lvl in range(0,wv_ll+1):
+        n_lvl = shape_wv_x[ii_lvl]
+        # decimation level at the current level
+        delta = decimation[ii_lvl]
+        # number of coefficients on which applying apodisation
+        n_apo_z_delta = int(n_apo_z / delta)
+        #
+        for ii_wz in range(0, n_apo_z_delta):
+            # on the last points of the level
+            ii_apo = n_lvl-n_apo_z_delta + ii_wz
+            # apply apodization with proper subsampling
+            apo_wavelets[ii_apo] = apo_window_z[delta*ii_wz]
+
+        if ground == 'None':
+            for ii_wz in range(0, n_apo_z_delta):
+                # on the first points of the level
+                ii_apo = n_apo_z_delta - ii_wz + shape_prev - 1
+                # apply apodization with proper subsampling
+                apo_wavelets[ii_apo] = apo_window_z[delta * ii_wz]
+            # update the previous vector length
+            shape_prev = shape_wv_x[ii_lvl]
+
+    return apo_wavelets
+
+
+##
+# @brief function that projects the refraction vertical profile on the wavelet basis
+# @author R. Douvenot
+# @package reshape_refraction_on_wavelets
+# @date 04/07/23
+# @version OK
+#
+# @details Function that projects the apodization function on the wavelet basis when represented as a single array.
+#
+# def reshape_refraction_on_wavelets(apo_window_z, ground, shape_wv_x):
+#
+# @params[in] n_profile : refraction profile wrt z
+# @params[in] shape_wv_x : shape of the wavelet vector (position of the wavelet levels in the vector)
+# @params[out] apo_wavelets : apodisation window projected on the wavelet levels in the same shape on the wavelets vector
+##
+
+cdef reshape_refraction_on_wavelets(const double[:] n_profile, const int[:] shape_wv_x):
 
     # wavelet level
     cdef int wv_ll = shape_wv_x.shape[0]-1
@@ -237,25 +286,25 @@ cdef reshape_apodisation_on_wavelets(const double[:] apo_window_z, ground, const
     # total size of the vector
     cdef int n_z = shape_wv_x[-1]
     # size of the apodisation function
-    cdef int n_apo_z = apo_window_z.size
-    cdef double[:] apo_wavelets = np.ones(n_z, dtype=np.float64)
+    cdef int n_ref_z = n_profile.size
+    cdef double[:] ref_wavelets = np.ones(n_z, dtype=np.float64)
+    # size of the current level
+    cdef int n_lvl
     # indices in loops
     cdef Py_ssize_t ii_lvl, ii_wz
-    print('n_z = ', n_z)
 
     # on each level, apodize the edge(s)
-    for ii_lvl in range(0,wv_ll):
-        print(shape_wv_x[ii_lvl])
+    for ii_lvl in range(0,wv_ll+1):
+        n_lvl = shape_wv_x[ii_lvl]
         # decimation level at the current level
         delta = decimation[ii_lvl]
         # number of coefficients on which applying apodisation
-        n_apo_z_delta = int(n_apo_z / delta)
+        n_ref_z_delta = int(n_ref_z / delta)
         #
-        for ii_wz in range(0,n_apo_z_delta):
-            apo_wavelets[-ii_wz:] = apo_wavelets[-ii_wz] * apo_window_z[delta*ii_wz]
+        for ii_wz in range(0, n_ref_z_delta):
+            # on the last points of the level
+            ii_apo = n_lvl-n_ref_z_delta + ii_wz
+            # apply apodization with proper subsampling
+            ref_wavelets[ii_apo] = n_profile[delta*ii_wz]
 
-        # if ground == 'None':
-        #     apo_wavelets[-n_apo_z_delta:] *= apo_window_z[::delta]
-
-    return apo_wavelets
-
+    return ref_wavelets

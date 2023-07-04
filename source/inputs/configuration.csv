@@ -6,5 +6,5 @@ frequency,1000.0,MHz
 P_Tx,1,W
 G_Tx,0,dBi
 type,CSP,
-z_s,200.0,m
+z_s,300.0,m
 W0,2.99792,m

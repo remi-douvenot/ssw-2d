@@ -112,6 +112,7 @@ def wavelet_propag_one_step_cy(const int n_z, const double complex[:] wv_x, doub
     # --- LOOP ON THE WAVELET LEVELS OF THE INPUT VECTOR WV_X --- #
     # ----------------------------------------------------------- #
 
+    # TODO: calculate all the stop and start coefficients just once in a dedicated loop.
     # --- LOOP ON THE LEVELS OF W_X --- #
     for ii_lvl_wv in range(0, wv_ll + 1):
         # number of propagators at this level
@@ -128,9 +129,6 @@ def wavelet_propag_one_step_cy(const int n_z, const double complex[:] wv_x, doub
         n_propa = int((n_stop_propa_lvl - n_start_propa_lvl) / q_wv)
         # size of the scaling function
         n_scal_pr = int(n_propa / (2 ** wv_ll))
-
-        print('n_start_propa_lvl = ', n_start_propa_lvl)
-        print('n_stop_propa_lvl = ', n_stop_propa_lvl)
 
         # --- LOOP ON THE WAVELET PARAMETERS OF EACH LEVEL --- #
         # for ii_wv in range(n_start_wv_lvl, n_stop_wv_lvl):

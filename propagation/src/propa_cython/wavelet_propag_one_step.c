@@ -2343,7 +2343,6 @@ int __pyx_module_is_main_wavelet_propag_one_step = 0;
 
 /* Implementation of 'wavelet_propag_one_step' */
 static PyObject *__pyx_builtin_range;
-static PyObject *__pyx_builtin_print;
 static PyObject *__pyx_builtin_ImportError;
 static PyObject *__pyx_builtin_ValueError;
 static PyObject *__pyx_builtin_MemoryError;
@@ -2383,7 +2382,6 @@ static const char __pyx_k_flags[] = "flags";
 static const char __pyx_k_ii_wv[] = "ii_wv";
 static const char __pyx_k_n_ker[] = "n_ker";
 static const char __pyx_k_numpy[] = "numpy";
-static const char __pyx_k_print[] = "print";
 static const char __pyx_k_q_pro[] = "q_pro";
 static const char __pyx_k_range[] = "range";
 static const char __pyx_k_shape[] = "shape";
@@ -2406,8 +2404,8 @@ static const char __pyx_k_struct[] = "struct";
 static const char __pyx_k_unpack[] = "unpack";
 static const char __pyx_k_update[] = "update";
 static const char __pyx_k_fortran[] = "fortran";
-static const char __pyx_k_ind_max[] = "ind_max = ";
-static const char __pyx_k_ind_min[] = "ind_min = ";
+static const char __pyx_k_ind_max[] = "ind_max";
+static const char __pyx_k_ind_min[] = "ind_min";
 static const char __pyx_k_memview[] = "memview";
 static const char __pyx_k_n_propa[] = "n_propa";
 static const char __pyx_k_nonzero[] = "nonzero";
@@ -2423,8 +2421,6 @@ static const char __pyx_k_TypeError[] = "TypeError";
 static const char __pyx_k_enumerate[] = "enumerate";
 static const char __pyx_k_ii_lvl_pr[] = "ii_lvl_pr";
 static const char __pyx_k_ii_lvl_wv[] = "ii_lvl_wv";
-static const char __pyx_k_ind_max_2[] = "ind_max";
-static const char __pyx_k_ind_min_2[] = "ind_min";
 static const char __pyx_k_n_scal_pr[] = "n_scal_pr";
 static const char __pyx_k_pyx_state[] = "__pyx_state";
 static const char __pyx_k_reduce_ex[] = "__reduce_ex__";
@@ -2454,18 +2450,15 @@ static const char __pyx_k_dtype_is_object[] = "dtype_is_object";
 static const char __pyx_k_n_stop_wvdx_lvl[] = "n_stop_wvdx_lvl";
 static const char __pyx_k_pyx_PickleError[] = "__pyx_PickleError";
 static const char __pyx_k_setstate_cython[] = "__setstate_cython__";
-static const char __pyx_k_n_start_wvdx_lvl[] = "n_start_wvdx_lvl = ";
-static const char __pyx_k_n_stop_propa_lvl[] = "n_stop_propa_lvl = ";
-static const char __pyx_k_n_start_propa_lvl[] = "n_start_propa_lvl = ";
+static const char __pyx_k_n_start_wvdx_lvl[] = "n_start_wvdx_lvl";
+static const char __pyx_k_n_stop_propa_lvl[] = "n_stop_propa_lvl";
+static const char __pyx_k_n_start_propa_lvl[] = "n_start_propa_lvl";
 static const char __pyx_k_pyx_unpickle_Enum[] = "__pyx_unpickle_Enum";
 static const char __pyx_k_calculate_dilation[] = "calculate_dilation";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
-static const char __pyx_k_n_start_wvdx_lvl_2[] = "n_start_wvdx_lvl";
-static const char __pyx_k_n_stop_propa_lvl_2[] = "n_stop_propa_lvl";
 static const char __pyx_k_n_stop_propa_lvl_q[] = "n_stop_propa_lvl_q";
 static const char __pyx_k_normalized_indices[] = "normalized_indices";
 static const char __pyx_k_strided_and_direct[] = "<strided and direct>";
-static const char __pyx_k_n_start_propa_lvl_2[] = "n_start_propa_lvl";
 static const char __pyx_k_n_start_propa_lvl_q[] = "n_start_propa_lvl_q";
 static const char __pyx_k_strided_and_indirect[] = "<strided and indirect>";
 static const char __pyx_k_contiguous_and_direct[] = "<contiguous and direct>";
@@ -2556,10 +2549,8 @@ static PyObject *__pyx_n_s_ii_q;
 static PyObject *__pyx_n_s_ii_wv;
 static PyObject *__pyx_n_s_ii_wv_dilate;
 static PyObject *__pyx_n_s_import;
-static PyObject *__pyx_kp_u_ind_max;
-static PyObject *__pyx_n_s_ind_max_2;
-static PyObject *__pyx_kp_u_ind_min;
-static PyObject *__pyx_n_s_ind_min_2;
+static PyObject *__pyx_n_s_ind_max;
+static PyObject *__pyx_n_s_ind_min;
 static PyObject *__pyx_n_s_itemsize;
 static PyObject *__pyx_kp_s_itemsize_0_for_cython_array;
 static PyObject *__pyx_n_s_list_q;
@@ -2573,15 +2564,12 @@ static PyObject *__pyx_n_s_n_propa;
 static PyObject *__pyx_n_s_n_scal;
 static PyObject *__pyx_n_s_n_scal_pr;
 static PyObject *__pyx_n_s_n_start_propa;
-static PyObject *__pyx_kp_u_n_start_propa_lvl;
-static PyObject *__pyx_n_s_n_start_propa_lvl_2;
+static PyObject *__pyx_n_s_n_start_propa_lvl;
 static PyObject *__pyx_n_s_n_start_propa_lvl_q;
 static PyObject *__pyx_n_s_n_start_propa_lvl_q_lvl;
 static PyObject *__pyx_n_s_n_start_wv_lvl;
-static PyObject *__pyx_kp_u_n_start_wvdx_lvl;
-static PyObject *__pyx_n_s_n_start_wvdx_lvl_2;
-static PyObject *__pyx_kp_u_n_stop_propa_lvl;
-static PyObject *__pyx_n_s_n_stop_propa_lvl_2;
+static PyObject *__pyx_n_s_n_start_wvdx_lvl;
+static PyObject *__pyx_n_s_n_stop_propa_lvl;
 static PyObject *__pyx_n_s_n_stop_propa_lvl_q;
 static PyObject *__pyx_n_s_n_stop_propa_lvl_q_lvl;
 static PyObject *__pyx_n_s_n_stop_wv_lvl;
@@ -2602,7 +2590,6 @@ static PyObject *__pyx_kp_u_numpy_core_umath_failed_to_impor;
 static PyObject *__pyx_n_s_obj;
 static PyObject *__pyx_n_s_pack;
 static PyObject *__pyx_n_s_pickle;
-static PyObject *__pyx_n_s_print;
 static PyObject *__pyx_n_s_propa_coef;
 static PyObject *__pyx_n_s_pyx_PickleError;
 static PyObject *__pyx_n_s_pyx_checksum;
@@ -3039,8 +3026,8 @@ static PyObject *__pyx_pf_23wavelet_propag_one_step_wavelet_propag_one_step_cy(C
   __pyx_t_8.memview = NULL;
   __pyx_t_8.data = NULL;
 
-  /* "wavelet_propag_one_step.pyx":116
- * 
+  /* "wavelet_propag_one_step.pyx":117
+ *     # TODO: calculate all the stop and start coefficients just once in a dedicated loop.
  *     # --- LOOP ON THE LEVELS OF W_X --- #
  *     for ii_lvl_wv in range(0, wv_ll + 1):             # <<<<<<<<<<<<<<
  *         # number of propagators at this level
@@ -3051,7 +3038,7 @@ static PyObject *__pyx_pf_23wavelet_propag_one_step_wavelet_propag_one_step_cy(C
   for (__pyx_t_10 = 0; __pyx_t_10 < __pyx_t_9; __pyx_t_10+=1) {
     __pyx_v_ii_lvl_wv = __pyx_t_10;
 
-    /* "wavelet_propag_one_step.pyx":118
+    /* "wavelet_propag_one_step.pyx":119
  *     for ii_lvl_wv in range(0, wv_ll + 1):
  *         # number of propagators at this level
  *         q_wv = list_q[ii_lvl_wv]             # <<<<<<<<<<<<<<
@@ -3066,11 +3053,11 @@ static PyObject *__pyx_pf_23wavelet_propag_one_step_wavelet_propag_one_step_cy(C
     } else if (unlikely(__pyx_t_11 >= __pyx_v_list_q.shape[0])) __pyx_t_12 = 0;
     if (unlikely(__pyx_t_12 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_12);
-      __PYX_ERR(0, 118, __pyx_L1_error)
+      __PYX_ERR(0, 119, __pyx_L1_error)
     }
     __pyx_v_q_wv = (*((int *) ( /* dim=0 */ (__pyx_v_list_q.data + __pyx_t_11 * __pyx_v_list_q.strides[0]) )));
 
-    /* "wavelet_propag_one_step.pyx":120
+    /* "wavelet_propag_one_step.pyx":121
  *         q_wv = list_q[ii_lvl_wv]
  *         # index where level ii_lvl_wv begins
  *         n_start_wv_lvl = norm_indices[ii_lvl_wv] * n_scal             # <<<<<<<<<<<<<<
@@ -3085,11 +3072,11 @@ static PyObject *__pyx_pf_23wavelet_propag_one_step_wavelet_propag_one_step_cy(C
     } else if (unlikely(__pyx_t_11 >= __pyx_v_norm_indices.shape[0])) __pyx_t_12 = 0;
     if (unlikely(__pyx_t_12 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_12);
-      __PYX_ERR(0, 120, __pyx_L1_error)
+      __PYX_ERR(0, 121, __pyx_L1_error)
     }
     __pyx_v_n_start_wv_lvl = ((*((int *) ( /* dim=0 */ (__pyx_v_norm_indices.data + __pyx_t_11 * __pyx_v_norm_indices.strides[0]) ))) * __pyx_v_n_scal);
 
-    /* "wavelet_propag_one_step.pyx":122
+    /* "wavelet_propag_one_step.pyx":123
  *         n_start_wv_lvl = norm_indices[ii_lvl_wv] * n_scal
  *         # index where level ii_lvl_wv ends
  *         n_stop_wv_lvl = norm_indices[ii_lvl_wv + 1] * n_scal             # <<<<<<<<<<<<<<
@@ -3104,11 +3091,11 @@ static PyObject *__pyx_pf_23wavelet_propag_one_step_wavelet_propag_one_step_cy(C
     } else if (unlikely(__pyx_t_11 >= __pyx_v_norm_indices.shape[0])) __pyx_t_12 = 0;
     if (unlikely(__pyx_t_12 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_12);
-      __PYX_ERR(0, 122, __pyx_L1_error)
+      __PYX_ERR(0, 123, __pyx_L1_error)
     }
     __pyx_v_n_stop_wv_lvl = ((*((int *) ( /* dim=0 */ (__pyx_v_norm_indices.data + __pyx_t_11 * __pyx_v_norm_indices.strides[0]) ))) * __pyx_v_n_scal);
 
-    /* "wavelet_propag_one_step.pyx":124
+    /* "wavelet_propag_one_step.pyx":125
  *         n_stop_wv_lvl = norm_indices[ii_lvl_wv + 1] * n_scal
  *         # index where propagators begin
  *         n_start_propa_lvl = n_start_propa[ii_lvl_wv]             # <<<<<<<<<<<<<<
@@ -3123,11 +3110,11 @@ static PyObject *__pyx_pf_23wavelet_propag_one_step_wavelet_propag_one_step_cy(C
     } else if (unlikely(__pyx_t_11 >= __pyx_v_n_start_propa.shape[0])) __pyx_t_12 = 0;
     if (unlikely(__pyx_t_12 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_12);
-      __PYX_ERR(0, 124, __pyx_L1_error)
+      __PYX_ERR(0, 125, __pyx_L1_error)
     }
     __pyx_v_n_start_propa_lvl = (*((int const  *) ( /* dim=0 */ (__pyx_v_n_start_propa.data + __pyx_t_11 * __pyx_v_n_start_propa.strides[0]) )));
 
-    /* "wavelet_propag_one_step.pyx":126
+    /* "wavelet_propag_one_step.pyx":127
  *         n_start_propa_lvl = n_start_propa[ii_lvl_wv]
  *         # index where propagators end
  *         n_stop_propa_lvl = n_start_propa[ii_lvl_wv + 1]             # <<<<<<<<<<<<<<
@@ -3142,11 +3129,11 @@ static PyObject *__pyx_pf_23wavelet_propag_one_step_wavelet_propag_one_step_cy(C
     } else if (unlikely(__pyx_t_11 >= __pyx_v_n_start_propa.shape[0])) __pyx_t_12 = 0;
     if (unlikely(__pyx_t_12 != -1)) {
       __Pyx_RaiseBufferIndexError(__pyx_t_12);
-      __PYX_ERR(0, 126, __pyx_L1_error)
+      __PYX_ERR(0, 127, __pyx_L1_error)
     }
     __pyx_v_n_stop_propa_lvl = (*((int const  *) ( /* dim=0 */ (__pyx_v_n_start_propa.data + __pyx_t_11 * __pyx_v_n_start_propa.strides[0]) )));
 
-    /* "wavelet_propag_one_step.pyx":128
+    /* "wavelet_propag_one_step.pyx":129
  *         n_stop_propa_lvl = n_start_propa[ii_lvl_wv + 1]
  *         # size of ONE propagator
  *         n_propa = int((n_stop_propa_lvl - n_start_propa_lvl) / q_wv)             # <<<<<<<<<<<<<<
@@ -3156,69 +3143,25 @@ static PyObject *__pyx_pf_23wavelet_propag_one_step_wavelet_propag_one_step_cy(C
     __pyx_t_13 = (__pyx_v_n_stop_propa_lvl - __pyx_v_n_start_propa_lvl);
     if (unlikely(__pyx_v_q_wv == 0)) {
       PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-      __PYX_ERR(0, 128, __pyx_L1_error)
+      __PYX_ERR(0, 129, __pyx_L1_error)
     }
     __pyx_v_n_propa = ((Py_ssize_t)(((double)__pyx_t_13) / ((double)__pyx_v_q_wv)));
 
-    /* "wavelet_propag_one_step.pyx":130
+    /* "wavelet_propag_one_step.pyx":131
  *         n_propa = int((n_stop_propa_lvl - n_start_propa_lvl) / q_wv)
  *         # size of the scaling function
  *         n_scal_pr = int(n_propa / (2 ** wv_ll))             # <<<<<<<<<<<<<<
  * 
- *         print('n_start_propa_lvl = ', n_start_propa_lvl)
+ *         # --- LOOP ON THE WAVELET PARAMETERS OF EACH LEVEL --- #
  */
     __pyx_t_14 = __Pyx_pow_long(2, ((long)__pyx_v_wv_ll));
     if (unlikely(__pyx_t_14 == 0)) {
       PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-      __PYX_ERR(0, 130, __pyx_L1_error)
+      __PYX_ERR(0, 131, __pyx_L1_error)
     }
     __pyx_v_n_scal_pr = ((Py_ssize_t)(((double)__pyx_v_n_propa) / ((double)__pyx_t_14)));
 
-    /* "wavelet_propag_one_step.pyx":132
- *         n_scal_pr = int(n_propa / (2 ** wv_ll))
- * 
- *         print('n_start_propa_lvl = ', n_start_propa_lvl)             # <<<<<<<<<<<<<<
- *         print('n_stop_propa_lvl = ', n_stop_propa_lvl)
- * 
- */
-    __pyx_t_5 = PyInt_FromSsize_t(__pyx_v_n_start_propa_lvl); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 132, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 132, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_INCREF(__pyx_kp_u_n_start_propa_lvl);
-    __Pyx_GIVEREF(__pyx_kp_u_n_start_propa_lvl);
-    PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_kp_u_n_start_propa_lvl);
-    __Pyx_GIVEREF(__pyx_t_5);
-    PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_t_5);
-    __pyx_t_5 = 0;
-    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_t_1, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 132, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-
-    /* "wavelet_propag_one_step.pyx":133
- * 
- *         print('n_start_propa_lvl = ', n_start_propa_lvl)
- *         print('n_stop_propa_lvl = ', n_stop_propa_lvl)             # <<<<<<<<<<<<<<
- * 
- *         # --- LOOP ON THE WAVELET PARAMETERS OF EACH LEVEL --- #
- */
-    __pyx_t_5 = PyInt_FromSsize_t(__pyx_v_n_stop_propa_lvl); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 133, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 133, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_INCREF(__pyx_kp_u_n_stop_propa_lvl);
-    __Pyx_GIVEREF(__pyx_kp_u_n_stop_propa_lvl);
-    PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_kp_u_n_stop_propa_lvl);
-    __Pyx_GIVEREF(__pyx_t_5);
-    PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_t_5);
-    __pyx_t_5 = 0;
-    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_t_1, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 133, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-
-    /* "wavelet_propag_one_step.pyx":137
+    /* "wavelet_propag_one_step.pyx":135
  *         # --- LOOP ON THE WAVELET PARAMETERS OF EACH LEVEL --- #
  *         # for ii_wv in range(n_start_wv_lvl, n_stop_wv_lvl):
  *         for ii_wv in range(n_start_wv_lvl, n_stop_wv_lvl):             # <<<<<<<<<<<<<<
@@ -3230,7 +3173,7 @@ static PyObject *__pyx_pf_23wavelet_propag_one_step_wavelet_propag_one_step_cy(C
     for (__pyx_t_16 = __pyx_v_n_start_wv_lvl; __pyx_t_16 < __pyx_t_15; __pyx_t_16+=1) {
       __pyx_v_ii_wv = __pyx_t_16;
 
-      /* "wavelet_propag_one_step.pyx":140
+      /* "wavelet_propag_one_step.pyx":138
  * 
  *             # Value of the wavelet coefficient
  *             wv_coef = wv_x[ii_wv]             # <<<<<<<<<<<<<<
@@ -3245,11 +3188,11 @@ static PyObject *__pyx_pf_23wavelet_propag_one_step_wavelet_propag_one_step_cy(C
       } else if (unlikely(__pyx_t_11 >= __pyx_v_wv_x.shape[0])) __pyx_t_12 = 0;
       if (unlikely(__pyx_t_12 != -1)) {
         __Pyx_RaiseBufferIndexError(__pyx_t_12);
-        __PYX_ERR(0, 140, __pyx_L1_error)
+        __PYX_ERR(0, 138, __pyx_L1_error)
       }
       __pyx_v_wv_coef = (*((__pyx_t_double_complex const  *) ( /* dim=0 */ (__pyx_v_wv_x.data + __pyx_t_11 * __pyx_v_wv_x.strides[0]) )));
 
-      /* "wavelet_propag_one_step.pyx":142
+      /* "wavelet_propag_one_step.pyx":140
  *             wv_coef = wv_x[ii_wv]
  *             # TODO optimize this?
  *             if wv_coef == 0:             # <<<<<<<<<<<<<<
@@ -3259,7 +3202,7 @@ static PyObject *__pyx_pf_23wavelet_propag_one_step_wavelet_propag_one_step_cy(C
       __pyx_t_17 = ((__Pyx_c_eq_double(__pyx_v_wv_coef, __pyx_t_double_complex_from_parts(0, 0))) != 0);
       if (__pyx_t_17) {
 
-        /* "wavelet_propag_one_step.pyx":143
+        /* "wavelet_propag_one_step.pyx":141
  *             # TODO optimize this?
  *             if wv_coef == 0:
  *                 continue             # <<<<<<<<<<<<<<
@@ -3268,7 +3211,7 @@ static PyObject *__pyx_pf_23wavelet_propag_one_step_wavelet_propag_one_step_cy(C
  */
         goto __pyx_L5_continue;
 
-        /* "wavelet_propag_one_step.pyx":142
+        /* "wavelet_propag_one_step.pyx":140
  *             wv_coef = wv_x[ii_wv]
  *             # TODO optimize this?
  *             if wv_coef == 0:             # <<<<<<<<<<<<<<
@@ -3277,7 +3220,7 @@ static PyObject *__pyx_pf_23wavelet_propag_one_step_wavelet_propag_one_step_cy(C
  */
       }
 
-      /* "wavelet_propag_one_step.pyx":145
+      /* "wavelet_propag_one_step.pyx":143
  *                 continue
  *             # choose the right propagator for the coefficient at current level = modulo of q_wv
  *             ii_q = ii_wv % q_wv             # <<<<<<<<<<<<<<
@@ -3286,11 +3229,11 @@ static PyObject *__pyx_pf_23wavelet_propag_one_step_wavelet_propag_one_step_cy(C
  */
       if (unlikely(__pyx_v_q_wv == 0)) {
         PyErr_SetString(PyExc_ZeroDivisionError, "integer division or modulo by zero");
-        __PYX_ERR(0, 145, __pyx_L1_error)
+        __PYX_ERR(0, 143, __pyx_L1_error)
       }
       __pyx_v_ii_q = __Pyx_mod_Py_ssize_t(__pyx_v_ii_wv, __pyx_v_q_wv);
 
-      /* "wavelet_propag_one_step.pyx":148
+      /* "wavelet_propag_one_step.pyx":146
  * 
  *             # index where THE propagator begins
  *             n_start_propa_lvl_q = n_start_propa_lvl + ii_q * n_propa             # <<<<<<<<<<<<<<
@@ -3299,7 +3242,7 @@ static PyObject *__pyx_pf_23wavelet_propag_one_step_wavelet_propag_one_step_cy(C
  */
       __pyx_v_n_start_propa_lvl_q = (__pyx_v_n_start_propa_lvl + (__pyx_v_ii_q * __pyx_v_n_propa));
 
-      /* "wavelet_propag_one_step.pyx":150
+      /* "wavelet_propag_one_step.pyx":148
  *             n_start_propa_lvl_q = n_start_propa_lvl + ii_q * n_propa
  *             # index where THE propagator ends
  *             n_stop_propa_lvl_q = n_start_propa_lvl_q + n_propa             # <<<<<<<<<<<<<<
@@ -3308,7 +3251,7 @@ static PyObject *__pyx_pf_23wavelet_propag_one_step_wavelet_propag_one_step_cy(C
  */
       __pyx_v_n_stop_propa_lvl_q = (__pyx_v_n_start_propa_lvl_q + __pyx_v_n_propa);
 
-      /* "wavelet_propag_one_step.pyx":154
+      /* "wavelet_propag_one_step.pyx":152
  *             # --- LOOP ON THE LEVELS OF THE PROPAGATOR / OUTPUT VECTOR --- #
  *             # write at level ii_lvl_pr in w_x_dx
  *             for ii_lvl_pr in range(0, wv_ll + 1):             # <<<<<<<<<<<<<<
@@ -3320,7 +3263,7 @@ static PyObject *__pyx_pf_23wavelet_propag_one_step_wavelet_propag_one_step_cy(C
       for (__pyx_t_19 = 0; __pyx_t_19 < __pyx_t_18; __pyx_t_19+=1) {
         __pyx_v_ii_lvl_pr = __pyx_t_19;
 
-        /* "wavelet_propag_one_step.pyx":156
+        /* "wavelet_propag_one_step.pyx":154
  *             for ii_lvl_pr in range(0, wv_ll + 1):
  *                 # current dilation level of the propagator
  *                 q_pro = list_q[ii_lvl_pr]             # <<<<<<<<<<<<<<
@@ -3335,11 +3278,11 @@ static PyObject *__pyx_pf_23wavelet_propag_one_step_wavelet_propag_one_step_cy(C
         } else if (unlikely(__pyx_t_11 >= __pyx_v_list_q.shape[0])) __pyx_t_12 = 0;
         if (unlikely(__pyx_t_12 != -1)) {
           __Pyx_RaiseBufferIndexError(__pyx_t_12);
-          __PYX_ERR(0, 156, __pyx_L1_error)
+          __PYX_ERR(0, 154, __pyx_L1_error)
         }
         __pyx_v_q_pro = (*((int *) ( /* dim=0 */ (__pyx_v_list_q.data + __pyx_t_11 * __pyx_v_list_q.strides[0]) )));
 
-        /* "wavelet_propag_one_step.pyx":158
+        /* "wavelet_propag_one_step.pyx":156
  *                 q_pro = list_q[ii_lvl_pr]
  *                 # index where the propagator level begins
  *                 n_start_propa_lvl_q_lvl = n_start_propa_lvl_q + norm_indices[ii_lvl_pr] * n_scal_pr             # <<<<<<<<<<<<<<
@@ -3354,11 +3297,11 @@ static PyObject *__pyx_pf_23wavelet_propag_one_step_wavelet_propag_one_step_cy(C
         } else if (unlikely(__pyx_t_11 >= __pyx_v_norm_indices.shape[0])) __pyx_t_12 = 0;
         if (unlikely(__pyx_t_12 != -1)) {
           __Pyx_RaiseBufferIndexError(__pyx_t_12);
-          __PYX_ERR(0, 158, __pyx_L1_error)
+          __PYX_ERR(0, 156, __pyx_L1_error)
         }
         __pyx_v_n_start_propa_lvl_q_lvl = (__pyx_v_n_start_propa_lvl_q + ((*((int *) ( /* dim=0 */ (__pyx_v_norm_indices.data + __pyx_t_11 * __pyx_v_norm_indices.strides[0]) ))) * __pyx_v_n_scal_pr));
 
-        /* "wavelet_propag_one_step.pyx":160
+        /* "wavelet_propag_one_step.pyx":158
  *                 n_start_propa_lvl_q_lvl = n_start_propa_lvl_q + norm_indices[ii_lvl_pr] * n_scal_pr
  *                 # index where the propagator level ends
  *                 n_stop_propa_lvl_q_lvl = n_start_propa_lvl_q + norm_indices[ii_lvl_pr + 1] * n_scal_pr             # <<<<<<<<<<<<<<
@@ -3373,11 +3316,11 @@ static PyObject *__pyx_pf_23wavelet_propag_one_step_wavelet_propag_one_step_cy(C
         } else if (unlikely(__pyx_t_11 >= __pyx_v_norm_indices.shape[0])) __pyx_t_12 = 0;
         if (unlikely(__pyx_t_12 != -1)) {
           __Pyx_RaiseBufferIndexError(__pyx_t_12);
-          __PYX_ERR(0, 160, __pyx_L1_error)
+          __PYX_ERR(0, 158, __pyx_L1_error)
         }
         __pyx_v_n_stop_propa_lvl_q_lvl = (__pyx_v_n_start_propa_lvl_q + ((*((int *) ( /* dim=0 */ (__pyx_v_norm_indices.data + __pyx_t_11 * __pyx_v_norm_indices.strides[0]) ))) * __pyx_v_n_scal_pr));
 
-        /* "wavelet_propag_one_step.pyx":163
+        /* "wavelet_propag_one_step.pyx":161
  * 
  *                 # index where level ii_lvl_wv_dx begins
  *                 n_start_wvdx_lvl = norm_indices[ii_lvl_pr] * n_scal             # <<<<<<<<<<<<<<
@@ -3392,11 +3335,11 @@ static PyObject *__pyx_pf_23wavelet_propag_one_step_wavelet_propag_one_step_cy(C
         } else if (unlikely(__pyx_t_11 >= __pyx_v_norm_indices.shape[0])) __pyx_t_12 = 0;
         if (unlikely(__pyx_t_12 != -1)) {
           __Pyx_RaiseBufferIndexError(__pyx_t_12);
-          __PYX_ERR(0, 163, __pyx_L1_error)
+          __PYX_ERR(0, 161, __pyx_L1_error)
         }
         __pyx_v_n_start_wvdx_lvl = ((*((int *) ( /* dim=0 */ (__pyx_v_norm_indices.data + __pyx_t_11 * __pyx_v_norm_indices.strides[0]) ))) * __pyx_v_n_scal);
 
-        /* "wavelet_propag_one_step.pyx":165
+        /* "wavelet_propag_one_step.pyx":163
  *                 n_start_wvdx_lvl = norm_indices[ii_lvl_pr] * n_scal
  *                 # index where level ii_lvl_wv_dx ends
  *                 n_stop_wvdx_lvl = norm_indices[ii_lvl_pr + 1] * n_scal             # <<<<<<<<<<<<<<
@@ -3411,11 +3354,11 @@ static PyObject *__pyx_pf_23wavelet_propag_one_step_wavelet_propag_one_step_cy(C
         } else if (unlikely(__pyx_t_11 >= __pyx_v_norm_indices.shape[0])) __pyx_t_12 = 0;
         if (unlikely(__pyx_t_12 != -1)) {
           __Pyx_RaiseBufferIndexError(__pyx_t_12);
-          __PYX_ERR(0, 165, __pyx_L1_error)
+          __PYX_ERR(0, 163, __pyx_L1_error)
         }
         __pyx_v_n_stop_wvdx_lvl = ((*((int *) ( /* dim=0 */ (__pyx_v_norm_indices.data + __pyx_t_11 * __pyx_v_norm_indices.strides[0]) ))) * __pyx_v_n_scal);
 
-        /* "wavelet_propag_one_step.pyx":168
+        /* "wavelet_propag_one_step.pyx":166
  * 
  *                 # number of coefficients at this level
  *                 n_coef = n_stop_wvdx_lvl - n_start_wvdx_lvl             # <<<<<<<<<<<<<<
@@ -3424,7 +3367,7 @@ static PyObject *__pyx_pf_23wavelet_propag_one_step_wavelet_propag_one_step_cy(C
  */
         __pyx_v_n_coef = (__pyx_v_n_stop_wvdx_lvl - __pyx_v_n_start_wvdx_lvl);
 
-        /* "wavelet_propag_one_step.pyx":172
+        /* "wavelet_propag_one_step.pyx":170
  *                 # current ii_z takes into account dilations due to the change of levels.
  *                 # must be calculated with respect to n_start_wv_lvl
  *                 ii_wv_dilate = int(((ii_wv - ii_q) - n_start_wv_lvl) / q_wv * q_pro + n_start_wvdx_lvl)             # <<<<<<<<<<<<<<
@@ -3434,11 +3377,11 @@ static PyObject *__pyx_pf_23wavelet_propag_one_step_wavelet_propag_one_step_cy(C
         __pyx_t_20 = ((__pyx_v_ii_wv - __pyx_v_ii_q) - __pyx_v_n_start_wv_lvl);
         if (unlikely(__pyx_v_q_wv == 0)) {
           PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-          __PYX_ERR(0, 172, __pyx_L1_error)
+          __PYX_ERR(0, 170, __pyx_L1_error)
         }
         __pyx_v_ii_wv_dilate = ((Py_ssize_t)(((((double)__pyx_t_20) / ((double)__pyx_v_q_wv)) * __pyx_v_q_pro) + __pyx_v_n_start_wvdx_lvl));
 
-        /* "wavelet_propag_one_step.pyx":175
+        /* "wavelet_propag_one_step.pyx":173
  * 
  *                 # size (and center) of the propagator
  *                 n_ker = n_stop_propa_lvl_q_lvl - n_start_propa_lvl_q_lvl             # <<<<<<<<<<<<<<
@@ -3447,7 +3390,7 @@ static PyObject *__pyx_pf_23wavelet_propag_one_step_wavelet_propag_one_step_cy(C
  */
         __pyx_v_n_ker = (__pyx_v_n_stop_propa_lvl_q_lvl - __pyx_v_n_start_propa_lvl_q_lvl);
 
-        /* "wavelet_propag_one_step.pyx":176
+        /* "wavelet_propag_one_step.pyx":174
  *                 # size (and center) of the propagator
  *                 n_ker = n_stop_propa_lvl_q_lvl - n_start_propa_lvl_q_lvl
  *                 n_ker2 = n_ker // 2             # <<<<<<<<<<<<<<
@@ -3456,7 +3399,7 @@ static PyObject *__pyx_pf_23wavelet_propag_one_step_wavelet_propag_one_step_cy(C
  */
         __pyx_v_n_ker2 = __Pyx_div_Py_ssize_t(__pyx_v_n_ker, 2);
 
-        /* "wavelet_propag_one_step.pyx":181
+        /* "wavelet_propag_one_step.pyx":179
  *                 # the coef is included in the propagator
  *                 # scan wv_x_dx in [ii_wv_dilate - n_ker/2, ii_wv_dilate + n_ker/2]. Remove points out of [n_start_wvdx_lvl, n_stop_wvdx_lvl-1]
  *                 ind_min = max(ii_wv_dilate - n_ker2, n_start_wvdx_lvl)             # <<<<<<<<<<<<<<
@@ -3472,12 +3415,12 @@ static PyObject *__pyx_pf_23wavelet_propag_one_step_wavelet_propag_one_step_cy(C
         }
         __pyx_v_ind_min = __pyx_t_22;
 
-        /* "wavelet_propag_one_step.pyx":182
+        /* "wavelet_propag_one_step.pyx":180
  *                 # scan wv_x_dx in [ii_wv_dilate - n_ker/2, ii_wv_dilate + n_ker/2]. Remove points out of [n_start_wvdx_lvl, n_stop_wvdx_lvl-1]
  *                 ind_min = max(ii_wv_dilate - n_ker2, n_start_wvdx_lvl)
  *                 ind_max = min(ii_wv_dilate - n_ker2 + n_ker, n_stop_wvdx_lvl)             # <<<<<<<<<<<<<<
  * 
- *                 # tests...
+ *                 # todo: search for nonzero coefficients
  */
         __pyx_t_22 = __pyx_v_n_stop_wvdx_lvl;
         __pyx_t_20 = ((__pyx_v_ii_wv_dilate - __pyx_v_n_ker2) + __pyx_v_n_ker);
@@ -3488,95 +3431,29 @@ static PyObject *__pyx_pf_23wavelet_propag_one_step_wavelet_propag_one_step_cy(C
         }
         __pyx_v_ind_max = __pyx_t_21;
 
-        /* "wavelet_propag_one_step.pyx":185
- * 
- *                 # tests...
- *                 print("n_start_wvdx_lvl = ", n_start_wvdx_lvl)             # <<<<<<<<<<<<<<
- *                 print("ind_min = ", ind_min)
- *                 print("ind_max = ", ind_max)
- */
-        __pyx_t_5 = PyInt_FromSsize_t(__pyx_v_n_start_wvdx_lvl); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 185, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_5);
-        __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 185, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_1);
-        __Pyx_INCREF(__pyx_kp_u_n_start_wvdx_lvl);
-        __Pyx_GIVEREF(__pyx_kp_u_n_start_wvdx_lvl);
-        PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_kp_u_n_start_wvdx_lvl);
-        __Pyx_GIVEREF(__pyx_t_5);
-        PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_t_5);
-        __pyx_t_5 = 0;
-        __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_t_1, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 185, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_5);
-        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-
-        /* "wavelet_propag_one_step.pyx":186
- *                 # tests...
- *                 print("n_start_wvdx_lvl = ", n_start_wvdx_lvl)
- *                 print("ind_min = ", ind_min)             # <<<<<<<<<<<<<<
- *                 print("ind_max = ", ind_max)
- * 
- */
-        __pyx_t_5 = PyInt_FromSsize_t(__pyx_v_ind_min); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 186, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_5);
-        __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 186, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_1);
-        __Pyx_INCREF(__pyx_kp_u_ind_min);
-        __Pyx_GIVEREF(__pyx_kp_u_ind_min);
-        PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_kp_u_ind_min);
-        __Pyx_GIVEREF(__pyx_t_5);
-        PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_t_5);
-        __pyx_t_5 = 0;
-        __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_t_1, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 186, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_5);
-        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-
-        /* "wavelet_propag_one_step.pyx":187
- *                 print("n_start_wvdx_lvl = ", n_start_wvdx_lvl)
- *                 print("ind_min = ", ind_min)
- *                 print("ind_max = ", ind_max)             # <<<<<<<<<<<<<<
- * 
- *                 # todo: search for nonzero coefficients
- */
-        __pyx_t_5 = PyInt_FromSsize_t(__pyx_v_ind_max); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 187, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_5);
-        __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 187, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_1);
-        __Pyx_INCREF(__pyx_kp_u_ind_max);
-        __Pyx_GIVEREF(__pyx_kp_u_ind_max);
-        PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_kp_u_ind_max);
-        __Pyx_GIVEREF(__pyx_t_5);
-        PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_t_5);
-        __pyx_t_5 = 0;
-        __pyx_t_5 = __Pyx_PyObject_Call(__pyx_builtin_print, __pyx_t_1, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 187, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_5);
-        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-
-        /* "wavelet_propag_one_step.pyx":190
+        /* "wavelet_propag_one_step.pyx":183
  * 
  *                 # todo: search for nonzero coefficients
  *                 for ii_ind in range(ind_min, ind_max):             # <<<<<<<<<<<<<<
+ *                     # n_start_propa_lvl_q_lvl corresponds to the beginning of the propagator kernel
  *                     ii_ker = ii_ind - (ii_wv_dilate - n_ker2) + n_start_propa_lvl_q_lvl
- *                     propa_coef = wv_coef * dictionary[ii_ker]
  */
         __pyx_t_21 = __pyx_v_ind_max;
         __pyx_t_22 = __pyx_t_21;
         for (__pyx_t_20 = __pyx_v_ind_min; __pyx_t_20 < __pyx_t_22; __pyx_t_20+=1) {
           __pyx_v_ii_ind = __pyx_t_20;
 
-          /* "wavelet_propag_one_step.pyx":191
- *                 # todo: search for nonzero coefficients
+          /* "wavelet_propag_one_step.pyx":185
  *                 for ii_ind in range(ind_min, ind_max):
+ *                     # n_start_propa_lvl_q_lvl corresponds to the beginning of the propagator kernel
  *                     ii_ker = ii_ind - (ii_wv_dilate - n_ker2) + n_start_propa_lvl_q_lvl             # <<<<<<<<<<<<<<
  *                     propa_coef = wv_coef * dictionary[ii_ker]
  *                     # if abs(propa_coef) < v_p:
  */
           __pyx_v_ii_ker = ((__pyx_v_ii_ind - (__pyx_v_ii_wv_dilate - __pyx_v_n_ker2)) + __pyx_v_n_start_propa_lvl_q_lvl);
 
-          /* "wavelet_propag_one_step.pyx":192
- *                 for ii_ind in range(ind_min, ind_max):
+          /* "wavelet_propag_one_step.pyx":186
+ *                     # n_start_propa_lvl_q_lvl corresponds to the beginning of the propagator kernel
  *                     ii_ker = ii_ind - (ii_wv_dilate - n_ker2) + n_start_propa_lvl_q_lvl
  *                     propa_coef = wv_coef * dictionary[ii_ker]             # <<<<<<<<<<<<<<
  *                     # if abs(propa_coef) < v_p:
@@ -3590,11 +3467,11 @@ static PyObject *__pyx_pf_23wavelet_propag_one_step_wavelet_propag_one_step_cy(C
           } else if (unlikely(__pyx_t_11 >= __pyx_v_dictionary.shape[0])) __pyx_t_12 = 0;
           if (unlikely(__pyx_t_12 != -1)) {
             __Pyx_RaiseBufferIndexError(__pyx_t_12);
-            __PYX_ERR(0, 192, __pyx_L1_error)
+            __PYX_ERR(0, 186, __pyx_L1_error)
           }
           __pyx_v_propa_coef = __Pyx_c_prod_double(__pyx_v_wv_coef, (*((__pyx_t_double_complex *) ( /* dim=0 */ (__pyx_v_dictionary.data + __pyx_t_11 * __pyx_v_dictionary.strides[0]) ))));
 
-          /* "wavelet_propag_one_step.pyx":195
+          /* "wavelet_propag_one_step.pyx":189
  *                     # if abs(propa_coef) < v_p:
  *                     #     continue
  *                     wv_x_dx_cy[ii_ind] += propa_coef             # <<<<<<<<<<<<<<
@@ -3609,7 +3486,7 @@ static PyObject *__pyx_pf_23wavelet_propag_one_step_wavelet_propag_one_step_cy(C
           } else if (unlikely(__pyx_t_11 >= __pyx_v_wv_x_dx_cy.shape[0])) __pyx_t_12 = 0;
           if (unlikely(__pyx_t_12 != -1)) {
             __Pyx_RaiseBufferIndexError(__pyx_t_12);
-            __PYX_ERR(0, 195, __pyx_L1_error)
+            __PYX_ERR(0, 189, __pyx_L1_error)
           }
           *((__pyx_t_double_complex *) ( /* dim=0 */ (__pyx_v_wv_x_dx_cy.data + __pyx_t_11 * __pyx_v_wv_x_dx_cy.strides[0]) )) += __pyx_v_propa_coef;
         }
@@ -3618,13 +3495,13 @@ static PyObject *__pyx_pf_23wavelet_propag_one_step_wavelet_propag_one_step_cy(C
     }
   }
 
-  /* "wavelet_propag_one_step.pyx":197
+  /* "wavelet_propag_one_step.pyx":191
  *                     wv_x_dx_cy[ii_ind] += propa_coef
  * 
  *     return wv_x_dx_cy             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_5 = __pyx_memoryview_fromslice(__pyx_v_wv_x_dx_cy, 1, (PyObject *(*)(char *)) __pyx_memview_get___pyx_t_double_complex, (int (*)(char *, PyObject *)) __pyx_memview_set___pyx_t_double_complex, 0);; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 197, __pyx_L1_error)
+  __pyx_t_5 = __pyx_memoryview_fromslice(__pyx_v_wv_x_dx_cy, 1, (PyObject *(*)(char *)) __pyx_memview_get___pyx_t_double_complex, (int (*)(char *, PyObject *)) __pyx_memview_set___pyx_t_double_complex, 0);; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 191, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __pyx_r = __pyx_t_5;
   __pyx_t_5 = 0;
@@ -18551,10 +18428,8 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_ii_wv, __pyx_k_ii_wv, sizeof(__pyx_k_ii_wv), 0, 0, 1, 1},
   {&__pyx_n_s_ii_wv_dilate, __pyx_k_ii_wv_dilate, sizeof(__pyx_k_ii_wv_dilate), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
-  {&__pyx_kp_u_ind_max, __pyx_k_ind_max, sizeof(__pyx_k_ind_max), 0, 1, 0, 0},
-  {&__pyx_n_s_ind_max_2, __pyx_k_ind_max_2, sizeof(__pyx_k_ind_max_2), 0, 0, 1, 1},
-  {&__pyx_kp_u_ind_min, __pyx_k_ind_min, sizeof(__pyx_k_ind_min), 0, 1, 0, 0},
-  {&__pyx_n_s_ind_min_2, __pyx_k_ind_min_2, sizeof(__pyx_k_ind_min_2), 0, 0, 1, 1},
+  {&__pyx_n_s_ind_max, __pyx_k_ind_max, sizeof(__pyx_k_ind_max), 0, 0, 1, 1},
+  {&__pyx_n_s_ind_min, __pyx_k_ind_min, sizeof(__pyx_k_ind_min), 0, 0, 1, 1},
   {&__pyx_n_s_itemsize, __pyx_k_itemsize, sizeof(__pyx_k_itemsize), 0, 0, 1, 1},
   {&__pyx_kp_s_itemsize_0_for_cython_array, __pyx_k_itemsize_0_for_cython_array, sizeof(__pyx_k_itemsize_0_for_cython_array), 0, 0, 1, 0},
   {&__pyx_n_s_list_q, __pyx_k_list_q, sizeof(__pyx_k_list_q), 0, 0, 1, 1},
@@ -18568,15 +18443,12 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_n_scal, __pyx_k_n_scal, sizeof(__pyx_k_n_scal), 0, 0, 1, 1},
   {&__pyx_n_s_n_scal_pr, __pyx_k_n_scal_pr, sizeof(__pyx_k_n_scal_pr), 0, 0, 1, 1},
   {&__pyx_n_s_n_start_propa, __pyx_k_n_start_propa, sizeof(__pyx_k_n_start_propa), 0, 0, 1, 1},
-  {&__pyx_kp_u_n_start_propa_lvl, __pyx_k_n_start_propa_lvl, sizeof(__pyx_k_n_start_propa_lvl), 0, 1, 0, 0},
-  {&__pyx_n_s_n_start_propa_lvl_2, __pyx_k_n_start_propa_lvl_2, sizeof(__pyx_k_n_start_propa_lvl_2), 0, 0, 1, 1},
+  {&__pyx_n_s_n_start_propa_lvl, __pyx_k_n_start_propa_lvl, sizeof(__pyx_k_n_start_propa_lvl), 0, 0, 1, 1},
   {&__pyx_n_s_n_start_propa_lvl_q, __pyx_k_n_start_propa_lvl_q, sizeof(__pyx_k_n_start_propa_lvl_q), 0, 0, 1, 1},
   {&__pyx_n_s_n_start_propa_lvl_q_lvl, __pyx_k_n_start_propa_lvl_q_lvl, sizeof(__pyx_k_n_start_propa_lvl_q_lvl), 0, 0, 1, 1},
   {&__pyx_n_s_n_start_wv_lvl, __pyx_k_n_start_wv_lvl, sizeof(__pyx_k_n_start_wv_lvl), 0, 0, 1, 1},
-  {&__pyx_kp_u_n_start_wvdx_lvl, __pyx_k_n_start_wvdx_lvl, sizeof(__pyx_k_n_start_wvdx_lvl), 0, 1, 0, 0},
-  {&__pyx_n_s_n_start_wvdx_lvl_2, __pyx_k_n_start_wvdx_lvl_2, sizeof(__pyx_k_n_start_wvdx_lvl_2), 0, 0, 1, 1},
-  {&__pyx_kp_u_n_stop_propa_lvl, __pyx_k_n_stop_propa_lvl, sizeof(__pyx_k_n_stop_propa_lvl), 0, 1, 0, 0},
-  {&__pyx_n_s_n_stop_propa_lvl_2, __pyx_k_n_stop_propa_lvl_2, sizeof(__pyx_k_n_stop_propa_lvl_2), 0, 0, 1, 1},
+  {&__pyx_n_s_n_start_wvdx_lvl, __pyx_k_n_start_wvdx_lvl, sizeof(__pyx_k_n_start_wvdx_lvl), 0, 0, 1, 1},
+  {&__pyx_n_s_n_stop_propa_lvl, __pyx_k_n_stop_propa_lvl, sizeof(__pyx_k_n_stop_propa_lvl), 0, 0, 1, 1},
   {&__pyx_n_s_n_stop_propa_lvl_q, __pyx_k_n_stop_propa_lvl_q, sizeof(__pyx_k_n_stop_propa_lvl_q), 0, 0, 1, 1},
   {&__pyx_n_s_n_stop_propa_lvl_q_lvl, __pyx_k_n_stop_propa_lvl_q_lvl, sizeof(__pyx_k_n_stop_propa_lvl_q_lvl), 0, 0, 1, 1},
   {&__pyx_n_s_n_stop_wv_lvl, __pyx_k_n_stop_wv_lvl, sizeof(__pyx_k_n_stop_wv_lvl), 0, 0, 1, 1},
@@ -18597,7 +18469,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_obj, __pyx_k_obj, sizeof(__pyx_k_obj), 0, 0, 1, 1},
   {&__pyx_n_s_pack, __pyx_k_pack, sizeof(__pyx_k_pack), 0, 0, 1, 1},
   {&__pyx_n_s_pickle, __pyx_k_pickle, sizeof(__pyx_k_pickle), 0, 0, 1, 1},
-  {&__pyx_n_s_print, __pyx_k_print, sizeof(__pyx_k_print), 0, 0, 1, 1},
   {&__pyx_n_s_propa_coef, __pyx_k_propa_coef, sizeof(__pyx_k_propa_coef), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_PickleError, __pyx_k_pyx_PickleError, sizeof(__pyx_k_pyx_PickleError), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_checksum, __pyx_k_pyx_checksum, sizeof(__pyx_k_pyx_checksum), 0, 0, 1, 1},
@@ -18644,8 +18515,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 116, __pyx_L1_error)
-  __pyx_builtin_print = __Pyx_GetBuiltinName(__pyx_n_s_print); if (!__pyx_builtin_print) __PYX_ERR(0, 132, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 117, __pyx_L1_error)
   __pyx_builtin_ImportError = __Pyx_GetBuiltinName(__pyx_n_s_ImportError); if (!__pyx_builtin_ImportError) __PYX_ERR(1, 944, __pyx_L1_error)
   __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) __PYX_ERR(2, 134, __pyx_L1_error)
   __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) __PYX_ERR(2, 149, __pyx_L1_error)
@@ -18887,7 +18757,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  *                                const int[:] n_start_propa, const double v_p):
  * 
  */
-  __pyx_tuple__22 = PyTuple_Pack(42, __pyx_n_s_n_z, __pyx_n_s_wv_x, __pyx_n_s_dictionary, __pyx_n_s_wv_ll, __pyx_n_s_n_start_propa, __pyx_n_s_v_p, __pyx_n_s_wv_x_dx, __pyx_n_s_wv_x_dx_cy, __pyx_n_s_wv_coef, __pyx_n_s_propa_coef, __pyx_n_s_n_scal, __pyx_n_s_list_q, __pyx_n_s_norm_indices, __pyx_n_s_ii_lvl_wv, __pyx_n_s_ii_lvl_pr, __pyx_n_s_ii_ker, __pyx_n_s_ii_wv, __pyx_n_s_ii_ind, __pyx_n_s_ii_propa, __pyx_n_s_nonzero, __pyx_n_s_q_wv, __pyx_n_s_q_pro, __pyx_n_s_ii_q, __pyx_n_s_n_start_wv_lvl, __pyx_n_s_n_stop_wv_lvl, __pyx_n_s_n_start_propa_lvl_2, __pyx_n_s_n_stop_propa_lvl_2, __pyx_n_s_n_start_propa_lvl_q, __pyx_n_s_n_stop_propa_lvl_q, __pyx_n_s_n_start_propa_lvl_q_lvl, __pyx_n_s_n_stop_propa_lvl_q_lvl, __pyx_n_s_n_start_wvdx_lvl_2, __pyx_n_s_n_stop_wvdx_lvl, __pyx_n_s_ii_wv_dilate, __pyx_n_s_n_coef, __pyx_n_s_n_propa, __pyx_n_s_n_scal_pr, __pyx_n_s_n_ker, __pyx_n_s_n_ker2, __pyx_n_s_ii, __pyx_n_s_ind_max_2, __pyx_n_s_ind_min_2); if (unlikely(!__pyx_tuple__22)) __PYX_ERR(0, 69, __pyx_L1_error)
+  __pyx_tuple__22 = PyTuple_Pack(42, __pyx_n_s_n_z, __pyx_n_s_wv_x, __pyx_n_s_dictionary, __pyx_n_s_wv_ll, __pyx_n_s_n_start_propa, __pyx_n_s_v_p, __pyx_n_s_wv_x_dx, __pyx_n_s_wv_x_dx_cy, __pyx_n_s_wv_coef, __pyx_n_s_propa_coef, __pyx_n_s_n_scal, __pyx_n_s_list_q, __pyx_n_s_norm_indices, __pyx_n_s_ii_lvl_wv, __pyx_n_s_ii_lvl_pr, __pyx_n_s_ii_ker, __pyx_n_s_ii_wv, __pyx_n_s_ii_ind, __pyx_n_s_ii_propa, __pyx_n_s_nonzero, __pyx_n_s_q_wv, __pyx_n_s_q_pro, __pyx_n_s_ii_q, __pyx_n_s_n_start_wv_lvl, __pyx_n_s_n_stop_wv_lvl, __pyx_n_s_n_start_propa_lvl, __pyx_n_s_n_stop_propa_lvl, __pyx_n_s_n_start_propa_lvl_q, __pyx_n_s_n_stop_propa_lvl_q, __pyx_n_s_n_start_propa_lvl_q_lvl, __pyx_n_s_n_stop_propa_lvl_q_lvl, __pyx_n_s_n_start_wvdx_lvl, __pyx_n_s_n_stop_wvdx_lvl, __pyx_n_s_ii_wv_dilate, __pyx_n_s_n_coef, __pyx_n_s_n_propa, __pyx_n_s_n_scal_pr, __pyx_n_s_n_ker, __pyx_n_s_n_ker2, __pyx_n_s_ii, __pyx_n_s_ind_max, __pyx_n_s_ind_min); if (unlikely(!__pyx_tuple__22)) __PYX_ERR(0, 69, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__22);
   __Pyx_GIVEREF(__pyx_tuple__22);
   __pyx_codeobj__23 = (PyObject*)__Pyx_PyCode_New(6, 0, 42, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__22, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_wavelet_propag_one_step_pyx, __pyx_n_s_wavelet_propag_one_step_cy, 69, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__23)) __PYX_ERR(0, 69, __pyx_L1_error)
