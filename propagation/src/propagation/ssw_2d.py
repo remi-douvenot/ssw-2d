@@ -87,6 +87,7 @@ def ssw_2d(u_0, config, n_refraction, ii_vect_relief):
                 n_propa_lib[ii_lvl + 1] += len(propagator_vect)  # add the size of each propagator
                 dictionary2 = np.append(dictionary2, propagator_vect)
         dictionary = dictionary2
+        nonzero_ind = np.nonzero(dictionary)
 
     # --- Sizes of the apodisation and image layers --- #
     if config.ground == 'PEC' or config.ground == 'Dielectric':

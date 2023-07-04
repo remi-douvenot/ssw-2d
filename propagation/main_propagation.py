@@ -83,6 +83,7 @@ from src.propagation.ssw_2d import ssw_2d
 from src.propagation.ssf_2d import ssf_2d
 from src.propagation.wwp_2d import wwp_2d
 from src.propagation.wwp_h_2d import wwp_h_2d
+from src.propa_cython.wwp_2d_cy import wwp_2d_cy
 import shutil  # to make file copies
 # where config is defined
 from src.classes_and_files.read_files import read_config, read_source, read_relief
@@ -168,7 +169,10 @@ if config.method == 'SSW':
     u_final, wv_total = ssw_2d(u_0, config, n_refraction, ii_vect_relief)
 # WWP  <-- if WW-H is chosen without ground then WWP is launched
 elif (config.method == 'WWP') or ((config.method == 'WWP-H') and (config.ground == 'None')):
-    u_final, wv_total = wwp_2d(u_0, config, n_refraction, ii_vect_relief)
+    if config.py_or_cy == 'Python':
+        u_final, wv_total = wwp_2d(u_0, config, n_refraction)
+    else:  # config.py_or_cy == 'Python'
+        u_final, wv_total = wwp_2d_cy(u_0, config, n_refraction)
 # WWP-H
 elif config.method == 'WWP-H':
     u_final, wv_total = wwp_h_2d(u_0, config, n_refraction, ii_vect_relief)

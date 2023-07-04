@@ -51,3 +51,16 @@ GUI/src/__pycache__/plots.cpython-38.pyc
 *.pyc
 *.pyc
 *.npy
+propagation/src/propa_cython/wwp_2d_cy.html
+propagation/src/propa_cython/wwp_2d_cy.c
+propagation/src/propa_cython/wwp_2d_cy.so
+propagation/src/propa_cython/refraction_cy.c
+propagation/src/propa_cython/refraction_cy.html
+propagation/src/propa_cython/refraction_cy.html
+propagation/src/propa_cython/refraction_cy.html
+propagation/src/propa_cython/refraction_cy.c
+propagation/src/propa_cython/refraction_cy.html
+propagation/src/propa_cython/refraction_cy.c
+propagation/src/propa_cython/refraction_cy.html
+*.c
+*.html

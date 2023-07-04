@@ -140,7 +140,7 @@ def wwp_h_2d(u_0, config, n_refraction, ii_vect_relief):
 
     # Loop over the x_axis
     for ii_x in np.arange(1, n_x+1):
-        if ii_x % 1 == 0:
+        if ii_x % 100 == 0:
             print('Iteration', ii_x, '/', n_x, '. Distance =', ii_x*config.x_step)
 
         # ------------------------------ #
