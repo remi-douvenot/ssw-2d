@@ -1,5 +1,5 @@
 frequency,1000.0,MHz
 N_z,2000
-z_step,0.25,m
+z_step,0.2,m
 x_s,-50.0,m
-z_s,50.0,m
+z_s,100.0,m

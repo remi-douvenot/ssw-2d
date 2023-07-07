@@ -567,7 +567,7 @@ class Dependencies(object):
         x_s = serie.loc['x_s']  # then remove the "-"
         self.x_sDoubleSpinBox.setProperty("value", x_s[1:])
         # z_s
-        self.z_sDoubleSpinBox.setProperty("value", np.float64(serie.loc['z_s']))                                      #change
+        self.z_sDoubleSpinBox.setProperty("value", serie.loc['z_s'])
         # W0 (width of the belt for CSP source)
         w0_lambda = np.float64(serie.loc['W0']) / lambda0                                                             #change
         # print('W0_lambda', w0_lambda)
@@ -587,10 +587,10 @@ class Dependencies(object):
         # type
         self.reliefTypeComboBox.setCurrentText(serie.loc['type'])
         # max relief
-        self.maxReliefDoubleSpinBox.setProperty("value", np.float64(serie.loc['z_max_relief']))                           #change
+        self.maxReliefDoubleSpinBox.setProperty("value", serie.loc['z_max_relief'])
         # number of iterations
         self.nIterationsSpinBox.setProperty("value", int(serie.loc['iterations']))
         # width of the relief
-        self.widthReliefDoubleSpinBox.setProperty("value", np.float64(serie.loc['width']))                                #change
+        self.widthReliefDoubleSpinBox.setProperty("value", serie.loc['width'])
         # center of the relief
-        self.centerReliefDoubleSpinBox.setProperty("value", np.float64(serie.loc['center']))                              #change
+        self.centerReliefDoubleSpinBox.setProperty("value", serie.loc['center'])

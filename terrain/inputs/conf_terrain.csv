@@ -1,8 +1,8 @@
 Property,Value,Unit
-N_x,600,
+N_x,200,
 x_step,50.0,m
-type,Plane,
+type,Superposed,
 z_max_relief,100.0,m
 iterations,7,for superposed terrain
-width,2000.0,pts
-center,30000.0,pts
+width,100.0,pts
+center,2000.0,pts

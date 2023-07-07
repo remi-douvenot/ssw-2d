@@ -270,11 +270,11 @@ class Window(QMainWindow, Ui_MainWindow, Dependencies, Plots):
             if groundType == 'Dielectric':
                 error_message = "Error with WWP, Dielectric ground not yet available in WWP"
                 self.informationTextBrowser.setPlainText(error_message)
-                raise ValueError('Error with WWP, ground not accounted. Do not consider the display')
+                raise ValueError('Error with WWP, Dielectric ground not yet available in WWP')
             elif groundType == 'PEC':
                 error_message = "Error with WWP, PEC ground not yet available in WWP"
                 self.informationTextBrowser.setPlainText(error_message)
-                raise ValueError('Error with WWP, ground not accounted. Do not consider the display')
+                raise ValueError('Error with WWP, PEC ground not yet available in WWP')
         elif method == 'SSF':
             if groundType == 'Dielectric':
                 error_message = "Dielectric ground not yet available in SSF"
@@ -305,10 +305,6 @@ class Window(QMainWindow, Ui_MainWindow, Dependencies, Plots):
                 z_step = np.float64(row[1])
             elif row[0] == 'N_z':
                 N_z = np.int32(row[1])
-                if N_z != 2000 and method == 'SSF':
-                    error_message = "z_step value does NOT match with the source generation. Requirement : N_z = 2000"
-                    self.informationTextBrowser.setPlainText(error_message)
-                    raise ValueError('z_step value does NOT match with the source generation')
             elif row[0] == 'z_s':
                 z_s = np.float64(row[1])
                 file_relief_config = '../terrain/outputs/z_relief.csv'
