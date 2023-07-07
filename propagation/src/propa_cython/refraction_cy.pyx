@@ -17,13 +17,14 @@
 import scipy.constants as cst
 import numpy as np
 cimport numpy as np
-from cython cimport boundscheck, wraparound, cdivision
+from cython cimport boundscheck, wraparound, cdivision, nonecheck
 cdef extern from "complex.h":  # import complex number library
     double complex exp(double complex z)
     pass
 @boundscheck(False)
 @wraparound(False)
 @cdivision(True)
+@nonecheck(False)
 
 def apply_refractive_index_cy(double complex[:] u_x, const double[:] n_index, const double freq, const double x_step):
 
@@ -37,6 +38,5 @@ def apply_refractive_index_cy(double complex[:] u_x, const double[:] n_index, co
     # half the refraction applied before and after propagation
 
     for ii in range(0, n_u):
-        u_x[ii] = u_x[ii] * exp(-1j * k0 * (n_index[ii]-1)/2 * x_step)
-
+        u_x[ii] = u_x[ii] * np.exp(-1j * k0 * (n_index[ii]-1)/2 * x_step)
     return u_x

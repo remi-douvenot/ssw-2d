@@ -1,5 +1,5 @@
 Property,Value,Unit
-N_x,500,
+N_x,100,
 x_step,100.0,m
 type,Plane,
 z_max_relief,300.0,m
