@@ -87,7 +87,7 @@ def ssw_2d(u_0, config, n_refraction, ii_vect_relief):
                 n_propa_lib[ii_lvl + 1] += len(propagator_vect)  # add the size of each propagator
                 dictionary2 = np.append(dictionary2, propagator_vect)
         dictionary = dictionary2
-        nonzero_ind = np.nonzero(dictionary)
+        # nonzero_ind = np.nonzero(dictionary)
 
     # --- Sizes of the apodisation and image layers --- #
     if config.ground == 'PEC' or config.ground == 'Dielectric':
@@ -123,10 +123,11 @@ def ssw_2d(u_0, config, n_refraction, ii_vect_relief):
         # ------------------- #
 
         # --- refractivity applied twice 1/2 --- #
-        if config.py_or_cy == 'Python':
-            u_x = apply_refractive_index(u_x, n_refraction, config)
-        else:  # config.py_or_cy == 'Cython':
-            u_x = np.array(apply_refractive_index_cy(u_x, n_refraction, config.freq, config.x_step))
+        # if config.py_or_cy == 'Python':
+        u_x = apply_refractive_index(u_x, n_refraction, config)
+        # else:  # config.py_or_cy == 'Cython':
+        #     u_x = np.array(apply_refractive_index_cy(u_x, n_refraction, config.freq, config.x_step))
+
         # -------------------------------------- #
 
         # ------------------------------ #
@@ -202,10 +203,10 @@ def ssw_2d(u_0, config, n_refraction, ii_vect_relief):
         # ------------------------------ #
 
         # --- refractivity applied twice 2/2 --- #
-        if config.py_or_cy == 'Python':
-            u_x_dx = apply_refractive_index(u_x_dx, n_refraction, config)
-        else:  # config.py_or_cy == 'Cython':
-            u_x_dx = apply_refractive_index_cy(u_x_dx, n_refraction, config.freq, config.x_step)
+        # if config.py_or_cy == 'Python':
+        u_x_dx = apply_refractive_index(u_x_dx, n_refraction, config)
+        # else:  # config.py_or_cy == 'Cython':
+        #     u_x_dx = apply_refractive_index_cy(u_x_dx, n_refraction, config.freq, config.x_step)
         if config.turbulence == 'Y':
             phi_turbulent = genere_phi_turbulent(config)
             u_x_dx = apply_phi_turbulent(u_x_dx, phi_turbulent, config)

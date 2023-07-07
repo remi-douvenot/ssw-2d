@@ -64,3 +64,13 @@ propagation/src/propa_cython/refraction_cy.c
 propagation/src/propa_cython/refraction_cy.html
 *.c
 *.html
+propagation/src/propa_cython/refraction_cy.html
+propagation/src/propa_cython/refraction_cy.html
+propagation/src/propa_cython/wavelet_propag_one_step.html
+propagation/src/propa_cython/wavelet_propag_one_step.so
+propagation/src/propa_cython/wavelet_propag_one_step.c
+propagation/src/propa_cython/refraction_cy.c
+propagation/src/propa_cython/wavelet_propag_one_step.html
+*.html
+propagation/src/propa_cython/wavelet_propag_one_step.c
+*.so

@@ -47,6 +47,12 @@ import pywt
 from src.wavelets.wavelet_operations import sparsify  # for sparsify
 from src.wavelets_cython.wavelets_operations import calculate_dilation
 from src.propa_cython.wavelet_propag_one_step import wavelet_propag_one_step_cy
+from cython cimport boundscheck, wraparound, cdivision, nonecheck
+
+@boundscheck(False)
+@wraparound(False)
+@cdivision(True)
+@nonecheck(False)
 
 def wwp_2d_cy(const double complex[:] u_0, config, const double[:] n_refraction):
 
@@ -208,6 +214,11 @@ def wwp_2d_cy(const double complex[:] u_0, config, const double[:] n_refraction)
 # @params[out] apo_wavelets : apodisation window projected on the wavelet levels in the same shape on the wavelets vector
 ##
 
+@boundscheck(False)
+@wraparound(False)
+@cdivision(True)
+@nonecheck(False)
+
 cdef reshape_apodisation_on_wavelets(const double[:] apo_window_z, ground, const int[:] shape_wv_x):
 
     # wavelet level
@@ -221,14 +232,14 @@ cdef reshape_apodisation_on_wavelets(const double[:] apo_window_z, ground, const
     for ii in range(0, wv_ll+1):
         decimation[ii] = int(2 ** wv_ll / q_max[ii])
     # total size of the vector
-    cdef int n_z = shape_wv_x[-1]
+    cdef int n_z = shape_wv_x[wv_ll]
     # size of the apodisation function
     cdef int n_apo_z = apo_window_z.size
     cdef double[:] apo_wavelets = np.ones(n_z, dtype=np.float64)
     # size of the current level
     cdef int n_lvl
     # indices in loops
-    cdef Py_ssize_t ii_lvl, ii_wz
+    cdef Py_ssize_t ii_lvl, ii_wz, ii_apo
 
     # on each level, apodize the edge(s)
     for ii_lvl in range(0,wv_ll+1):
@@ -272,6 +283,11 @@ cdef reshape_apodisation_on_wavelets(const double[:] apo_window_z, ground, const
 # @params[out] apo_wavelets : apodisation window projected on the wavelet levels in the same shape on the wavelets vector
 ##
 
+@boundscheck(False)
+@wraparound(False)
+@cdivision(True)
+@nonecheck(False)
+
 cdef reshape_refraction_on_wavelets(const double[:] n_profile, const int[:] shape_wv_x):
 
     # wavelet level
@@ -284,14 +300,14 @@ cdef reshape_refraction_on_wavelets(const double[:] n_profile, const int[:] shap
     for ii in range(0, wv_ll+1):
         decimation[ii] = int(2 ** wv_ll / q_max[ii])
     # total size of the vector
-    cdef int n_z = shape_wv_x[-1]
+    cdef int n_z = shape_wv_x[wv_ll]
     # size of the apodisation function
     cdef int n_ref_z = n_profile.size
     cdef double[:] ref_wavelets = np.ones(n_z, dtype=np.float64)
     # size of the current level
     cdef int n_lvl
     # indices in loops
-    cdef Py_ssize_t ii_lvl, ii_wz
+    cdef Py_ssize_t ii_lvl, ii_wz, ii_ref
 
     # on each level, apodize the edge(s)
     for ii_lvl in range(0,wv_ll+1):
@@ -303,8 +319,8 @@ cdef reshape_refraction_on_wavelets(const double[:] n_profile, const int[:] shap
         #
         for ii_wz in range(0, n_ref_z_delta):
             # on the last points of the level
-            ii_apo = n_lvl-n_ref_z_delta + ii_wz
+            ii_ref = n_lvl-n_ref_z_delta + ii_wz
             # apply apodization with proper subsampling
-            ref_wavelets[ii_apo] = n_profile[delta*ii_wz]
+            ref_wavelets[ii_ref] = n_profile[delta*ii_wz]
 
     return ref_wavelets

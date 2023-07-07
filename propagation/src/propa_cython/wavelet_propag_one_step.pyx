@@ -41,10 +41,10 @@ from cython cimport boundscheck, wraparound, cdivision, nonecheck
 cdef extern from "complex.h":  # import complex number library
     pass
 
-# @boundscheck(False)
-# @wraparound(False)
-# @cdivision(True)
-# @nonecheck(False)
+@boundscheck(False)
+@wraparound(False)
+@cdivision(True)
+@nonecheck(False)
 ##
 # @package: wavelet_propag_one_step_cy
 # @author: Remi Douvenot
