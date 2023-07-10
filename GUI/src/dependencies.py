@@ -506,12 +506,12 @@ class Dependencies(object):
         self.xMaxKmDoubleSpinBox.setProperty("value", str(x_max))
         # z_max
         z_max = np.float64(serie.loc['z_step']) * np.int32(serie.loc['N_z'])                                                  #change
-        self.zMaxMDoubleSpinBox.setProperty("value", z_max)
+        self.zMaxMDoubleSpinBox.setProperty("value", str(z_max))
         # frequency
         self.frequencyMHzDoubleSpinBox.setProperty("value", serie.loc['frequency'])
         # lambda
         lambda0 = cst.c/np.float64(serie.loc['frequency'])*1e-6  # freq in MHz                                                   change
-        self.lambdaMDoubleSpinBox.setProperty("value", lambda0)
+        self.lambdaMDoubleSpinBox.setProperty("value", str(lambda0))
         # ground
         self.polarisationComboBox.setCurrentText(serie.loc['polarisation'])
         # Max compression error
@@ -523,9 +523,9 @@ class Dependencies(object):
         # apodisation window
         self.apodisationComboBox.setProperty("value", serie.loc['apodisation window'])
         # apodisation % in z
-        self.sizeApoSpinBox.setProperty("value",  np.float64(serie.loc['apodisation size'])*100)  # from value to %               change
+        self.sizeApoSpinBox.setProperty("value",  int(np.float64(serie.loc['apodisation size'])*100))  # from value to %               change
         # image layer % in z
-        self.sizeImageSpinBox.setProperty("value", np.float64(serie.loc['image size'])*100)  # from value to %                    change
+        self.sizeImageSpinBox.setProperty("value", int(np.float64(serie.loc['image size'])*100))  # from value to %                    change
         self.image_clicked()  # initialise nb points in image layer
         # ground
         self.groundTypeComboBox.setCurrentText(serie.loc['ground'])
@@ -571,7 +571,7 @@ class Dependencies(object):
         # W0 (width of the belt for CSP source)
         w0_lambda = np.float64(serie.loc['W0']) / lambda0                                                             #change
         # print('W0_lambda', w0_lambda)
-        self.widthDoubleSpinBox.setProperty("value", w0_lambda)
+        self.widthDoubleSpinBox.setProperty("value", str(w0_lambda))
         # @todo P_Tx
         # self.nZSpinBox.setProperty("value", serie.loc['N_z'])
         # @todo G_Tx

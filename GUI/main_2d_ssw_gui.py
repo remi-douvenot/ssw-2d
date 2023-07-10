@@ -298,7 +298,7 @@ class Window(QMainWindow, Ui_MainWindow, Dependencies, Plots):
             if row[0] == 'frequency':
                 freq1 = np.float64(row[1])
                 if freq != freq1:
-                    error_message = "The value of the Frequency does NOT match with source generation. Please Click on the Run Source Button Before Running the Simulation."
+                    error_message = "The value of the Frequency does NOT match with source generation."
                     self.informationTextBrowser.setPlainText(error_message)
                     raise ValueError(['frequency ', freq, ' MHz value does not match with source generation', freq1, ' MHz'])
             elif row[0] == 'z_step':
