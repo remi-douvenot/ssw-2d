@@ -44,12 +44,9 @@ import time
 import scipy.constants as cst
 from src.propagators.dictionary_generation import dictionary_generation
 from src.propagation.wwp_2d_one_step import wwp_2d_one_step
-from src.propagation.apodisation import apply_apodisation, apply_apodisation_wavelet, apodisation_window
-from src.DSSF.dmft import dmft_parameters, u2w, w2u, surface_wave_propagation
+
 import pywt
 from src.wavelets.wavelet_operations import thresholding, q_max_calculation
-from src.propagation.refraction import apply_refractive_index_wavelet
-from src.wavelets.wavelet_operations import sparsify  # for sparsify
 
 
 # import cProfile, pstats, io
@@ -71,11 +68,12 @@ from src.wavelets.wavelet_operations import sparsify  # for sparsify
 # @profile
 
 
-def wwp_2d(u_0, config, n_refraction):
+def wwp_2d_light(u_0, config, n_refraction):
 
     # Simulation parameters
     n_x = config.N_x
 
+    # TODO : tip for JEREMY : make this step before and put the dictionary as an input of wwp_2d_cpp and wwp_2d_ccp
     # Compute the dictionary of unit operators. Those operators correspond to the wavelet-to-wavelet propagation of
     # each basis wavelet.
     print('--- Creation of the dictionary of the free-space operators ---')
@@ -97,73 +95,46 @@ def wwp_2d(u_0, config, n_refraction):
         print('--- Main loop. No ground ---')
         n_im = 0
     config.N_im = n_im
-
-    n_apo_z = np.int(config.apo_z * config.N_z)
-    remain_apo = n_apo_z % 2 ** config.wv_L
-    if remain_apo != 0:
-        n_apo_z += 2 ** config.wv_L - remain_apo
-    # ------------------------------------------------- #
-
-    # --- Creation of the apodisation window --- # @todo Code other apodisation windows
-    # along z
-    apo_window_z = apodisation_window(config.apo_window, n_apo_z)
-    # ------------------------------------------ #
+    '''
+    # put the library in the shape of a vector. Useful for Cython version
+    for ii_lvl in range(0, config.wv_L + 1):
+        n_propa_lib[ii_lvl + 1] += n_propa_lib[ii_lvl]  # add previous level
+        for ii_q in range(0, q_list[ii_lvl]):
+            propagator_list = dictionary[ii_lvl][ii_q]
+            propagator_vect = pywt.coeffs_to_array(propagator_list)[0]
+            n_propa_lib[ii_lvl + 1] += len(propagator_vect)  # add the size of each propagator
+            dictionary2 = np.append(dictionary2, propagator_vect)
+    dictionary = dictionary2
+    '''
 
     # --- Initialisations --- #
-    # initial field
-    u_0 = apply_apodisation(u_0, apo_window_z, config)
     # Decompose the initial field into a wavelet coefficient vector
     w_x = pywt.wavedec(u_0, config.wv_family, 'per', config.wv_L)
     # Threshold V_s on the signal
     w_x = thresholding(w_x, config.V_s)
 
-    # saved total wavelet parameters (sparse coo matrix)
-    wv_total = [[]] * n_x
-    # ----------------------- #
-
     # Loop over the x_axis
     for ii_x in np.arange(1, n_x+1):
-        if ii_x % 100 == 0:
-            print('Iteration', ii_x, '/', n_x, '. Distance =', ii_x*config.x_step)
-        # --- apodisation applied on wavelets --- #
-        w_x = apply_apodisation_wavelet(w_x, apo_window_z, config)
-        # --------------------------------------- #
+        # if ii_x % 100 == 0:
+        #     print('Iteration', ii_x, '/', n_x, '. Distance =', ii_x*config.x_step)
 
         # ------------------------------ #
         # --- Free-space propagation --- #
         # ------------------------------ #
-        if config.ground == 'Dielectric':
 
-            raise ValueError(['Dielectric ground not yet available in WWP'])
+        # Propagate using WWP
+        # TODO jeremy : regarder la propagation en cython plutot que la python
+        w_x_dx = wwp_2d_one_step(w_x, dictionary, config)
 
-        elif config.ground == 'PEC':
-
-            raise ValueError(['PEC ground not yet available in WWP'])
-
-        elif config.ground == 'None':
-
-            # Propagate using WWP
-            w_x_dx = wwp_2d_one_step(w_x, dictionary, config)
-
-        else:
-            raise ValueError(['Ground condition should be dielectric, PEC, or None'])
         # ---------- END --------------- #
         # --- Free-space propagation --- #
         # ------------------------------ #
 
-        # --- refractivity applied on wavelets --- #
-        w_x_dx = apply_refractive_index_wavelet(w_x_dx, n_refraction, config)
-        # ------------------------------__-------- #
-
-        # store the wavelet parameters (in coo format)
-        wv_total[ii_x-1] = sparsify(w_x_dx)
-        # store the wavelet parameters (in coo format)
-        # spectrum_w_0_tot[ii_x - 1] = spectrum_w_0_tot
         # update w_x
         w_x = w_x_dx
 
     # back from wavelet to field
     u_x_dx = pywt.waverec(w_x_dx, config.wv_family, mode='per')
 
-    return u_x_dx, wv_total
+    return u_x_dx
 

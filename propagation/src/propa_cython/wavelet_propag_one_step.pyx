@@ -53,7 +53,7 @@ cdef extern from "complex.h":  # import complex number library
 #
 # @brief One step of the SSW 2D free-space propagation -- Cython version
 # @param[in] wv_x Wavelet decomposition of the field before the free-space propagation
-# @param[in] dictionary Pre-generated wavelet propagators.
+# @param[in] dictionary Pre-generated wavelet propagators
 # @param[in] family Str wavelet family
 # @param[in] wv_ll Integer max wavelet level decomposition
 # @param[in] n_z Integer total size of the signal (including image layer and apodisation)
