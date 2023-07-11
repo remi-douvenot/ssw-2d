@@ -92,7 +92,7 @@ def wwp_h_2d(u_0, config, n_refraction, ii_vect_relief):
     print('--- Dedicated time (s) ---', np.round(t_dictionary_f - t_dictionary_s, decimals=2))
     print(' ')
     # save the final electric field
-    np.save('./outputs/dictionary', dictionary)
+    #np.save('./outputs/dictionary', dictionary)
     # --- Relief and Sizes of the apodisation and image layers --- #
     if config.ground == 'PEC' or config.ground == 'Dielectric':
         # derivative of the relief calculated once for all
