@@ -74,7 +74,6 @@
 # @warning: only atmosphere is accounted with WWP. No ground or relief.
 ##
 
-
 import numpy as np
 import time
 import scipy.constants as cst
@@ -83,10 +82,7 @@ from src.propagation.ssw_2d import ssw_2d_light
 from src.propagation.wwp_2d import wwp_2d_light
 import shutil  # to make file copies
 # where config is defined
-from src.classes_and_files.read_files import read_config, read_source, read_relief
-from src.atmosphere.genere_n_profile import generate_n_profile
-import pywt
-import matplotlib.pyplot as plt
+from src.classes_and_files.read_files import read_config, read_source
 
 # -------------------------------------------------- #
 # --- Declare the files where inputs are written --- #
@@ -100,10 +96,6 @@ file_source_config = '../source/outputs/configuration.csv'
 file_E_init = '../source/outputs/E_field.csv'
 # input: refractivity phase screens
 file_refractivity = '../refractivity/outputs/phase_screens.csv'
-# input: relief configuration
-file_relief_config = '../terrain/inputs/conf_terrain.csv'
-# input: relief vector
-file_relief = '../terrain/outputs/z_relief.csv'
 
 # copy the configuration
 file_output_config = './outputs/configuration.csv'
@@ -135,15 +127,6 @@ UU_0 = pywt.wavedec(u_0, config.wv_family, 'per', config.wv_L)
 UU_0[0][10] = 1.0
 u_0 = pywt.waverec(UU_0, config.wv_family, 'per')'''
 
-# ----------------------------------------- #
-# --- Creating refraction phase screens --- #
-# ----------------------------------------- #
-# n_refraction = np.ones(config.N_z)
-n_refraction = generate_n_profile(config)
-
-# -------------- END ---------------------- #
-# --- Creating refraction phase screens --- #
-# ----------------------------------------- #
 
 # --- Computing wavelet thresholds --- #
 # following Bonnafont et al. IEEE TAP, 2021, eqs .(35) and (36)
@@ -159,35 +142,35 @@ config.V_s, config.V_p = compute_thresholds(config.N_x, config.max_compression_e
 t_propa_s = time.process_time()
 u_final = ssw_2d_light(u_0, config)
 t_propa_f = time.process_time()
-print('Total '+config.method+' (ms)', np.round((t_propa_f-t_propa_s)*1e3))
+print('Total SSW Python (ms)', np.round((t_propa_f-t_propa_s)*1e3))
 
 # test C++ code
 # TODO Jeremy : coder en C le code SSW 2D simplifie.
 t_propa_s = time.process_time()
-# u_final_cpp = ssw_2d_cpp(u_0, config, n_refraction, ii_vect_relief)
+# u_final_cpp = ssw_2d_cpp(u_0, config)
 t_propa_f = time.process_time()
-print('Total '+config.method+' (ms)', np.round((t_propa_f-t_propa_s)*1e3))
+print('Total SSW C++ (ms)', np.round((t_propa_f-t_propa_s)*1e3))
 
 
 # WWP
 t_propa_s = time.process_time()
 u_final = wwp_2d_light(u_0, config)
 t_propa_f = time.process_time()
-print('Total '+config.method+' (ms)', np.round((t_propa_f-t_propa_s)*1e3))
+print('Total WWP Python (ms)', np.round((t_propa_f-t_propa_s)*1e3))
 
 # test C++ code
 # TODO Jeremy : coder en C le code SSW 2D simplifie.
 t_propa_s = time.process_time()
-# u_final_cpp = wwp_2d_cpp(u_0, config, n_refraction, ii_vect_relief)
+# u_final_cpp = wwp_2d_cpp(u_0, config)
 t_propa_f = time.process_time()
-print('Total '+config.method+' (ms)', np.round((t_propa_f-t_propa_s)*1e3))
+print('Total WWP C++ (ms)', np.round((t_propa_f-t_propa_s)*1e3))
 
 
 # TODO : comparer les u_final
 
 # TODO : comparer les u_final en dB eventuellement (precision dB fixee par la compression)
 with np.errstate(divide='ignore'):
-    data_dB = 20*np.log10(np.abs(u_field))
+    data_dB = 20*np.log10(np.abs(u_final))
     v_max = data_dB.max()
 
 # ----------- END ------------ #

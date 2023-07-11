@@ -68,7 +68,7 @@ from src.wavelets.wavelet_operations import thresholding, q_max_calculation
 # @profile
 
 
-def wwp_2d_light(u_0, config, n_refraction):
+def wwp_2d_light(u_0, config):
 
     # Simulation parameters
     n_x = config.N_x
