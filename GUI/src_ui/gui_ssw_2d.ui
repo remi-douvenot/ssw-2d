@@ -238,7 +238,7 @@
        </size>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="tab_3">
        <attribute name="title">
@@ -1039,6 +1039,9 @@
            </property>
            <property name="suffix">
             <string/>
+           </property>
+           <property name="minimum">
+            <number>2</number>
            </property>
            <property name="maximum">
             <number>100</number>

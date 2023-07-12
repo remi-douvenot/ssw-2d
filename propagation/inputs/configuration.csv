@@ -1,9 +1,9 @@
 Property,Value,Unit
-method,SSW,
+method,WWP-H,
 N_x,1000,Unnamed: 2
-N_z,2000,
+N_z,1600,
 x_step,50.0,m
-z_step,0.2,m
+z_step,0.25,m
 frequency,1000.0,MHz
 polarisation,TE,
 Max compression error,-10.0,dB

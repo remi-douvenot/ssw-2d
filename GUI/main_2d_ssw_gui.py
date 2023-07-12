@@ -270,11 +270,11 @@ class Window(QMainWindow, Ui_MainWindow, Dependencies, Plots):
             if groundType == 'Dielectric':
                 error_message = "Error with WWP, Dielectric ground not yet available in WWP"
                 self.informationTextBrowser.setPlainText(error_message)
-                raise ValueError('Error with WWP, Dielectric ground not yet available in WWP')
+                #raise ValueError('Error with WWP, Dielectric ground not yet available in WWP')
             elif groundType == 'PEC':
                 error_message = "Error with WWP, PEC ground not yet available in WWP"
                 self.informationTextBrowser.setPlainText(error_message)
-                raise ValueError('Error with WWP, PEC ground not yet available in WWP')
+                #raise ValueError('Error with WWP, PEC ground not yet available in WWP')
         elif method == 'SSF':
             if groundType == 'Dielectric':
                 error_message = "Dielectric ground not yet available in SSF"
@@ -316,13 +316,6 @@ class Window(QMainWindow, Ui_MainWindow, Dependencies, Plots):
                         error_message = "Warning: The Source is in the Apodization Zone"
                         self.informationTextBrowser.setPlainText(error_message)
                         raise ValueError('The Source is in the Apodization Zone')
-        reliefType = self.reliefTypeComboBox.currentText()
-        if reliefType == 'Superposed':
-            Iteration = self.nIterationsSpinBox.value()
-            if Iteration == 0:
-                error_message = "Warning : Iterations(scales) = 0. Please change the value."
-                self.informationTextBrowser.setPlainText(error_message)
-                raise ValueError('zero-size array to reduction operation minimum which has no identity')
         self.run_simulation.setStyleSheet('QPushButton {background-color: red;}')
         self.informationTextBrowser.setPlainText(start_message)
         self.informationTextBrowser.repaint()

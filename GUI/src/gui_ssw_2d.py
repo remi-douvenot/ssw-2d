@@ -348,6 +348,7 @@ class Ui_MainWindow(object):
         self.nIterationsSpinBox.setLocale(QtCore.QLocale(QtCore.QLocale.English, QtCore.QLocale.UnitedStates))
         self.nIterationsSpinBox.setKeyboardTracking(False)
         self.nIterationsSpinBox.setSuffix("")
+        self.nIterationsSpinBox.setMinimum(2)
         self.nIterationsSpinBox.setMaximum(100)
         self.nIterationsSpinBox.setProperty("value", 100)
         self.nIterationsSpinBox.setObjectName("nIterationsSpinBox")
@@ -756,7 +757,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         self.polarisationComboBox.setCurrentIndex(0)
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(3)
         self.groundTypeComboBox.setCurrentIndex(0)
         self.sourceTypeComboBox.setCurrentIndex(0)
         self.atmTypeComboBox.setCurrentIndex(0)
