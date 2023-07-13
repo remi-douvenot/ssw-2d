@@ -154,9 +154,9 @@
       <widget class="QDoubleSpinBox" name="lambdaMDoubleSpinBox">
        <property name="geometry">
         <rect>
-         <x>80</x>
+         <x>60</x>
          <y>40</y>
-         <width>101</width>
+         <width>132</width>
          <height>26</height>
         </rect>
        </property>
@@ -170,7 +170,7 @@
         <string> m</string>
        </property>
        <property name="decimals">
-        <number>6</number>
+        <number>9</number>
        </property>
        <property name="maximum">
         <double>5000.000000000000000</double>
