@@ -1,6 +1,6 @@
 Property,Value,Unit
 method,SSF,
-N_x,1000,Unnamed: 2
+N_x,200,Unnamed: 2
 N_z,1600,
 x_step,50.0,m
 z_step,0.25,m

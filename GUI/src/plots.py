@@ -13,6 +13,7 @@ import numpy as np
 import pywt
 import warnings
 import matplotlib.pyplot as plt
+import csv
 
 
 class Plots(object):
@@ -144,25 +145,29 @@ class Plots(object):
 
         # --- from wavelets to E-field --- #
         # loop on each distance step
-        for ii_x in np.arange(0, n_x):  # first field is not saved
-            # from coo matrix to array on each level
-            for ii_lvl in np.arange(0, wv_l + 1):
-                wv_ii_x[ii_lvl] = wv_total[ii_x][ii_lvl].todense()
-            # inverse fast wavelet transform
-            # squeeze to remove the first useless dimension
-            uu_x = np.squeeze(pywt.waverec(wv_ii_x, wv_family, 'per'))
-            # remove image field
-            uu_x = uu_x[n_im:]
-            # add the relief
-            if ground_type == 'PEC' or ground_type == 'Dielectric':
-                # whether ascending or descending relief, the shift is made before or after propagation
-                if diff_relief[ii_x] < 0:
-                    ii_relief = int(z_relief[ii_x+1]/z_step)
-                else:
-                    ii_relief = int(z_relief[ii_x] / z_step)
-                uu_x = shift_relief(uu_x, ii_relief)
-            x_current = -x_s + (ii_x + 1) * x_step
-            e_field_total[ii_x, :] = uu_x / np.sqrt(k0 * x_current) * np.exp(-1j * k0 * x_current)
+        relief = self.reliefTypeComboBox.currentText()
+        if (method == 'WWP' and ground_type != 'No Ground') or (method == 'WWP-H' and relief != 'Plane'):
+            pass
+        else:
+            for ii_x in np.arange(0, n_x):  # first field is not saved
+                # from coo matrix to array on each level
+                for ii_lvl in np.arange(0, wv_l + 1):
+                    wv_ii_x[ii_lvl] = wv_total[ii_x][ii_lvl].todense()
+                # inverse fast wavelet transform
+                # squeeze to remove the first useless dimension
+                uu_x = np.squeeze(pywt.waverec(wv_ii_x, wv_family, 'per'))
+                # remove image field
+                uu_x = uu_x[n_im:]
+                # add the relief
+                if ground_type == 'PEC' or ground_type == 'Dielectric':
+                    # whether ascending or descending relief, the shift is made before or after propagation
+                    if diff_relief[ii_x] < 0:
+                        ii_relief = int(z_relief[ii_x+1]/z_step)
+                    else:
+                        ii_relief = int(z_relief[ii_x] / z_step)
+                    uu_x = shift_relief(uu_x, ii_relief)
+                x_current = -x_s + (ii_x + 1) * x_step
+                e_field_total[ii_x, :] = uu_x / np.sqrt(k0 * x_current) * np.exp(-1j * k0 * x_current)
         # -------------------------------- #
 
         # --- 2D plot --- #
@@ -242,6 +247,38 @@ class Plots(object):
             ax.hlines(z_max-z_apo, 0, x_max, colors='k', linestyles='dotted')
         elif ground_type == 'No Ground':
             ax.hlines([z_apo, z_max - z_apo], 0, x_max, colors='k', linestyles='dotted')
+        ###################################################
+        if method == 'WWP':
+            if ground_type == 'Dielectric' or ground_type == 'PEC' :
+                ax.clear()
+        elif method == 'SSF':
+            if ground_type == 'Dielectric':
+                ax.clear()
+        elif method == 'WWP-H':
+            if ground_type == 'No Ground' or ground_type == 'Dielectric' or relief != 'Plane':
+                ax.clear()
+        apod = self.sizeApoSpinBox.value()
+        file_source_output_config = '../source/outputs/configuration.csv'
+        f_source_config = open(file_source_output_config, newline='')
+        file_tmp = csv.reader(f_source_config)
+        for row in file_tmp:
+            if row[0] == 'z_step':
+                z_step = np.float64(row[1])
+            elif row[0] == 'N_z':
+                N_z = np.int32(row[1])
+            elif row[0] == 'z_s':
+                z_s = np.float64(row[1])
+                file_relief_config = '../terrain/outputs/z_relief.csv'
+                relief_config = open(file_relief_config, newline='')
+                file = csv.reader(relief_config)
+                Apod = False
+                for l in file:
+                    relief0 = np.float64(l[0])
+                    if (z_s + relief0) >= N_z * z_step * (1 - apod * 1e-2) or (ground_type == 'No Ground' and z_s <= 400 * apod * 1e-2):
+                        Apod = True
+                        ax.clear()
+
+            #################################################
 
         # ax.vlines(35, 0, z_max, colors='k', linestyles='dotted')
         # ax.vlines(35.2, 0, z_max, colors='k', linestyles='dotted')
@@ -250,17 +287,23 @@ class Plots(object):
         ax = ax_final
         ax.clear()  # defined in the input
         ax.plot(data_db_final, z_vect)
-        ax.set_xlim(v_min, v_max)
-        ax.set_ylim(0, z_step * n_z)
-        ax.set_xlabel(output_type, fontsize=12)
-        # --- Apodisation plot ("top" or "bottom + top") --- #
-        if ground_type == 'PEC' or ground_type == 'Dielectric':
-            ax.hlines(z_max-z_apo, v_min, v_max, colors='k', linestyles='dotted')
-        elif ground_type == 'No Ground':
-            ax.hlines([z_apo, z_max - z_apo], v_min, v_max, colors='k', linestyles='dotted')
-        # ax.set_ylabel('Altitude (m)', fontsize=12)
-        ax.grid('on')
+        try:
+            ax.set_xlim(v_min, v_max)
+            ax.set_ylim(0, z_step * n_z)
+            ax.set_xlabel(output_type, fontsize=12)
+            # --- Apodisation plot ("top" or "bottom + top") --- #
+            if ground_type == 'PEC' or ground_type == 'Dielectric':
+                ax.hlines(z_max-z_apo, v_min, v_max, colors='k', linestyles='dotted')
+            elif ground_type == 'No Ground':
+                ax.hlines([z_apo, z_max - z_apo], v_min, v_max, colors='k', linestyles='dotted')
+            # ax.set_ylabel('Altitude (m)', fontsize=12)
+            ax.grid('on')
+        except :
+            ax.clear()
         # print('Max value = ', np.round(v_max, 2))
+
+        if (ground_type == 'Dielectric' and method == 'SSF') or (method == 'WWP-H' and ground_type != 'PEC') or Apod == True:
+            ax.clear()
 
         self.canvas_final.draw()
 

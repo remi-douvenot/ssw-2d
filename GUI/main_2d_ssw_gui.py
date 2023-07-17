@@ -266,42 +266,53 @@ class Window(QMainWindow, Ui_MainWindow, Dependencies, Plots):
         end_message = "Field calculation using "+method+" -- Successfully finished"
         error_message = "Field calculation using "+method+" -- Error. Do not consider the display"
         groundType = self.groundTypeComboBox.currentText()
+        relief = self.reliefTypeComboBox.currentText()
+        ###################################################
         if method == 'WWP':
             if groundType == 'Dielectric':
                 error_message = "Error with WWP, Dielectric ground not yet available in WWP"
+                self.informationTextBrowser.setStyleSheet('color: red')
                 self.informationTextBrowser.setPlainText(error_message)
-                #raise ValueError('Error with WWP, Dielectric ground not yet available in WWP')
+                self.plot_field_in()
+                raise ValueError("Error with WWP, Dielectric ground not yet available in WWP")
             elif groundType == 'PEC':
                 error_message = "Error with WWP, PEC ground not yet available in WWP"
+                self.informationTextBrowser.setStyleSheet('color: red')
                 self.informationTextBrowser.setPlainText(error_message)
-                #raise ValueError('Error with WWP, PEC ground not yet available in WWP')
+                self.plot_field_in()
+                raise ValueError("Error with WWP, PEC ground not yet available in WWP")
         elif method == 'SSF':
             if groundType == 'Dielectric':
-                error_message = "Dielectric ground not yet available in SSF"
+                error_message = " Dielectric ground not yet available in SSF"
+                self.informationTextBrowser.setStyleSheet('color: red')
                 self.informationTextBrowser.setPlainText(error_message)
-                raise ValueError('Dielectric ground not yet available in SSF')
+                self.plot_field_in()
+                raise ValueError("Error with SSF, Dielectric ground not yet available in SSF")
         elif method == 'WWP-H':
             if groundType == 'No Ground':
                 error_message = "There is no ground, Please use WWP instead of WWP-H"
+                self.informationTextBrowser.setStyleSheet('color: red')
                 self.informationTextBrowser.setPlainText(error_message)
-                raise ValueError('There is no ground, Please use WWP instead of WWP-H')
+                self.plot_field_in()
+                raise ValueError("There is no ground, Please use WWP instead of WWP-H")
             elif groundType == 'Dielectric':
                 error_message = "Dielectric ground not yet available in WWP-H"
+                self.informationTextBrowser.setStyleSheet('color: red')
                 self.informationTextBrowser.setPlainText(error_message)
-                raise ValueError('Dielectric ground not yet available in WWP-H')
-        freq = self.frequencyMHzDoubleSpinBox.value()
+                self.plot_field_in()
+                raise ValueError("Dielectric ground not yet available in WWP-H")
+            elif relief != 'Plane':
+                error_message = "Relief not yet available in WWP-H"
+                self.informationTextBrowser.setStyleSheet('color: red')
+                self.informationTextBrowser.setPlainText(error_message)
+                self.plot_field_in()
+                raise ValueError("Relief not yet available in WWP-H")
         apod = self.sizeApoSpinBox.value()
         file_source_output_config = '../source/outputs/configuration.csv'
         f_source_config = open(file_source_output_config, newline='')
         file_tmp = csv.reader(f_source_config)
         for row in file_tmp:
-            if row[0] == 'frequency':
-                freq1 = np.float64(row[1])
-                if freq != freq1:
-                    error_message = "The value of the Frequency does NOT match with source generation."
-                    self.informationTextBrowser.setPlainText(error_message)
-                    raise ValueError(['frequency ', freq, ' MHz value does not match with source generation', freq1, ' MHz'])
-            elif row[0] == 'z_step':
+            if row[0] == 'z_step':
                 z_step = np.float64(row[1])
             elif row[0] == 'N_z':
                 N_z = np.int32(row[1])
@@ -313,10 +324,13 @@ class Window(QMainWindow, Ui_MainWindow, Dependencies, Plots):
                 for l in file:
                     relief0 = np.float64(l[0])
                     if (z_s + relief0) >= N_z * z_step * (1 - apod * 1e-2) or (groundType == 'No Ground' and z_s <= 400 * apod * 1e-2):
-                        error_message = "Warning: The Source is in the Apodization Zone"
+                        error_message = "The Source is in the Apodization Zone"
+                        self.informationTextBrowser.setStyleSheet('color: red')
                         self.informationTextBrowser.setPlainText(error_message)
-                        raise ValueError('The Source is in the Apodization Zone')
-        self.run_simulation.setStyleSheet('QPushButton {background-color: red;}')
+                        self.plot_field_in()
+                        raise ValueError("The Source is in the Apodization Zone")
+        #################################################
+        self.informationTextBrowser.setStyleSheet('color: black')
         self.informationTextBrowser.setPlainText(start_message)
         self.informationTextBrowser.repaint()
         # check for modulo
@@ -381,6 +395,7 @@ class Window(QMainWindow, Ui_MainWindow, Dependencies, Plots):
         self.plot_source_in()
 
         # end message
+        self.informationTextBrowser.setStyleSheet('color: black')
         self.informationTextBrowser.setPlainText("Terrain generation -- finished")
         self.run_relief.setStyleSheet('QPushButton {background-color: lightgray;}')
 

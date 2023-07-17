@@ -1,5 +1,5 @@
 Property,Value,Unit
-N_x,1000,
+N_x,200,
 x_step,50.0,m
 type,Superposed,
 z_max_relief,100.0,m
