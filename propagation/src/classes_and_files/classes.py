@@ -37,7 +37,7 @@ class Config:
         self.image_layer = 0
         # number of point sin the image layer (multiple of 2^L)
         self.N_im = 0
-        # ground type ('None', 'PEC', or 'dielectric')
+        # ground type ('No Ground', 'PEC', or 'dielectric')
         self.ground = 'None'
         # ground relative permittivity (for dielectric ground only)
         self.epsr = 0

@@ -102,7 +102,7 @@ f_source = open(file_source, newline='')
 source_tmp = csv.reader(f_source)
 for row in source_tmp:
     if row[0] == 'N_z':
-        ConfigSource.n_z = np.int32(row[1])
+        ConfigSource.n_z = np.int64(row[1])                                                                       #change
     elif row[0] == 'z_step':
         ConfigSource.z_step = np.float64(row[1])
     elif row[0] == 'x_s':  # position along x --> must be <0

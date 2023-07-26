@@ -66,7 +66,7 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from src.dependencies import Dependencies
 from src.plots import Plots
 import scipy.constants as cst
-
+import csv
 
 class Window(QMainWindow, Ui_MainWindow, Dependencies, Plots):
 
@@ -265,13 +265,73 @@ class Window(QMainWindow, Ui_MainWindow, Dependencies, Plots):
         start_message = "Field calculation using "+method+" -- in progress"
         end_message = "Field calculation using "+method+" -- Successfully finished"
         error_message = "Field calculation using "+method+" -- Error. Do not consider the display"
+        groundType = self.groundTypeComboBox.currentText()
         if method == 'WWP':
-            groundType = self.groundTypeComboBox.currentText()
-            if groundType != 'None':
-                error_message = "Error with WWP, ground not accounted. Do not consider the display"
+            if groundType == 'Dielectric':
+                error_message = "Error with WWP, Dielectric ground not yet available in WWP"
+                self.informationTextBrowser.setPlainText(error_message)
                 raise ValueError('Error with WWP, ground not accounted. Do not consider the display')
-
-        # start message
+            elif groundType == 'PEC':
+                error_message = "Error with WWP, PEC ground not yet available in WWP"
+                self.informationTextBrowser.setPlainText(error_message)
+                raise ValueError('Error with WWP, ground not accounted. Do not consider the display')
+        elif method == 'SSF':
+            if groundType == 'Dielectric':
+                error_message = "Dielectric ground not yet available in SSF"
+                self.informationTextBrowser.setPlainText(error_message)
+                raise ValueError('Dielectric ground not yet available in SSF')
+        elif method == 'WWP-H':
+            if groundType == 'No Ground':
+                error_message = "There is no ground, Please use WWP instead of WWP-H"
+                self.informationTextBrowser.setPlainText(error_message)
+                raise ValueError('There is no ground, Please use WWP instead of WWP-H')
+            elif groundType == 'Dielectric':
+                error_message = "Dielectric ground not yet available in WWP-H"
+                self.informationTextBrowser.setPlainText(error_message)
+                raise ValueError('Dielectric ground not yet available in WWP-H')
+        Width = self.widthDoubleSpinBox.value()
+        if Width == 0:
+            error_message = "Please Enter a Value For lambda Source"
+            self.informationTextBrowser.setPlainText(error_message)
+            raise ValueError('lambda Source = 0m!!')
+        freq = self.frequencyMHzDoubleSpinBox.value()
+        apod = self.sizeApoSpinBox.value()
+        file_source_output_config = '../source/outputs/configuration.csv'
+        f_source_config = open(file_source_output_config, newline='')
+        file_tmp = csv.reader(f_source_config)
+        for row in file_tmp:
+            if row[0] == 'frequency':
+                freq1 = np.float64(row[1])
+                if freq != freq1:
+                    error_message = "The value of the Frequency does NOT match with source generation. Please Click on the Run Source Button Before Running the Simulation."
+                    self.informationTextBrowser.setPlainText(error_message)
+                    raise ValueError(['frequency ', freq, ' MHz value does not match with source generation', freq1, ' MHz'])
+            elif row[0] == 'z_step':
+                z_step = np.float64(row[1])
+            elif row[0] == 'N_z':
+                N_z = np.int64(row[1])
+                if N_z != 2000 and method == 'SSF':
+                    error_message = "z_step value does NOT match with the source generation. Requirement : N_z = 2000"
+                    self.informationTextBrowser.setPlainText(error_message)
+                    raise ValueError('z_step value does NOT match with the source generation')
+            elif row[0] == 'z_s':
+                z_s = np.float64(row[1])
+                file_relief_config = '../terrain/outputs/z_relief.csv'
+                relief_config = open(file_relief_config, newline='')
+                file = csv.reader(relief_config)
+                for l in file:
+                    relief0 = np.float64(l[0])
+                    if (z_s + relief0) >= N_z * z_step * (1 - apod * 1e-2) or (groundType == 'No Ground' and z_s <= 400 * apod * 1e-2):
+                        error_message = "Warning: The Source is in the Apodization Zone"
+                        self.informationTextBrowser.setPlainText(error_message)
+                        raise ValueError('The Source is in the Apodization Zone')
+        reliefType = self.reliefTypeComboBox.currentText()
+        if reliefType == 'Superposed':
+            Iteration = self.nIterationsSpinBox.value()
+            if Iteration == 0:
+                error_message = "Warning : Iterations(scales) = 0. Please change the value."
+                self.informationTextBrowser.setPlainText(error_message)
+                raise ValueError('zero-size array to reduction operation minimum which has no identity')
         self.run_simulation.setStyleSheet('QPushButton {background-color: red;}')
         self.informationTextBrowser.setPlainText(start_message)
         self.informationTextBrowser.repaint()
@@ -280,14 +340,14 @@ class Window(QMainWindow, Ui_MainWindow, Dependencies, Plots):
         wv_l = self.wvlMaxLevelSpinBox.value()
         flag_error = check_modulo(n_z, wv_l)
         turbu_type = self.turbuComboBox.currentText()
-        ground_type = self.groundTypeComboBox.currentText()
+        # ground_type = self.groundTypeComboBox.currentText()
         #flag_error_turbu = check_turbu(turbu_type,ground_type)
         if flag_error:
             self.informationTextBrowser.setPlainText("ERROR: N_z must be multiple of 2^L (max wavelet level)")
             raise (ValueError(['N_z must be multiple of 2^L (max wavelet level)']))
         #if flag_error_turbu:
-            #self.informationTextBrowser.setPlainText("ERROR: Ground type must be None if turbulence is True")
-            #raise (ValueError(['Ground type must be None if turbulence is True']))
+            #self.informationTextBrowser.setPlainText("ERROR: Ground type must be No Ground if turbulence is True")
+            #raise (ValueError(['Ground type must be No Ground if turbulence is True']))
         # main program: SSW propagation
         # change directory and launch propagation (depends on the OS)
         if sys.platform == "linux" or sys.platform == "linux2" or sys.platform == "darwin":
@@ -366,7 +426,7 @@ def check_modulo(n_z, wv_l):
 """
 def check_turbu(turbu_type, ground_type):
     # --- Check the size of the vectors, multiple of 2^n --- #
-    if turbu_type == 'Y' and ground_type != 'None':
+    if turbu_type == 'Y' and ground_type != 'No Ground':
         flag_error = True
     else:
         flag_error = False

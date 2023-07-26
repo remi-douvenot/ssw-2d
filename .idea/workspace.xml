@@ -5,26 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b5a6572f-2cbb-45cc-aad0-8ebc0e965382" name="Changes" comment="Final correction of the computation of the log-amplitude variance">
-      <change afterPath="$PROJECT_DIR$/source/src/plane_wave_source.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/ssw-2d.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ssw-2d.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/main_2d_ssw_gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/main_2d_ssw_gui.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/post_processing/inputs/configuration.csv" beforeDir="false" afterPath="$PROJECT_DIR$/post_processing/inputs/configuration.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/post_processing/main_montecarlo.py" beforeDir="false" afterPath="$PROJECT_DIR$/post_processing/main_montecarlo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/post_processing/outputs/E_field_standard_1G_40km_Los100.npy" beforeDir="false" afterPath="$PROJECT_DIR$/post_processing/outputs/E_field_standard_1G_40km_Los100.npy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/post_processing/outputs/E_reference.npy" beforeDir="false" afterPath="$PROJECT_DIR$/post_processing/outputs/E_reference.npy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/post_processing/src/plots/log_variance.py" beforeDir="false" afterPath="$PROJECT_DIR$/post_processing/src/plots/log_variance.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/post_processing/src/plots/plot_field.py" beforeDir="false" afterPath="$PROJECT_DIR$/post_processing/src/plots/plot_field.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/propagation/inputs/configuration.csv" beforeDir="false" afterPath="$PROJECT_DIR$/propagation/inputs/configuration.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/propagation/main_propagation.py" beforeDir="false" afterPath="$PROJECT_DIR$/propagation/main_propagation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/propagation/outputs/configuration.csv" beforeDir="false" afterPath="$PROJECT_DIR$/propagation/outputs/configuration.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/propagation/outputs/dictionary.npy" beforeDir="false" afterPath="$PROJECT_DIR$/propagation/outputs/dictionary.npy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/propagation/src/DSSF/propa_discrete_spectral_domain.py" beforeDir="false" afterPath="$PROJECT_DIR$/propagation/src/DSSF/propa_discrete_spectral_domain.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/inputs/configuration.csv" beforeDir="false" afterPath="$PROJECT_DIR$/source/inputs/configuration.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/main_source.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/main_source.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/outputs/configuration.csv" beforeDir="false" afterPath="$PROJECT_DIR$/source/outputs/configuration.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/src/complex_source_point.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/src/complex_source_point.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/terrain/inputs/conf_terrain.csv" beforeDir="false" afterPath="$PROJECT_DIR$/terrain/inputs/conf_terrain.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/terrain/outputs/z_relief.csv" beforeDir="false" afterPath="$PROJECT_DIR$/terrain/outputs/z_relief.csv" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,15 +32,17 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/home/remi/Bureau/codes/GitHub/ssw-2d/propagation",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;evelyn&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/remi/Bureau/codes/GitHub/ssw-2d/propagation&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Python.main_2d_ssw_gui">
     <configuration name="main_2d_ssw_gui" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="ssw-2d" />

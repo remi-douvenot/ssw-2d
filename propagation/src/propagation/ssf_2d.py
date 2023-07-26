@@ -55,8 +55,8 @@ def ssf_2d(u_0, config, n_refraction, ii_vect_relief):
 
     # --- Creation of the apodisation window --- # @todo Code other apodisation windows
     # along z
-    n_apo_z = np.int(config.apo_z * config.N_z)
-    apo_window_z = apodisation_window(config.apo_window, n_apo_z)
+    n_apo_z = np.int64(config.apo_z * config.N_z)                                                                                       # change
+    apo_window_z = apodisation_window(config.apo_window, n_apo_z) #Ex : congig.apo_window = "Hanning" /// n_apo_z = zmax
     # ------------------------------------------ #
 
     # --- Initialisations --- #
@@ -74,7 +74,7 @@ def ssf_2d(u_0, config, n_refraction, ii_vect_relief):
     # --- propagator --- %
     print('ground')
     print(config.ground)
-    if config.ground == 'None':
+    if config.ground == 'No Ground':
         print('I am there')
         propagator_dssf = discrete_spectral_propagator(config, config.N_z)
     elif config.ground == 'PEC':
@@ -123,14 +123,14 @@ def ssf_2d(u_0, config, n_refraction, ii_vect_relief):
                 # u_x_dx[0:diff_relief[ii_x - 1]] = 0.0
 
                 # end of the loop
-        elif config.ground == 'None':
+        elif config.ground == 'No Ground':
             # print('No ground')
 
             # Propagate using SSF
             u_x_dx = dssf_one_step(u_x, propagator_dssf)
 
         else:
-            raise ValueError(['Ground condition should be dielectric, PEC, or None'])
+            raise ValueError(['Ground condition should be dielectric, PEC, or No Ground'])
         # ---------- END --------------- #
         # --- Free-space propagation --- #
         # ------------------------------ #

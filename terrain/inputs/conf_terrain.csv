@@ -1,8 +1,14 @@
 Property,Value,Unit
+<<<<<<< HEAD
 N_x,60,
 x_step,100.0,m
 type,Plane,
+=======
+N_x,500,
+x_step,10.0,m
+type,Superposed,
+>>>>>>> origin/manal
 z_max_relief,100.0,m
 iterations,7,for superposed terrain
-width,2000.0,pts
-center,30000.0,pts
+width,150.0,pts
+center,2000.0,pts

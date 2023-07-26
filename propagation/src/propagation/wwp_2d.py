@@ -89,16 +89,16 @@ def wwp_2d(u_0, config, n_refraction, ii_vect_relief):
     np.save('./outputs/dictionary', dictionary)
     # --- Sizes of the apodisation and image layers --- #
     if config.ground == 'PEC' or config.ground == 'Dielectric':
-        n_im = np.int(np.round(config.N_z * config.image_layer))
+        n_im = np.int64(np.round(config.N_z * config.image_layer))                                                    #change
         remain_im = n_im % 2**config.wv_L
         if remain_im != 0:
             n_im += 2**config.wv_L - remain_im
-    else:  # config.ground == 'None':
+    else:  # config.ground == 'No Ground':
         print('--- Main loop. No ground ---')
         n_im = 0
     config.N_im = n_im
 
-    n_apo_z = np.int(config.apo_z * config.N_z)
+    n_apo_z = np.int64(config.apo_z * config.N_z)                                                                     #change
     remain_apo = n_apo_z % 2 ** config.wv_L
     if remain_apo != 0:
         n_apo_z += 2 ** config.wv_L - remain_apo
@@ -140,13 +140,13 @@ def wwp_2d(u_0, config, n_refraction, ii_vect_relief):
 
             raise ValueError(['PEC ground not yet available in WWP'])
 
-        elif config.ground == 'None':
+        elif config.ground == 'No Ground':
 
             # Propagate using WWP
             w_x_dx = wwp_2d_one_step(w_x, dictionary, config)
 
         else:
-            raise ValueError(['Ground condition should be dielectric, PEC, or None'])
+            raise ValueError(['Ground condition should be dielectric, PEC, or No Ground'])
         # ---------- END --------------- #
         # --- Free-space propagation --- #
         # ------------------------------ #
