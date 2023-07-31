@@ -1,6 +1,6 @@
 Property,Value,Unit
 method,SSF,
-N_x,500,Unnamed: 2
+N_x,100,Unnamed: 2
 N_z,2000,
 x_step,10.0,m
 z_step,0.25,m
@@ -12,7 +12,7 @@ wavelet family,sym6,
 apodisation window,Hanning,
 apodisation size,0.2,% of N_z
 image size,0.2,% of N_z
-ground,PEC,
+ground,No Ground,
 epsr,15.0,
 sigma,0.5,S/m
 atmosphere,Homogeneous,
