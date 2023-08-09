@@ -18,6 +18,7 @@
 
 from src.DSSF.dssf_one_step import dssf_one_step
 from src.DSSF.propa_discrete_spectral_domain import discrete_spectral_propagator
+from src.propagation.connection_coefficient_one_step import connection_coefficient_one_step
 import numpy as np
 import math
 import matplotlib.pyplot as plt
@@ -32,5 +33,7 @@ def wavelet_propagation(u_wavelet_x, config):
     propagator_dssf = discrete_spectral_propagator(config, n_z_tot)
 
     u_wavelet_x_dx = dssf_one_step(u_wavelet_x, propagator_dssf)
+
+    # u_wavelet_x_dx = connection_coefficient_one_step(u_wavelet_x, propagation_matrix)
 
     return u_wavelet_x_dx

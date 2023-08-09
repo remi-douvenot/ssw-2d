@@ -69,7 +69,7 @@ def ssw_2d(u_0, config, n_refraction, ii_vect_relief):
     print('--- Dedicated time (s) ---', np.round(t_dictionary_f - t_dictionary_s, decimals=2))
     print(' ')
     # save the final electric field
-    np.save('./outputs/dictionary', dictionary)
+    # np.save('./outputs/dictionary', dictionary)
     n_propa_lib = 0  # not used in Python code
     # if Cython, the dictionary is stored in the shape of one unique vector.
     if config.py_or_cy == 'Cython':

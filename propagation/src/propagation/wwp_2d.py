@@ -86,7 +86,7 @@ def wwp_2d(u_0, config, n_refraction, ii_vect_relief):
     print('--- Dedicated time (s) ---', np.round(t_dictionary_f - t_dictionary_s, decimals=2))
     print(' ')
     # save the final electric field
-    np.save('./outputs/dictionary', dictionary)
+    # np.save('./outputs/dictionary', dictionary)
     # --- Sizes of the apodisation and image layers --- #
     if config.ground == 'PEC' or config.ground == 'Dielectric':
         n_im = np.int64(np.round(config.N_z * config.image_layer))                                                    #change
