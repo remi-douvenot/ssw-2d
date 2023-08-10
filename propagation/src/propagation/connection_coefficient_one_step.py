@@ -18,9 +18,12 @@ def compute_connection_coeff(propaconfig):
     coeff_a = np.array(wav.rec_lo) * np.sqrt(2)
 
     N = len(coeff_a)  # number of filter coefficients
+    z_step = propaconfig.z_step
 
     # possible j indices of the connection coefficient
-    j_idx = np.arange(-N + 2, N - 1)
+    j_idx = np.arange(-N + 2, N - 2 + z_step, z_step)
+    j_idx = np.around(j_idx, 2)
+    # j_idx = np.arange(-N + 2, N - 1)
     num_coeff = j_idx.size
 
     # ---------------------------- #
@@ -32,11 +35,12 @@ def compute_connection_coeff(propaconfig):
     # Generation of the homogeneous equations
     for j in j_idx:
         row = np.zeros(num_coeff)
-        row[j + N - 2] = 1
+        idx = np.searchsorted(j_idx, j)
+        row[idx] = 1
         for n in range(N):
             for m in range(N):
                 if -N + 2 - 2 * j <= n - m <= N - 2 - 2 * j:
-                    idx = np.searchsorted(j_idx, 2 * j + n - m)
+                    idx = np.searchsorted(j_idx, round(2 * j + n - m, 2))
                     row[idx] = row[idx] - coeff_a[n] * coeff_a[m]
         A1[eq, :] = row
         eq = eq + 1  # increase by 1 to move on to the next equation
@@ -70,7 +74,7 @@ def compute_connection_coeff(propaconfig):
         for n in range(N):
             for m in range(N):
                 if -N + 2 - 2 * j <= n - m <= N - 2 - 2 * j:
-                    idx = np.searchsorted(j_idx, 2 * j + n - m)
+                    idx = np.searchsorted(j_idx, round(2 * j + n - m, 2))
                     row[idx] = row[idx] - 2 * coeff_a[n] * coeff_a[m]
         A2[eq, :] = row
         eq = eq + 1  # increase by 1 to move on to the next equation
@@ -86,7 +90,7 @@ def compute_connection_coeff(propaconfig):
         col = col + 1
 
     B2 = np.zeros(num_coeff)
-    B2 = np.append(B2, 2)
+    B2 = np.append(B2, 2 / z_step)
 
     Lambda_02 = np.linalg.lstsq(A2, B2, rcond=None)[0]
 
@@ -120,6 +124,6 @@ def galerkin_matrices(propaconfig):
     '''num = 2 * delta_matrix - (L_matrix + S_matrix) * propaconfig.x_step
     den = np.linalg.inv(2 * delta_matrix + (L_matrix + S_matrix) * propaconfig.x_step)
     propagation_matrix = np.dot(den, num)'''
-    propagation_matrix  = expm(- (L_matrix + S_matrix) * propaconfig.x_step)
+    propagation_matrix = expm(- (L_matrix + S_matrix) * propaconfig.x_step)
 
     return L_matrix, S_matrix, propagation_matrix
