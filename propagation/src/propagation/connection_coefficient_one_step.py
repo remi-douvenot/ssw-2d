@@ -107,17 +107,12 @@ def galerkin_matrices(propaconfig):
     n_refractive_index = generate_n_profile(propaconfig)
 
     # delta, L and S matrices (Iqbal)
-    delta_matrix = np.eye(propaconfig.N_z, dtype='complex')
+    # delta_matrix = np.eye(propaconfig.N_z, dtype='complex')
     L_matrix = np.zeros((propaconfig.N_z, propaconfig.N_z), dtype='complex')
 
-    for k in range(propaconfig.N_z):  # rows of matrices
-        for l in range(propaconfig.N_z):  # columns of matrices
-            j = l - k
-            if min(j_idx) <= j * propaconfig.z_step <= max(j_idx) and (j * propaconfig.z_step) % 1 == 0:
-                idx = np.searchsorted(j_idx, j * propaconfig.z_step)
-                L_matrix[k, l] = 1j / (2 * k0) * Lambda02[idx]
-            else:
-                pass
+    for diag in j_idx:
+        L_matrix = L_matrix + np.diag(np.ones(propaconfig.N_z - np.abs(int(diag/propaconfig.z_step))) * 1j / (2 * k0) *
+                                      Lambda02[np.searchsorted(j_idx, diag)], k=int(diag/propaconfig.z_step))
 
     S_matrix = np.diag(1j * k0 / 2 * (n_refractive_index ** 2 - 1))
 
