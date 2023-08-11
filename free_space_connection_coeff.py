@@ -5,6 +5,7 @@ import csv
 import scipy.constants as cst
 import matplotlib.pyplot as plt
 from propagation.src.propagation.connection_coefficient_one_step import connection_coefficient_one_step, galerkin_matrices
+import sys
 
 # ----------------------------- #
 # --- Extract configuration --- #
@@ -101,11 +102,16 @@ for row in propa_tmp:
 class propaConfig:
     freq = 1000e6
     wv_family = 'sym6'
-    x_step = 2
-    N_x = 100
+    x_step = 1
+    N_x = 300
     z_step = 0.2
     N_z = 2000
     atmosphere = 'Homogeneous'
+    c0 = 0.118
+    delta = 15.0
+    zb = 200.0
+    c2 = -0.8
+    zt = 200.0
 
 
 class ConfigSource:
@@ -162,7 +168,7 @@ u_0 /= u_infty  # put max at 1 to avoid numerical errors
 # --- INITIAL FIELD --- #
 # --------------------- #
 
-u_total = np.zeros((propaConfig.N_z, propaConfig.N_x), dtype='complex')
+e_total = np.zeros((propaConfig.N_z, propaConfig.N_x), dtype='complex')
 
 u_x = u_0
 
@@ -171,7 +177,9 @@ L_matrix, S_matrix, propagation_matrix = galerkin_matrices(propaConfig)
 
 for ii_x in np.arange(0, propaConfig.N_x):
     u_x_dx = connection_coefficient_one_step(u_x, propagation_matrix)
-    u_total[:, ii_x] = u_x_dx
+    e_x_dx = u_x_dx * u_infty / np.sqrt(ConfigSource.k0 * (-ConfigSource.x_s + ii_x * propaConfig.x_step)) * np.exp(
+        1j * ConfigSource.k0 * (-ConfigSource.x_s + ii_x * propaConfig.x_step))
+    e_total[:, ii_x] = e_x_dx
     u_x = u_x_dx
 
 
@@ -205,4 +213,22 @@ plt.ylabel('Altitude (m)', fontsize=14)
 plt.title('Final field E')
 plt.legend()
 plt.grid()
+plt.show()
+
+
+
+plt.figure()
+plot_dynamic = 60 # dB from max to min
+v_max = np.max(20 * np.log10(np.abs(e_total) + sys.float_info.epsilon))
+v_min = v_max - plot_dynamic
+z_max = propaConfig.N_z * propaConfig.z_step
+extent = [0, x_max, 0, z_max]
+im_field = plt.imshow(20 * np.log10(abs(e_total) + sys.float_info.epsilon),
+                      extent=extent, aspect='auto', vmax=v_max,
+                      vmin=v_min, origin='lower', interpolation='none', cmap='jet')
+cb = plt.colorbar(im_field)
+cb.ax.tick_params(labelsize=12)
+plt.xlabel('Distance (m)', fontsize=14)
+plt.ylabel('Altitude (m)', fontsize=14)
+plt.title('Propagated field u')
 plt.show()

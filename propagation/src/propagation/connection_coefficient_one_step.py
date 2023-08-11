@@ -21,9 +21,8 @@ def compute_connection_coeff(propaconfig):
     z_step = propaconfig.z_step
 
     # possible j indices of the connection coefficient
-    j_idx = np.arange(-N + 2, N - 2 + z_step, z_step)
-    j_idx = np.around(j_idx, 2)
-    # j_idx = np.arange(-N + 2, N - 1)
+    # j_idx = np.around(np.arange(-N + 2, N - 2 + z_step, z_step), 2) # for decimal indices
+    j_idx = np.arange(-N + 2, N - 1) # for integer indices
     num_coeff = j_idx.size
 
     # ---------------------------- #
@@ -90,7 +89,8 @@ def compute_connection_coeff(propaconfig):
         col = col + 1
 
     B2 = np.zeros(num_coeff)
-    B2 = np.append(B2, 2 / z_step)
+    B2 = np.append(B2, 2) # for integer indices
+    # B2 = np.append(B2, 2 / z_step) # for decimal indices
 
     Lambda_02 = np.linalg.lstsq(A2, B2, rcond=None)[0]
 
@@ -105,7 +105,7 @@ def galerkin_matrices(propaconfig):
     k0 = 2 * cst.pi * propaconfig.freq / cst.c
     z_max = propaconfig.N_z * propaconfig.z_step
 
-    j_idx, Lambda_01, Lambda02 = compute_connection_coeff(propaconfig)
+    j_idx, Lambda01, Lambda02 = compute_connection_coeff(propaconfig)
 
     # Generate n profile
     n_refractive_index = generate_n_profile(propaconfig)
@@ -116,7 +116,7 @@ def galerkin_matrices(propaconfig):
 
     for diag in j_idx:
         L_matrix = L_matrix + np.diag(np.ones(propaconfig.N_z - np.abs(int(diag/propaconfig.z_step))) * 1j / (2 * k0) *
-                                      Lambda02[np.searchsorted(j_idx, diag)], k=int(diag/propaconfig.z_step))
+                                      Lambda02[int(diag + (j_idx.size-1)/2)], k=int(diag/propaconfig.z_step))
 
     S_matrix = np.diag(1j * k0 / 2 * (n_refractive_index ** 2 - 1))
 
