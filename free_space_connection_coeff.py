@@ -5,6 +5,7 @@ import csv
 import scipy.constants as cst
 import matplotlib.pyplot as plt
 from propagation.src.propagation.connection_coefficient_one_step import connection_coefficient_one_step, galerkin_matrices
+from propagation.src.propagation.apodisation import apply_apodisation, apodisation_window
 import sys
 
 # ----------------------------- #
@@ -102,8 +103,8 @@ for row in propa_tmp:
 class propaConfig:
     freq = 1000e6
     wv_family = 'sym6'
-    x_step = 1
-    N_x = 300
+    x_step = 0.1
+    N_x = 1000
     z_step = 0.2
     N_z = 2000
     atmosphere = 'Homogeneous'
@@ -112,6 +113,9 @@ class propaConfig:
     zb = 200.0
     c2 = -0.8
     zt = 200.0
+    apo_z = 0.2
+    apo_window = 'Hanning'
+    ground = 'No Ground'
 
 
 class ConfigSource:
@@ -128,7 +132,7 @@ class ConfigSource:
     # altitude of the source in m
     z_s = 200
     # width of the aperture W0
-    W0 = cst.c / propaConfig.freq * 2
+    W0 = cst.c / propaConfig.freq * 4
 
 # ------------ END ------------ #
 # --- Extract configuration --- #
@@ -169,13 +173,15 @@ u_0 /= u_infty  # put max at 1 to avoid numerical errors
 # --------------------- #
 
 e_total = np.zeros((propaConfig.N_z, propaConfig.N_x), dtype='complex')
-
+n_apo_z = np.int64(propaConfig.apo_z * propaConfig.N_z)
+apo_window_z = apodisation_window(propaConfig.apo_window, n_apo_z)
 u_x = u_0
 
 # Propagation
 L_matrix, S_matrix, propagation_matrix = galerkin_matrices(propaConfig)
 
 for ii_x in np.arange(0, propaConfig.N_x):
+    u_x = apply_apodisation(u_x, apo_window_z, propaConfig)
     u_x_dx = connection_coefficient_one_step(u_x, propagation_matrix)
     e_x_dx = u_x_dx * u_infty / np.sqrt(ConfigSource.k0 * (-ConfigSource.x_s + ii_x * propaConfig.x_step)) * np.exp(
         1j * ConfigSource.k0 * (-ConfigSource.x_s + ii_x * propaConfig.x_step))
@@ -202,7 +208,7 @@ v_max = np.max(e_final_db)
 v_min = v_max - 100
 print('Max output field = ', np.round(v_max, 2), 'dBV/m')
 z_vect = np.linspace(0, ConfigSource.z_step * ConfigSource.n_z, num=ConfigSource.n_z, endpoint=False)
-plt.plot(e_field_db, z_vect, color='g', label='Initial field')
+# plt.plot(e_field_db, z_vect, color='g', label='Initial field')
 plt.plot(e_final_db, z_vect, color='r', label='Wavelet-Galerkin')
 z_vect2 = np.linspace(0, 400, num=2000, endpoint=False)
 plt.plot(e_ssf_db, z_vect2, color='b', label='SSF')
