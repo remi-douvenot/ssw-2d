@@ -104,6 +104,9 @@ def compute_connection_coeff(propaconfig):
 def galerkin_matrices(propaconfig):
     k0 = 2 * cst.pi * propaconfig.freq / cst.c
     z_max = propaconfig.N_z * propaconfig.z_step
+    wav = pywt.Wavelet(propaconfig.wv_family)
+    genus = wav.number
+    sup_len = propaconfig.N_z + 2 * (genus - 1)  # length of support of the extended domain
 
     j_idx, Lambda01, Lambda02 = compute_connection_coeff(propaconfig)
 
@@ -112,11 +115,15 @@ def galerkin_matrices(propaconfig):
 
     # delta, L and S matrices (Iqbal)
     # delta_matrix = np.eye(propaconfig.N_z, dtype='complex')
-    L_matrix = np.zeros((propaconfig.N_z, propaconfig.N_z), dtype='complex')
+    L_matrix = np.zeros((sup_len, sup_len), dtype='complex')
 
     for diag in j_idx:
-        L_matrix = L_matrix + np.diag(np.ones(propaconfig.N_z - np.abs(int(diag/propaconfig.z_step))) * 1j / (2 * k0) *
+        L_matrix = L_matrix + np.diag(np.ones(sup_len - np.abs(int(diag/propaconfig.z_step))) * 1j / (2 * k0) *
                                       Lambda02[int(diag + (j_idx.size-1)/2)], k=int(diag/propaconfig.z_step))
+
+    n_refractive_index_up = n_refractive_index[-genus - 1:-1]
+    n_refractive_index_down = np.flip(n_refractive_index[1:genus - 1])
+    n_refractive_index = np.concatenate((n_refractive_index_down, n_refractive_index, n_refractive_index_up))
 
     S_matrix = np.diag(1j * k0 / 2 * (n_refractive_index ** 2 - 1))
 

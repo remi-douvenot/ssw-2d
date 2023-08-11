@@ -103,7 +103,7 @@ for row in propa_tmp:
 class propaConfig:
     freq = 1000e6
     wv_family = 'sym6'
-    x_step = 0.1
+    x_step = 1
     N_x = 1000
     z_step = 0.2
     N_z = 2000
@@ -172,10 +172,15 @@ u_0 /= u_infty  # put max at 1 to avoid numerical errors
 # --- INITIAL FIELD --- #
 # --------------------- #
 
+# --- Extended domain --- #
+wav = pywt.Wavelet(propaConfig.wv_family)
+genus = wav.number
+ext_dom = np.zeros(genus-1)
+
 e_total = np.zeros((propaConfig.N_z, propaConfig.N_x), dtype='complex')
-n_apo_z = np.int64(propaConfig.apo_z * propaConfig.N_z)
+n_apo_z = np.int64(propaConfig.apo_z * propaConfig.N_z + 2 * (genus - 1))
 apo_window_z = apodisation_window(propaConfig.apo_window, n_apo_z)
-u_x = u_0
+u_x = np.concatenate((ext_dom, u_0, ext_dom))
 
 # Propagation
 L_matrix, S_matrix, propagation_matrix = galerkin_matrices(propaConfig)
@@ -185,15 +190,16 @@ for ii_x in np.arange(0, propaConfig.N_x):
     u_x_dx = connection_coefficient_one_step(u_x, propagation_matrix)
     e_x_dx = u_x_dx * u_infty / np.sqrt(ConfigSource.k0 * (-ConfigSource.x_s + ii_x * propaConfig.x_step)) * np.exp(
         1j * ConfigSource.k0 * (-ConfigSource.x_s + ii_x * propaConfig.x_step))
-    e_total[:, ii_x] = e_x_dx
+    e_total[:, ii_x] = e_x_dx[genus-1:-genus+1]
     u_x = u_x_dx
 
 
 # de-normalise in infinity norm
-u_x_dx *= u_infty
+u_final = u_x_dx[genus-1:-genus+1]
+u_final *= u_infty
 # de-normalise the reduced field
 x_max = propaConfig.N_x * propaConfig.x_step
-e_final = u_x_dx / np.sqrt(ConfigSource.k0 * (-ConfigSource.x_s + x_max)) * np.exp(
+e_final = u_final / np.sqrt(ConfigSource.k0 * (-ConfigSource.x_s + x_max)) * np.exp(
     1j * ConfigSource.k0 * (-ConfigSource.x_s + x_max))
 # e_final = u_x_dx * np.exp(-1j * ConfigSource.k0 * (-ConfigSource.x_s + x_max))
 
@@ -224,7 +230,7 @@ plt.show()
 
 
 plt.figure()
-plot_dynamic = 60 # dB from max to min
+plot_dynamic = 80 # dB from max to min
 v_max = np.max(20 * np.log10(np.abs(e_total) + sys.float_info.epsilon))
 v_min = v_max - plot_dynamic
 z_max = propaConfig.N_z * propaConfig.z_step
@@ -236,5 +242,4 @@ cb = plt.colorbar(im_field)
 cb.ax.tick_params(labelsize=12)
 plt.xlabel('Distance (m)', fontsize=14)
 plt.ylabel('Altitude (m)', fontsize=14)
-plt.title('Propagated field u')
 plt.show()
