@@ -4,7 +4,7 @@ from source.src.complex_source_point import complex_source_point
 import csv
 import scipy.constants as cst
 import matplotlib.pyplot as plt
-from propagation.src.propagation.connection_coefficient_one_step import connection_coefficient_one_step, galerkin_matrices
+from propagation.src.propagation.wgm_one_step import wgm_one_step, galerkin_matrices
 from propagation.src.propagation.apodisation import apply_apodisation, apodisation_window
 import sys
 
@@ -103,7 +103,7 @@ for row in propa_tmp:
 class propaConfig:
     freq = 1000e6
     wv_family = 'sym6'
-    x_step = 1
+    x_step = 10
     N_x = 1000
     z_step = 0.2
     N_z = 2000
@@ -187,7 +187,7 @@ L_matrix, S_matrix, propagation_matrix = galerkin_matrices(propaConfig)
 
 for ii_x in np.arange(0, propaConfig.N_x):
     u_x = apply_apodisation(u_x, apo_window_z, propaConfig)
-    u_x_dx = connection_coefficient_one_step(u_x, propagation_matrix)
+    u_x_dx = wgm_one_step(u_x, propagation_matrix)
     e_x_dx = u_x_dx * u_infty / np.sqrt(ConfigSource.k0 * (-ConfigSource.x_s + ii_x * propaConfig.x_step)) * np.exp(
         1j * ConfigSource.k0 * (-ConfigSource.x_s + ii_x * propaConfig.x_step))
     e_total[:, ii_x] = e_x_dx[genus-1:-genus+1]
@@ -234,12 +234,12 @@ plot_dynamic = 80 # dB from max to min
 v_max = np.max(20 * np.log10(np.abs(e_total) + sys.float_info.epsilon))
 v_min = v_max - plot_dynamic
 z_max = propaConfig.N_z * propaConfig.z_step
-extent = [0, x_max, 0, z_max]
+extent = [0, x_max / 1000, 0, z_max]
 im_field = plt.imshow(20 * np.log10(abs(e_total) + sys.float_info.epsilon),
                       extent=extent, aspect='auto', vmax=v_max,
                       vmin=v_min, origin='lower', interpolation='none', cmap='jet')
 cb = plt.colorbar(im_field)
 cb.ax.tick_params(labelsize=12)
-plt.xlabel('Distance (m)', fontsize=14)
+plt.xlabel('Distance (km)', fontsize=14)
 plt.ylabel('Altitude (m)', fontsize=14)
 plt.show()

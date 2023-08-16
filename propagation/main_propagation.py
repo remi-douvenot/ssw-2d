@@ -83,6 +83,7 @@ from src.propagation.ssw_2d import ssw_2d
 from src.propagation.ssf_2d import ssf_2d
 from src.propagation.wwp_2d import wwp_2d
 from src.propagation.wwp_h_2d import wwp_h_2d
+from src.propagation.wgm_2d import wgm_2d
 import shutil  # to make file copies
 # where config is defined
 from src.classes_and_files.read_files import read_config, read_source, read_relief
@@ -175,6 +176,9 @@ elif config.method == 'WWP-H':
 # SSF
 elif config.method == 'SSF':
     u_final, wv_total = ssf_2d(u_0, config, n_refraction, ii_vect_relief)
+# WGM
+elif config.method == 'WGM':
+    u_final, wv_total = wgm_2d(u_0, config, n_refraction, ii_vect_relief)
 else:
     raise ValueError('Unknown propagation method.')
 

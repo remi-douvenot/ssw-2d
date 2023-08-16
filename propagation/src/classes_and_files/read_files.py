@@ -96,8 +96,8 @@ def read_config(file_configuration):
     if (Config.ground != 'No Ground') & (Config.ground != 'PEC') & (Config.ground != 'Dielectric'):
         raise ValueError(['Ground must be chosen among: No Ground, PEC, or Dielectric'])
 
-    if (Config.method != 'SSW') & (Config.method != 'WWP') & (Config.method != 'WWP-H') & (Config.method != 'SSF'):
-        raise ValueError(['Method must be chosen among: SSW or WWP or WWP-H or SSF'])
+    if (Config.method != 'SSW') & (Config.method != 'WWP') & (Config.method != 'WWP-H') & (Config.method != 'SSF') & (Config.method != 'WGM'):
+        raise ValueError(['Method must be chosen among: SSW or WWP or WWP-H or SSF or WGM'])
     # ------------ END ------------ #
     # --- Reading configuration --- #
     # ----------------------------- #

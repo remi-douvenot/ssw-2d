@@ -4,7 +4,7 @@ from source.src.complex_source_point import complex_source_point
 import csv
 import scipy.constants as cst
 import matplotlib.pyplot as plt
-from propagation.src.propagation.connection_coefficient_one_step import connection_coefficient_one_step, galerkin_matrices, compute_connection_coeff
+from propagation.src.propagation.wgm_one_step import compute_connection_coeff
 
 
 class propaConfig:

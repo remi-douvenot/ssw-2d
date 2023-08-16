@@ -5,7 +5,7 @@ from scipy.linalg import expm
 from propagation.src.atmosphere.genere_n_profile import generate_n_profile
 
 
-def connection_coefficient_one_step(u_x, propagation_matrix):
+def wgm_one_step(u_x, propagation_matrix):
 
     # Propagation in one step
     u_dx = np.dot(propagation_matrix, u_x)
@@ -122,7 +122,7 @@ def galerkin_matrices(propaconfig):
                                       Lambda02[int(diag + (j_idx.size-1)/2)], k=int(diag/propaconfig.z_step))
 
     n_refractive_index_up = n_refractive_index[-genus - 1:-1]
-    n_refractive_index_down = np.flip(n_refractive_index[1:genus - 1])
+    n_refractive_index_down = n_refractive_index[0:genus - 2]
     n_refractive_index = np.concatenate((n_refractive_index_down, n_refractive_index, n_refractive_index_up))
 
     S_matrix = np.diag(1j * k0 / 2 * (n_refractive_index ** 2 - 1))
