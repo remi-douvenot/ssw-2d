@@ -11,19 +11,25 @@ def wgm_2d(u_0, config, n_refraction, ii_vect_relief):
     n_x = config.N_x
 
     # --- Extended domain --- #
+    print('Extending domain')
     wav = pywt.Wavelet(config.wv_family)
     genus = wav.number
     ext_dom = np.zeros(genus - 1)
     u_x = np.concatenate((ext_dom, u_0, ext_dom))
+    sup_len = config.N_z + 2 * (genus - 1)  # length of support of the extended domain
+    n_refraction_up = n_refraction[-genus - 1:-1]
+    n_refraction_down = n_refraction[0:genus - 2]
+    n_refraction = np.concatenate((n_refraction_down, n_refraction, n_refraction_up))
     # ----------------------- #
 
     # --- Apodisation window --- #
-    n_apo_z = np.int64(config.apo_z * config.N_z + 2 * (genus - 1))
+    n_apo_z = np.int64(config.apo_z * sup_len)
     apo_window_z = apodisation_window(config.apo_window, n_apo_z)
     # -------------------------- #
 
     # --- Propagation matrix --- #
-    L_matrix, S_matrix, propagation_matrix = galerkin_matrices(config)
+    print('Computing propagation matrix')
+    L_matrix, S_matrix, propagation_matrix = galerkin_matrices(config, n_refraction, sup_len)
     # -------------------------- #
 
     wv_total = [[]] * n_x

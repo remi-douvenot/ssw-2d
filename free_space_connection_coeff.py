@@ -6,6 +6,7 @@ import scipy.constants as cst
 import matplotlib.pyplot as plt
 from propagation.src.propagation.wgm_one_step import wgm_one_step, galerkin_matrices
 from propagation.src.propagation.apodisation import apply_apodisation, apodisation_window
+from propagation.src.atmosphere.genere_n_profile import generate_n_profile
 import sys
 
 # ----------------------------- #
@@ -176,14 +177,23 @@ u_0 /= u_infty  # put max at 1 to avoid numerical errors
 wav = pywt.Wavelet(propaConfig.wv_family)
 genus = wav.number
 ext_dom = np.zeros(genus-1)
-
-e_total = np.zeros((propaConfig.N_z, propaConfig.N_x), dtype='complex')
-n_apo_z = np.int64(propaConfig.apo_z * propaConfig.N_z + 2 * (genus - 1))
-apo_window_z = apodisation_window(propaConfig.apo_window, n_apo_z)
+sup_len = propaConfig.N_z + 2 * (genus - 1)  # length of support of the extended domain
 u_x = np.concatenate((ext_dom, u_0, ext_dom))
 
+e_total = np.zeros((propaConfig.N_z, propaConfig.N_x), dtype='complex')
+
+# Apodisation window
+n_apo_z = np.int64(propaConfig.apo_z * propaConfig.N_z + 2 * (genus - 1))
+apo_window_z = apodisation_window(propaConfig.apo_window, n_apo_z)
+
+# Generate n profile
+n_refractive_index = generate_n_profile(propaConfig)
+n_refractive_index_up = n_refractive_index[-genus - 1:-1]
+n_refractive_index_down = n_refractive_index[0:genus - 2]
+n_refractive_index = np.concatenate((n_refractive_index_down, n_refractive_index, n_refractive_index_up))
+
 # Propagation
-L_matrix, S_matrix, propagation_matrix = galerkin_matrices(propaConfig)
+L_matrix, S_matrix, propagation_matrix = galerkin_matrices(propaConfig, n_refractive_index, sup_len)
 
 for ii_x in np.arange(0, propaConfig.N_x):
     u_x = apply_apodisation(u_x, apo_window_z, propaConfig)
@@ -215,7 +225,7 @@ v_min = v_max - 100
 print('Max output field = ', np.round(v_max, 2), 'dBV/m')
 z_vect = np.linspace(0, ConfigSource.z_step * ConfigSource.n_z, num=ConfigSource.n_z, endpoint=False)
 # plt.plot(e_field_db, z_vect, color='g', label='Initial field')
-plt.plot(e_final_db, z_vect, color='r', label='Wavelet-Galerkin')
+plt.plot(e_final_db, z_vect, color='r', label='WGM')
 z_vect2 = np.linspace(0, 400, num=2000, endpoint=False)
 plt.plot(e_ssf_db, z_vect2, color='b', label='SSF')
 plt.xlim(v_min, -15)
