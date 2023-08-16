@@ -7,12 +7,13 @@ import matplotlib.pyplot as plt
 from propagation.src.propagation.wgm_one_step import wgm_one_step, galerkin_matrices
 from propagation.src.propagation.apodisation import apply_apodisation, apodisation_window
 from propagation.src.atmosphere.genere_n_profile import generate_n_profile
+from propagation.src.classes_and_files.read_files import read_config
 import sys
 
 # ----------------------------- #
 # --- Extract configuration --- #
 # ----------------------------- #
-'''file_source = 'source/inputs/configuration.csv'
+file_source = 'source/inputs/configuration.csv'
 
 
 class ConfigSource:
@@ -63,77 +64,10 @@ for row in source_tmp:
     else:
         raise ValueError(['Input file of the geometry is not valid. Input "' + row[0] + '" not valid'])
 
+ConfigSource.k0 = 2 * cst.pi * freq / cst.c
 
-ConfigSource.k0 = 2 * cst.pi * freq / cst.c'''
-
-
-'''file_config_propa = 'propagation/inputs/configuration.csv'
-
-
-class propaConfig:
-    def __init__(self):
-        self.wv_family = 0
-        self.x_step = 0
-        self.N_z = 0
-        self.z_step = 0
-        self.atmosphere = 0
-        self.freq = 0
-
-
-f_propa = open(file_config_propa, newline='')
-propa_tmp = csv.reader(f_propa)
-for row in propa_tmp:
-    if row[0] == 'N_z':
-        propaConfig.N_z = np.int64(row[1])
-    elif row[0] == 'N_x':
-        propaConfig.N_x = np.int64(row[1])
-    elif row[0] == 'z_step':
-        propaConfig.z_step = np.float64(row[1])
-    elif row[0] == 'x_step':
-        propaConfig.x_step = np.float64(row[1])
-    elif row[0] == 'wavelet family':
-        propaConfig.wv_family = row[1]
-    elif row[0] == 'atmosphere':
-        propaConfig.atmosphere = row[1]
-    elif row[0] == 'frequency':
-        propaConfig.freq = np.float64(row[1]) * 1e6
-    else:
-        pass'''
-
-
-class propaConfig:
-    freq = 1000e6
-    wv_family = 'sym6'
-    x_step = 10
-    N_x = 1000
-    z_step = 0.2
-    N_z = 2000
-    atmosphere = 'Homogeneous'
-    c0 = 0.118
-    delta = 15.0
-    zb = 200.0
-    c2 = -0.8
-    zt = 200.0
-    apo_z = 0.2
-    apo_window = 'Hanning'
-    ground = 'No Ground'
-
-
-class ConfigSource:
-    n_z = 2000
-    z_step = 0.2
-    # position of the CSP along x (real <0)
-    x_s = -50
-    # radiated power in W (real)
-    P_Tx = 1
-    # max gain in dBi (real)
-    G_Tx = 0
-    # wavenumber in m
-    k0 = 2 * cst.pi * propaConfig.freq / cst.c
-    # altitude of the source in m
-    z_s = 200
-    # width of the aperture W0
-    W0 = cst.c / propaConfig.freq * 4
+file_config = 'propagation/inputs/configuration.csv'
+propaConfig = read_config(file_config)
 
 # ------------ END ------------ #
 # --- Extract configuration --- #
@@ -183,7 +117,7 @@ u_x = np.concatenate((ext_dom, u_0, ext_dom))
 e_total = np.zeros((propaConfig.N_z, propaConfig.N_x), dtype='complex')
 
 # Apodisation window
-n_apo_z = np.int64(propaConfig.apo_z * propaConfig.N_z + 2 * (genus - 1))
+n_apo_z = np.int64(propaConfig.apo_z * propaConfig.N_z + (genus - 1))
 apo_window_z = apodisation_window(propaConfig.apo_window, n_apo_z)
 
 # Generate n profile

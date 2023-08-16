@@ -16,7 +16,7 @@
 ##
 
 # where config class is defined
-from src.classes_and_files.classes import *
+from propagation.src.classes_and_files.classes import *
 import csv
 import numpy as np
 import scipy.constants as cst

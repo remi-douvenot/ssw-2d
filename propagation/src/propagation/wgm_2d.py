@@ -23,7 +23,7 @@ def wgm_2d(u_0, config, n_refraction, ii_vect_relief):
     # ----------------------- #
 
     # --- Apodisation window --- #
-    n_apo_z = np.int64(config.apo_z * sup_len)
+    n_apo_z = np.int64(config.apo_z * config.N_z + (genus - 1))
     apo_window_z = apodisation_window(config.apo_window, n_apo_z)
     # -------------------------- #
 
