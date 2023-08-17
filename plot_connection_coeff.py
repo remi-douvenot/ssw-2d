@@ -8,21 +8,21 @@ from propagation.src.propagation.wgm_one_step import compute_connection_coeff
 
 
 class propaConfig:
-    freq = 1000e6
     wv_family = 'sym6'
-    x_step = 2
-    N_x = 100
     z_step = 1
-    N_z = 2000
-    atmosphere = 'Homogeneous'
 
 
 j_idx, Lambda_01, Lambda_02 = compute_connection_coeff(propaConfig)
+print('j is', j_idx)
+print(r'\Lambda_j^{01} is', Lambda_01)
+print(r'\Lambda_j^{02} is', Lambda_02)
+np.savetxt('Lambda_01.csv', Lambda_01, delimiter=',')
+np.savetxt('Lambda_02.csv', Lambda_02, delimiter=',')
 
 plt.figure()
 plt.plot(j_idx, Lambda_01)
 plt.xlabel('j index', fontsize=14)
-plt.ylabel('Lambda_01', fontsize=14)
+plt.ylabel(r'$\Lambda_j^{01}$', fontsize=14)
 plt.title('First-order connection coefficient')
 plt.grid()
 plt.show()
@@ -30,7 +30,7 @@ plt.show()
 plt.figure()
 plt.plot(j_idx, Lambda_02)
 plt.xlabel('j index', fontsize=14)
-plt.ylabel('Lambda_02', fontsize=14)
+plt.ylabel(r'$\Lambda_j^{02}$', fontsize=14)
 plt.title('Second-order connection coefficient')
 plt.grid()
 plt.show()
