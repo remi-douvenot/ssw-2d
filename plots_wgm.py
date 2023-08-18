@@ -6,10 +6,11 @@ x_max = 100  # km
 z_step = 0.2  # m
 n_z = 2000
 z_max = n_z * z_step  # m
+atmosphere = 'Homogeneous'
 
-e_ssf = np.load('SSF_'+str(x_max)+'.0km.npy')
-e_ssw = np.load('SSW_'+str(x_max)+'.0km.npy')
-e_wgm = np.load('WGM_'+str(x_max)+'.0km.npy')
+e_ssf = np.load('SSF_'+str(x_max)+'.0km_'+atmosphere+'.npy')
+e_ssw = np.load('SSW_'+str(x_max)+'.0km_'+atmosphere+'.npy')
+e_wgm = np.load('WGM_'+str(x_max)+'.0km_'+atmosphere+'.npy')
 
 e_ssf_db = 20 * np.log10(np.abs(e_ssf))
 e_ssw_db = 20 * np.log10(np.abs(e_ssw))
@@ -28,12 +29,12 @@ plt.xlim(v_min, v_max+10)
 plt.ylim(0, z_max)
 plt.xlabel('E field (dBV/m)', fontsize=14)
 plt.ylabel('Altitude (m)', fontsize=14)
-plt.title('Final field E at '+str(x_max)+' km')
+plt.title('Final field E at '+str(x_max)+' km for '+atmosphere+' atmosphere')
 plt.legend()
 plt.grid()
 plt.show()
 
-e_total = np.load('WGM_2d_'+str(x_max)+'.0km.npy')
+e_total = np.load('WGM_2d_'+str(x_max)+'.0km_'+atmosphere+'.npy')
 plt.figure()
 plot_dynamic = 80  # dB from max to min
 v_max = np.max(20 * np.log10(np.abs(e_total) + sys.float_info.epsilon))
