@@ -81,22 +81,6 @@ propaConfig = read_config(file_config)
 # compute E field
 e_field = complex_source_point(ConfigSource)  # initial field
 
-# plot E_init
-plt.figure()
-e_field_db = 20 * np.log10(np.abs(e_field))
-v_max = np.max(e_field_db)
-v_min = v_max - 100
-print('Max input field = ', np.round(v_max, 2), 'dBV/m')
-z_vect = np.linspace(0, ConfigSource.z_step * ConfigSource.n_z, num=ConfigSource.n_z, endpoint=False)
-plt.plot(e_field_db, z_vect)
-plt.xlim(v_min, v_max+1)
-plt.ylim(0, ConfigSource.z_step * ConfigSource.n_z)
-plt.xlabel('E field (dBV/m)', fontsize=14)
-plt.ylabel('Altitude (m)', fontsize=14)
-plt.title('Initial field E')
-plt.grid()
-plt.show()
-
 # --- Calculate u_0 from E_init (normalised in infinity norm to have max(|u_0|) = 1) --- #
 u_0 = e_field * np.sqrt(ConfigSource.k0 * (-ConfigSource.x_s)) * np.exp(-1j * ConfigSource.k0 * (-ConfigSource.x_s))
 # u_0 = e_field * np.exp(1j * ConfigSource.k0 * (-ConfigSource.x_s))
@@ -149,41 +133,6 @@ e_final = u_final / np.sqrt(ConfigSource.k0 * (-ConfigSource.x_s + x_max)) * np.
 
 # Field computed by the SSW-2D in SSF
 e_ssf = np.load('propagation/outputs/E_field.npy')
-
-# Plot the field after propagation
-plt.figure()
-e_final_db = 20 * np.log10(np.abs(e_final))
-e_ssf_db = 20 * np.log10(np.abs(e_ssf))
-v_max = np.max(e_final_db)
-v_min = v_max - 100
-print('Max output field = ', np.round(v_max, 2), 'dBV/m')
-z_vect = np.linspace(0, ConfigSource.z_step * ConfigSource.n_z, num=ConfigSource.n_z, endpoint=False)
-# plt.plot(e_field_db, z_vect, color='g', label='Initial field')
-plt.plot(e_final_db, z_vect, color='r', label='WGM')
-z_vect2 = np.linspace(0, 400, num=2000, endpoint=False)
-plt.plot(e_ssf_db, z_vect2, color='b', label='SSF')
-plt.xlim(v_min, -15)
-plt.ylim(0, ConfigSource.z_step * ConfigSource.n_z)
-plt.xlabel('E field (dBV/m)', fontsize=14)
-plt.ylabel('Altitude (m)', fontsize=14)
-plt.title('Final field E')
-plt.legend()
-plt.grid()
-plt.show()
-
-
-
-plt.figure()
-plot_dynamic = 80 # dB from max to min
-v_max = np.max(20 * np.log10(np.abs(e_total) + sys.float_info.epsilon))
-v_min = v_max - plot_dynamic
-z_max = propaConfig.N_z * propaConfig.z_step
-extent = [0, x_max / 1000, 0, z_max]
-im_field = plt.imshow(20 * np.log10(abs(e_total) + sys.float_info.epsilon),
-                      extent=extent, aspect='auto', vmax=v_max,
-                      vmin=v_min, origin='lower', interpolation='none', cmap='jet')
-cb = plt.colorbar(im_field)
-cb.ax.tick_params(labelsize=12)
-plt.xlabel('Distance (km)', fontsize=14)
-plt.ylabel('Altitude (m)', fontsize=14)
-plt.show()
+np.save(propaConfig.method+'_'+str(propaConfig.x_step*propaConfig.N_x/1000)+'km', e_ssf)
+np.save('WGM_'+str(propaConfig.x_step*propaConfig.N_x/1000)+'km', e_final)
+np.save('WGM_2d_'+str(propaConfig.x_step*propaConfig.N_x/1000)+'km', e_total)
