@@ -31,24 +31,23 @@ def wavelet_propagation(u_wavelet_x, config):
     n_z_tot = u_wavelet_x.size
     # N_y_pre,N_z_pre = P_DSSF.shape
     # if N_y_tot != N_y_pre or N_z_tot!=N_z_pre:
-    propagator_dssf = discrete_spectral_propagator(config, n_z_tot)
+    '''propagator_dssf = discrete_spectral_propagator(config, n_z_tot)
 
-    u_wavelet_x_dx = dssf_one_step(u_wavelet_x, propagator_dssf)
+    u_wavelet_x_dx = dssf_one_step(u_wavelet_x, propagator_dssf)'''
 
-    # u_wavelet_x_dx = wgm_propagator(u_wavelet_x, config, n_z_tot)
+    u_wavelet_x_dx = wgm_propagator(u_wavelet_x, config, n_z_tot)
 
     return u_wavelet_x_dx
 
 
 def wgm_propagator(u_x, config, n_z_tot):
 
-    config.N_z = n_z_tot
-    L_matrix, S_matrix, propagation_matrix = galerkin_matrices(config)
-
     wav = pywt.Wavelet(config.wv_family)
     genus = wav.number
     ext_dom = np.zeros(genus - 1)
+    sup_len = n_z_tot + 2 * (genus - 1)  # length of support of the extended domain
     u_x = np.concatenate((ext_dom, u_x, ext_dom))
+    L_matrix, S_matrix, propagation_matrix = galerkin_matrices(config, 0, sup_len)
 
     u_x_dx = wgm_one_step(u_x, propagation_matrix)
     u_x_dx = u_x_dx[genus - 1:-genus + 1]

@@ -114,7 +114,10 @@ def galerkin_matrices(propaconfig, n_refractive_index, sup_len):
         L_matrix = L_matrix + np.diag(np.ones(sup_len - np.abs(int(diag/propaconfig.z_step))) * 1j / (2 * k0) *
                                       Lambda02[int(diag + (j_idx.size-1)/2)], k=int(diag/propaconfig.z_step))
 
-    S_matrix = np.diag(1j * k0 / 2 * (n_refractive_index ** 2 - 1))
+    if n_refractive_index == 0:
+        S_matrix = np.zeros((sup_len,sup_len), dtype='complex')
+    else:
+        S_matrix = np.diag(1j * k0 / 2 * (n_refractive_index ** 2 - 1))
 
     # matrix for propagation in delta_x (Iqbal)
     '''num = 2 * delta_matrix - (L_matrix + S_matrix) * propaconfig.x_step
