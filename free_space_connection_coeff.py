@@ -111,7 +111,7 @@ n_refractive_index_down = n_refractive_index[0:genus - 2]
 n_refractive_index = np.concatenate((n_refractive_index_down, n_refractive_index, n_refractive_index_up))
 
 # Propagation
-L_matrix, S_matrix, propagation_matrix = galerkin_matrices(propaConfig, n_refractive_index, sup_len)
+propagation_matrix = galerkin_matrices(propaConfig, sup_len, n_refractive_index)
 
 for ii_x in np.arange(0, propaConfig.N_x):
     u_x = apply_apodisation(u_x, apo_window_z, propaConfig)

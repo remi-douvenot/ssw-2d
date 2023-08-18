@@ -47,7 +47,7 @@ def wgm_propagator(u_x, config, n_z_tot):
     ext_dom = np.zeros(genus - 1)
     sup_len = n_z_tot + 2 * (genus - 1)  # length of support of the extended domain
     u_x = np.concatenate((ext_dom, u_x, ext_dom))
-    L_matrix, S_matrix, propagation_matrix = galerkin_matrices(config, 0, sup_len)
+    propagation_matrix = galerkin_matrices(config, sup_len)
 
     u_x_dx = wgm_one_step(u_x, propagation_matrix)
     u_x_dx = u_x_dx[genus - 1:-genus + 1]

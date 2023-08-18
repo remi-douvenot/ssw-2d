@@ -29,7 +29,7 @@ def wgm_2d(u_0, config, n_refraction, ii_vect_relief):
 
     # --- Propagation matrix --- #
     print('Computing propagation matrix')
-    L_matrix, S_matrix, propagation_matrix = galerkin_matrices(config, n_refraction, sup_len)
+    propagation_matrix = galerkin_matrices(config, sup_len, n_refraction)
     # -------------------------- #
 
     wv_total = [[]] * n_x

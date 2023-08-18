@@ -101,7 +101,7 @@ def compute_connection_coeff(propaconfig):
     return j_idx, Lambda_01, Lambda_02
 
 
-def galerkin_matrices(propaconfig, n_refractive_index, sup_len):
+def galerkin_matrices(propaconfig, sup_len, *args):
     k0 = 2 * cst.pi * propaconfig.freq / cst.c
 
     j_idx, Lambda01, Lambda02 = compute_connection_coeff(propaconfig)
@@ -114,9 +114,10 @@ def galerkin_matrices(propaconfig, n_refractive_index, sup_len):
         L_matrix = L_matrix + np.diag(np.ones(sup_len - np.abs(int(diag/propaconfig.z_step))) * 1j / (2 * k0) *
                                       Lambda02[int(diag + (j_idx.size-1)/2)], k=int(diag/propaconfig.z_step))
 
-    if n_refractive_index == 0:
+    if len(args) == 0:
         S_matrix = np.zeros((sup_len,sup_len), dtype='complex')
     else:
+        n_refractive_index = args[0]
         S_matrix = np.diag(1j * k0 / 2 * (n_refractive_index ** 2 - 1))
 
     # matrix for propagation in delta_x (Iqbal)
@@ -125,4 +126,4 @@ def galerkin_matrices(propaconfig, n_refractive_index, sup_len):
     propagation_matrix = np.dot(den, num)'''
     propagation_matrix = expm(- (L_matrix + S_matrix) * propaconfig.x_step)
 
-    return L_matrix, S_matrix, propagation_matrix
+    return propagation_matrix
