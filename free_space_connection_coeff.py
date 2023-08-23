@@ -133,6 +133,11 @@ e_final = u_final / np.sqrt(ConfigSource.k0 * (-ConfigSource.x_s + x_max)) * np.
 
 # Field computed by the SSW-2D in SSF
 e_ssf = np.load('propagation/outputs/E_field.npy')
-np.save(propaConfig.method+'_'+str(propaConfig.x_step*propaConfig.N_x/1000)+'km_'+propaConfig.atmosphere, e_ssf)
+if propaConfig.method == 'SSW':
+    np.save(
+        'SSW_with '+propaConfig.wvl_propagator+'_' + str(propaConfig.x_step * propaConfig.N_x / 1000) + 'km_' + propaConfig.atmosphere,
+        e_ssf)
+else:
+    np.save(propaConfig.method+'_'+str(propaConfig.x_step*propaConfig.N_x/1000)+'km_'+propaConfig.atmosphere, e_ssf)
 np.save('WGM_'+str(propaConfig.x_step*propaConfig.N_x/1000)+'km_'+propaConfig.atmosphere, e_final)
 np.save('WGM_2d_'+str(propaConfig.x_step*propaConfig.N_x/1000)+'km_'+propaConfig.atmosphere, e_total)
