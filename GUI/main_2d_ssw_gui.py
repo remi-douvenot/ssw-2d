@@ -289,6 +289,11 @@ class Window(QMainWindow, Ui_MainWindow, Dependencies, Plots):
                 error_message = "Dielectric ground not yet available in WWP-H"
                 self.informationTextBrowser.setPlainText(error_message)
                 raise ValueError('Dielectric ground not yet available in WWP-H')
+        elif method == 'WGM':
+            if groundType != 'No Ground':
+                error_message = "WGM only available for No Ground"
+                self.informationTextBrowser.setPlainText(error_message)
+                raise ValueError('WGM only available for No Ground')
         Width = self.widthDoubleSpinBox.value()
         if Width == 0:
             error_message = "Please Enter a Value For lambda Source"
