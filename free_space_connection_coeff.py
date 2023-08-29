@@ -101,8 +101,9 @@ u_x = np.concatenate((ext_dom, u_0, ext_dom))
 e_total = np.zeros((propaConfig.N_z, propaConfig.N_x), dtype='complex')
 
 # Apodisation window
-n_apo_z = np.int64(propaConfig.apo_z * propaConfig.N_z + (genus - 1))
+n_apo_z = np.int64(propaConfig.apo_z * propaConfig.N_z)
 apo_window_z = apodisation_window(propaConfig.apo_window, n_apo_z)
+apo_window_z = np.concatenate((apo_window_z, np.zeros(genus-1)))
 
 # Generate n profile
 n_refractive_index = generate_n_profile(propaConfig)

@@ -23,8 +23,9 @@ def wgm_2d(u_0, config, n_refraction, ii_vect_relief):
     # ----------------------- #
 
     # --- Apodisation window --- #
-    n_apo_z = np.int64(config.apo_z * config.N_z + (genus - 1))
+    n_apo_z = np.int64(config.apo_z * config.N_z)
     apo_window_z = apodisation_window(config.apo_window, n_apo_z)
+    apo_window_z = np.concatenate((apo_window_z, np.zeros(genus - 1)))
     # -------------------------- #
 
     # --- Propagation matrix --- #
