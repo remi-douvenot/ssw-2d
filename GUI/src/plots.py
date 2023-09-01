@@ -146,7 +146,7 @@ class Plots(object):
         # --- from wavelets to E-field --- #
         # loop on each distance step
         relief = self.reliefTypeComboBox.currentText()
-        if (method == 'WWP' and ground_type != 'No Ground') or (method == 'WWP-H' and relief != 'Plane'):
+        if (method == 'WWP' and ground_type != 'No Ground') or (method == 'WWP-H' and relief != 'Plane') or (method == 'SSF' and ground_type == 'Dielectric'):
             pass
         else:
             for ii_x in np.arange(0, n_x):  # first field is not saved
@@ -274,7 +274,7 @@ class Plots(object):
                 Apod = False
                 for l in file:
                     relief0 = np.float64(l[0])
-                    if (z_s + relief0) >= N_z * z_step * (1 - apod * 1e-2) or (ground_type == 'No Ground' and z_s <= 400 * apod * 1e-2):
+                    if (z_s + relief0) >= N_z * z_step * (1 - apod * 1e-2) or (ground_type == 'No Ground' and z_s <= (N_z * z_step) * apod * 1e-2):
                         Apod = True
                         ax.clear()
 

@@ -1,0 +1,29 @@
+Property,Value,Unit
+method,WWP,
+N_x,1000,Unnamed: 2
+N_z,2000,
+x_step,10.0,m
+z_step,0.2,m
+frequency,2000.0,MHz
+polarisation,TM,
+Max compression error,-10.0,dB
+wavelet level,3,
+wavelet family,sym6,
+apodisation window,Hanning,
+apodisation size,0.2,% of N_z
+image size,0.25,% of N_z
+ground,No Ground,
+epsr,15.0,
+sigma,0.5,S/m
+atmosphere,Trilinear,
+turbulence,N,Y or N
+Cn2,-12.0,Cn2 exponent
+L0,10.0,m
+c0,0.11799999999999988,M-unit/m
+delta,20.0,m
+zb,200.0,m
+c2,-2.0,M-unit/m
+zt,200.0,m
+atm filename,toto.atm,
+dynamic,80,dB
+py_or_cy,Python,'Python' or 'Cython'

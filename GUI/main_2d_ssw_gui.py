@@ -323,7 +323,7 @@ class Window(QMainWindow, Ui_MainWindow, Dependencies, Plots):
                 file = csv.reader(relief_config)
                 for l in file:
                     relief0 = np.float64(l[0])
-                    if (z_s + relief0) >= N_z * z_step * (1 - apod * 1e-2) or (groundType == 'No Ground' and z_s <= 400 * apod * 1e-2):
+                    if (z_s + relief0) >= N_z * z_step * (1 - apod * 1e-2) or (groundType == 'No Ground' and z_s <= (N_z * z_step) * apod * 1e-2):
                         error_message = "The Source is in the Apodization Zone"
                         self.informationTextBrowser.setStyleSheet('color: red')
                         self.informationTextBrowser.setPlainText(error_message)
@@ -375,6 +375,7 @@ class Window(QMainWindow, Ui_MainWindow, Dependencies, Plots):
         self.plot_source_in()
 
         # end message
+        self.informationTextBrowser.setStyleSheet('color: black')
         self.informationTextBrowser.setPlainText("Source calculation -- finished")
         self.run_source.setStyleSheet('QPushButton {background-color: lightgray;}')
         self.run_simulation.setStyleSheet('QPushButton {background-color: green;}')
