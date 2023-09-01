@@ -1,0 +1,17 @@
+Hanning apodisation window
+ground
+No Ground
+I am there
+Iteration 100 / 1000 . Distance = 1000.0
+Iteration 200 / 1000 . Distance = 2000.0
+Iteration 300 / 1000 . Distance = 3000.0
+Iteration 400 / 1000 . Distance = 4000.0
+Iteration 500 / 1000 . Distance = 5000.0
+Iteration 600 / 1000 . Distance = 6000.0
+Iteration 700 / 1000 . Distance = 7000.0
+Iteration 800 / 1000 . Distance = 8000.0
+Iteration 900 / 1000 . Distance = 9000.0
+Iteration 1000 / 1000 . Distance = 10000.0
+Total SSF (ms) 784.0
+Distance from the source =  10050.0
+max E-field at the max distance =  -59.22 V/m

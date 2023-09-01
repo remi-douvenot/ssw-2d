@@ -5,6 +5,7 @@ import numpy as np
 import os
 import csv
 import time
+from numpy.linalg import norm
 
 print('current directory = ', os.getcwd())
 
@@ -54,7 +55,7 @@ def Test():
 
                     # propagation computation
                     if sys.platform == "linux" or sys.platform == "linux2" or sys.platform == "darwin":
-                        cmd = 'cd ../propagation && python3 ./main_propagation.py'
+                        cmd = 'cd ../propagation && python3 ./main_propagation.py > propa.log'
                     else:
                         cmd = 'cd ../propagation && python ./main_propagation.py'
                     #sys.stdout = open("test.txt", 'a')
@@ -63,8 +64,8 @@ def Test():
 
                     E_field_comp = np.load('../propagation/outputs/E_field.npy', allow_pickle=True)
 
-                    E_field_comp_db = 20 * np.log10(np.abs(E_field_comp))
-                    E_field_db = 20 * np.log10(np.abs(E_field))
+                    #E_field_comp_db = 20 * np.log10(np.abs(E_field_comp))
+                    #E_field_db = 20 * np.log10(np.abs(E_field))
                     #print(E_field_comp_db)
                     #print(E_field_db)
 
@@ -80,23 +81,26 @@ def Test():
 
 
 
-                    E_field_comp_db_apo = E_field_comp_db[:int(len(E_field_comp_db) - (apod * N_z))]
-                    E_field_db_apo = E_field_db[:int(len(E_field_db) - (apod * N_z))]
+                    E_field_comp_apo = E_field_comp[:int(len(E_field_comp) - (apod * N_z))]
+                    E_field_apo = E_field[:int(len(E_field) - (apod * N_z))]
 
 
                     if groundType == "No Ground":
-                        E_field_comp_db_apo = E_field_comp_db_apo[int(apod * N_z):]
-                        E_field_db_apo = E_field_db_apo[int(apod * N_z):]
+                        E_field_comp_apo = E_field_comp_apo[int(apod * N_z):]
+                        E_field_apo = E_field_apo[int(apod * N_z):]
 
                     #print(E_field_comp_db_apo,len(E_field_comp_db_apo))
                     #print(E_field_db_apo,len(E_field_db_apo))
 
-
-                    E_diff = E_field_comp_db_apo - E_field_db_apo
+                    E_field_comp_apo_norm = norm(E_field_comp_apo)
+                    E_field_apo_norm = norm(E_field_apo)
+                    E_diff = E_field_comp_apo_norm - E_field_apo_norm
+                    E_diff_db = 20 * np.log10(np.abs(E_diff))
+                    print(E_diff, E_diff_db)
                     if (E_diff != 0).all():
                         print('Test invalide!')
-                        print("La différence entre les deux champs est :", E_diff)
-                        rep=str(input("Voulez-vous continuer ?(o/n)"))
+                        print("La différence entre les deux champs est :", E_diff_db)
+                        rep = str(input("Voulez-vous continuer ?(o/n)"))
                         if rep == "o":
                             break
                         else:
@@ -154,7 +158,7 @@ def Test():
 
                             # propagation computation
                             if sys.platform == "linux" or sys.platform == "linux2" or sys.platform == "darwin":
-                                cmd = 'cd ../propagation && python3 ./main_propagation.py'
+                                cmd = 'cd ../propagation && python3 ./main_propagation.py > propa.log'
                             else:
                                 cmd = 'cd ../propagation && python ./main_propagation.py'
                             # sys.stdout = open("test.txt", 'a')
@@ -162,8 +166,8 @@ def Test():
 
                             E_field_comp = np.load('../propagation/outputs/E_field.npy', allow_pickle=True)
 
-                            E_field_comp_db = 20 * np.log10(np.abs(E_field_comp))
-                            E_field_db = 20 * np.log10(np.abs(E_field))
+                            # E_field_comp_db = 20 * np.log10(np.abs(E_field_comp))
+                            # E_field_db = 20 * np.log10(np.abs(E_field))
                             # print(E_field_comp_db)
                             # print(E_field_db)
 
@@ -177,43 +181,43 @@ def Test():
                                 elif row[0] == 'N_z':
                                     N_z = np.int32(row[1])
 
-                            E_field_comp_db_apo = E_field_comp_db[:int(len(E_field_comp_db) - (apod * N_z))]
-                            E_field_db_apo = E_field_db[:int(len(E_field_db) - (apod * N_z))]
+                            E_field_comp_apo = E_field_comp[:int(len(E_field_comp) - (apod * N_z))]
+                            E_field_apo = E_field[:int(len(E_field) - (apod * N_z))]
 
                             if groundType == "No Ground":
-                                E_field_comp_db_apo = E_field_comp_db_apo[int(apod * N_z):]
-                                E_field_db_apo = E_field_db_apo[int(apod * N_z):]
+                                E_field_comp_apo = E_field_comp_apo[int(apod * N_z):]
+                                E_field_apo = E_field_apo[int(apod * N_z):]
 
-                            #print(E_field_comp_db_apo, len(E_field_comp_db_apo))
-                            #print(E_field_db_apo, len(E_field_db_apo))
+                            # print(E_field_comp_db_apo,len(E_field_comp_db_apo))
+                            # print(E_field_db_apo,len(E_field_db_apo))
 
-                            #if (E_field_comp_db != E_field_db).all():
-                             #   print('Test invalide!')
-                              #  raise ValueError('test invalide!')
+                            E_field_comp_apo_norm = norm(E_field_comp_apo)
+                            E_field_apo_norm = norm(E_field_apo)
+                            E_diff = E_field_comp_apo_norm - E_field_apo_norm
+                            E_diff_db = 20 * np.log10(np.abs(E_diff))
+                            print(E_diff, E_diff_db)
 
-                            E_diff = E_field_comp_db - E_field_db
                             if (E_diff != 0).all():
                                 print('Test invalide!')
-                                print("La différence entre les deux champs est :", E_diff)
+                                print("La différence entre les deux champs est :", E_diff_db)
                                 rep = str(input("Voulez-vous continuer ?(o/n)"))
                                 if rep == "o":
                                     break
                                 else:
                                     raise ValueError('test invalide!')
+
                             print('Test valide!')
 
+                        # E1 = [[]] * (wvl + 1)
+                        # E2 = [[]] * (wvl + 1)
 
-                            #E1 = [[]] * (wvl + 1)
-                            #E2 = [[]] * (wvl + 1)
-
-                            #for ii_x in np.arange(0, N_x):
-                             #   for ii_lvl in np.arange(0, wvl + 1):
-                              #      E1[ii_lvl] = E_field[ii_x][ii_lvl].todense()
-                               #     E2[ii_lvl] = E_field_comp[ii_x][ii_lvl].todense()
-                                #    if (E1[ii_lvl] != E2[ii_lvl]).all():
-                                 #       print('Test invalide!')
-                                  #      raise ValueError('test invalide!')
-
+                        # for ii_x in np.arange(0, N_x):
+                        #   for ii_lvl in np.arange(0, wvl + 1):
+                        #      E1[ii_lvl] = E_field[ii_x][ii_lvl].todense()
+                        #     E2[ii_lvl] = E_field_comp[ii_x][ii_lvl].todense()
+                        #    if (E1[ii_lvl] != E2[ii_lvl]).all():
+                        #       print('Test invalide!')
+                        #      raise ValueError('test invalide!')
 
     t_end = time.process_time()
     print('Total Time (s)', np.round((t_end - t_start)))
