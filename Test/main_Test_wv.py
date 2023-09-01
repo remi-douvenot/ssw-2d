@@ -68,7 +68,7 @@ def Test():
                             E2[ii_lvl] = E_field_comp[ii_x][ii_lvl].todense()
                             if (E1[ii_lvl] != E2[ii_lvl]).all():
                                 print('Test invalide!')
-                                print("La différence entre les deux champs est :", E_diff_db)
+                                print("La différence au niveau des ondelettes est :", E_diff_db)
                                 rep = str(input("Voulez-vous continuer ?(o/n)"))
                                 if rep == "o":
                                     break
@@ -130,7 +130,7 @@ def Test():
                                     E2[ii_lvl] = E_field_comp[ii_x][ii_lvl].todense()
                                     if (E1[ii_lvl] != E2[ii_lvl]).all():
                                         print('Test invalide!')
-                                        print("La différence entre les deux champs est :", E_diff_db)
+                                        print("La différence au niveau des ondelettes est :", E_diff_db)
                                         rep = str(input("Voulez-vous continuer ?(o/n)"))
                                         if rep == "o":
                                             break
