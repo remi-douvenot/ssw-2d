@@ -227,6 +227,9 @@ class Window(QMainWindow, Ui_MainWindow, Dependencies, Plots):
         self.apodisationComboBox.currentTextChanged.connect(self.apodisation_changed)
         self.sizeApoSpinBox.valueChanged.connect(self.size_apo_clicked)
 
+        # --- wvl propagator --- #
+        self.wvlPropagatorComboBox.currentTextChanged.connect(self.wvl_propagator_changed)
+
         # --- Atmosphere --- #
         self.atmTypeComboBox.currentTextChanged.connect(self.atm_type_changed)
         self.c0DoubleSpinBox.valueChanged.connect(self.c0_clicked)

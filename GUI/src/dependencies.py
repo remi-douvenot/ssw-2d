@@ -20,6 +20,10 @@ class Dependencies(object):
     def method_changed(self):
         # --- get method --- #
         method = self.methodComboBox.currentText()
+        if method == 'SSW' or method == 'WWP' or method == 'WWP-H':
+            self.wvlPropagatorComboBox.setEnabled(True)
+        else:
+            self.wvlPropagatorComboBox.setEnabled(False)
         # write the polarisation value in files
         update_file('method', method, 'propa')
 
@@ -185,6 +189,13 @@ class Dependencies(object):
         wavelet_family = self.apodisationComboBox.currentText()
         # write the apodisation type
         update_file('apodisation window', wavelet_family, 'propa')
+
+    # --- wvl propagator type --- #
+    def wvl_propagator_changed(self):
+        # --- get wvl propagator --- #
+        wvl_propagator = self.wvlPropagatorComboBox.currentText()
+        # write the wvl propagator type
+        update_file('wvl propagator', wvl_propagator, 'propa')
 
     # --- size apodisation (in %) --- #
     def size_apo_clicked(self):
@@ -524,6 +535,8 @@ class Dependencies(object):
         self.apodisationComboBox.setProperty("value", serie.loc['apodisation window'])
         # apodisation % in z
         self.sizeApoSpinBox.setProperty("value",  np.float64(serie.loc['apodisation size'])*100)  # from value to %               change
+        # wavelet propagator
+        self.wvlPropagatorComboBox.setCurrentText(serie.loc['wvl propagator'])
         # image layer % in z
         self.sizeImageSpinBox.setProperty("value", np.float64(serie.loc['image size'])*100)  # from value to %                    change
         self.image_clicked()  # initialise nb points in image layer

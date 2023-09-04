@@ -54,6 +54,7 @@ class Config:
         self.Cn2 = 0
         self.L0 = 0
         self.py_or_cy = 'None'  # ='Py' for Python code, and = 'Cy' for Cython code
+        self.wvl_propagator = 'None'
 # ---------- END --------- #
 # --- Defining classes --- #
 # ------------------------ #

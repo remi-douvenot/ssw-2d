@@ -31,11 +31,15 @@ def wavelet_propagation(u_wavelet_x, config):
     n_z_tot = u_wavelet_x.size
     # N_y_pre,N_z_pre = P_DSSF.shape
     # if N_y_tot != N_y_pre or N_z_tot!=N_z_pre:
-    '''propagator_dssf = discrete_spectral_propagator(config, n_z_tot)
-
-    u_wavelet_x_dx = dssf_one_step(u_wavelet_x, propagator_dssf)'''
-
-    u_wavelet_x_dx = wgm_propagator(u_wavelet_x, config, n_z_tot)
+    if config.wvl_propagator == 'DSSF':
+        print('Wavelet propagator is DSSF')
+        propagator_dssf = discrete_spectral_propagator(config, n_z_tot)
+        u_wavelet_x_dx = dssf_one_step(u_wavelet_x, propagator_dssf)
+    elif config.wvl_propagator == 'WGM':
+        print('Wavelet propagator is WGM')
+        u_wavelet_x_dx = wgm_propagator(u_wavelet_x, config, n_z_tot)
+    else:
+        raise ValueError('Not a possible wavelet propagator')
 
     return u_wavelet_x_dx
 

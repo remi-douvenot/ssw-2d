@@ -83,6 +83,8 @@ def read_config(file_configuration):
             Config.L0 = np.float64(row[1])                                                                          #change
         elif row[0] == 'py_or_cy':
             Config.py_or_cy = row[1]
+        elif row[0] == 'wvl propagator':
+            Config.wvl_propagator = row[1]
         elif row[0] == 'Property':
             pass  # first line
         elif row[0] == 'dynamic':  # only used for HMI plots
