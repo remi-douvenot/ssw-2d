@@ -1,8 +1,8 @@
+import time
 import pywt
 import numpy as np
 import scipy.constants as cst
 from scipy.linalg import expm
-
 
 
 def wgm_one_step(u_x, propagation_matrix):
@@ -107,12 +107,11 @@ def galerkin_matrices(propaconfig, sup_len, *args):
     j_idx, Lambda01, Lambda02 = compute_connection_coeff(propaconfig)
 
     # delta, L and S matrices (Iqbal)
-    # delta_matrix = np.eye(propaconfig.N_z, dtype='complex')
     L_matrix = np.zeros((sup_len, sup_len), dtype='complex')
 
     for diag in j_idx:
-        L_matrix = L_matrix + np.diag(np.ones(sup_len - np.abs(int(diag/propaconfig.z_step))) * 1j / (2 * k0) *
-                                      Lambda02[int(diag + (j_idx.size-1)/2)], k=int(diag/propaconfig.z_step))
+        L_matrix = L_matrix + np.diag(np.ones(sup_len - np.abs(diag)) * (1j) / (2 * k0 * propaconfig.z_step**2) *
+                                      Lambda02[int(diag + (j_idx.size-1)/2)], k=diag)
 
     if len(args) == 0:
         S_matrix = np.zeros((sup_len,sup_len), dtype='complex')
@@ -121,9 +120,17 @@ def galerkin_matrices(propaconfig, sup_len, *args):
         S_matrix = np.diag(1j * k0 / 2 * (n_refractive_index ** 2 - 1))
 
     # matrix for propagation in delta_x (Iqbal)
-    '''num = 2 * delta_matrix - (L_matrix + S_matrix) * propaconfig.x_step
-    den = np.linalg.inv(2 * delta_matrix + (L_matrix + S_matrix) * propaconfig.x_step)
-    propagation_matrix = np.dot(den, num)'''
-    propagation_matrix = expm(- (L_matrix + S_matrix) * propaconfig.x_step)
+    t1 = time.time()
+    if propaconfig.method == 'WGM' and propaconfig.x_step <= 20:
+        delta_matrix = np.eye(sup_len, dtype='complex')
+        num = 2 * delta_matrix - (L_matrix + S_matrix) * propaconfig.x_step
+        den = np.linalg.inv(2 * delta_matrix + (L_matrix + S_matrix) * propaconfig.x_step)
+        propagation_matrix = np.dot(den, num)
+        print('Propagation matrix with Crank-Nicolson')
+    else:
+        propagation_matrix = expm(- (L_matrix + S_matrix) * propaconfig.x_step)
+        print('Exponential propagation matrix')
+    t2 = time.time()
+    print('Time for propagation matrix', round((t2-t1)*1e3, 2), 'ms for size =', sup_len)
 
     return propagation_matrix
