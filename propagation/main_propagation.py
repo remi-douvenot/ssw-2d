@@ -163,7 +163,7 @@ config.V_s, config.V_p = compute_thresholds(config.N_x, config.max_compression_e
 # ---------------------- #
 # --- 2D Propagation --- #
 # ---------------------- #
-t_propa_s = time.process_time()
+t_propa_s = time.time()
 # SSW
 if config.method == 'SSW':
     u_final, wv_total = ssw_2d(u_0, config, n_refraction, ii_vect_relief)
@@ -182,7 +182,7 @@ elif config.method == 'WGM':
 else:
     raise ValueError('Unknown propagation method.')
 
-t_propa_f = time.process_time()
+t_propa_f = time.time()
 print('Total '+config.method+' (ms)', np.round((t_propa_f-t_propa_s)*1e3))
 
 # --- de-normalise in infinity norm --- #
