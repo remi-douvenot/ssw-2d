@@ -73,7 +73,9 @@
 #
 # @warning: only atmosphere is accounted with WWP. No ground or relief.
 ##
-
+# Since we import cython below, we need to add support to the python interpreter
+import pyximport
+pyximport.install()
 
 import numpy as np
 import time
