@@ -25,6 +25,7 @@ packages to run the core propagation module:
 - scipy
 - pywavelets
 - matplolib
+- cython
 
 and theses additional packages to run the GUI:
 - PyQT5
