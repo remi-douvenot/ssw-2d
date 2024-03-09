@@ -46,7 +46,7 @@ from src.DSSF.dmft import dmft_parameters, u2w, w2u, surface_wave_propagation
 from src.propagation.refraction import apply_refractive_index
 from src.propagation.image_field import compute_image_field, compute_image_field_tm_pec
 from src.wavelets.wavelet_operations import sparsify, q_max_calculation
-from src.propa_cython.refraction_cy import apply_refractive_index_cy
+# from src.propa_cython.refraction_cy import apply_refractive_index_cy # import not used
 
 
 def ssw_2d(u_0, config, n_refraction, ii_vect_relief):
@@ -70,7 +70,8 @@ def ssw_2d(u_0, config, n_refraction, ii_vect_relief):
     print('--- Dedicated time (s) ---', np.round(t_dictionary_f - t_dictionary_s, decimals=2))
     print(' ')
     # save the final electric field
-    np.save('./outputs/dictionary', dictionary)
+    print(len(dictionary), len(dictionary[0]), len(dictionary[1]), len(dictionary[2]))
+    # np.save('./outputs/dictionary', dictionary)
     n_propa_lib = 0  # not used in Python code
     # if Cython, the dictionary is stored in the shape of one unique vector.
     if config.py_or_cy == 'Cython':
