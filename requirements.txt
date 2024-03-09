@@ -1,5 +1,6 @@
 numpy
 scipy
 pywavelets
-matplolib
+matplotlib
 cython
+pandas
