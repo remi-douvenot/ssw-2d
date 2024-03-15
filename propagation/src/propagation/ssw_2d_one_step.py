@@ -50,9 +50,10 @@ import pywt
 import time
 from src.wavelets.wavelet_operations import thresholding, q_max_calculation
 from scipy.signal import convolve
-from src.propa_cython.wavelet_propag_one_step import wavelet_propag_one_step_cy
+# from src.propa_cython.wavelet_propag_one_step import wavelet_propag_one_step_cy # imported dynamically
 # from src.wavelets_cython.wavelets_operations import normalized_indices, calculate_dilation
 import timeit
+import importlib
 
 
 def ssw_2d_one_step(u_x, dictionary, n_propa_lib, config):
@@ -81,12 +82,14 @@ def ssw_2d_one_step(u_x, dictionary, n_propa_lib, config):
 
     # Propagation with the Cython code
     elif config.py_or_cy == 'Cython':
+        # Compile if necessary and import cython function
+        one_step_cy = importlib.import_module('src.propa_cython.wavelet_propag_one_step')
         # put coefficients in array shape
         wv_x, wx_x_shape = pywt.coeffs_to_array(wv_x)
         # Apply the threshold on the array
         wv_x = pywt.threshold(wv_x, config.V_s, mode='hard')
         # Propagate the field in the wavelet domain
-        wv_x_dx_array = wavelet_propag_one_step_cy(n_z, wv_x, dictionary, config.wv_L, n_propa_lib, config.V_p)
+        wv_x_dx_array = one_step_cy.wavelet_propag_one_step_cy(n_z, wv_x, dictionary, config.wv_L, n_propa_lib, config.V_p)
         # Apply the threshold on the array
         wv_x_dx_array = pywt.threshold(wv_x_dx_array, config.V_s, mode='hard')
         # back in coefficients shape

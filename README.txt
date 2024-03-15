@@ -25,6 +25,7 @@ packages to run the core propagation module:
 - scipy
 - pywavelets
 - matplolib
+- cython
 
 and theses additional packages to run the GUI:
 - PyQT5
@@ -45,15 +46,20 @@ install Pycharm (adapt installation to your favorite IDE)
 install pip3 (to install python packages)
 >> sudo apt install python3-pip
 
-install required packages 
->> sudo pip3 install numpy scipy pywavelets matplotlib
+install required packages (user scope)
+>> pip3 install -r requirements.txt
 
-install additional required packages for using the GUI
->> sudo pip3 PyQt5 pandas
+install additional required packages for using the GUI (user-scope)
+>> pip3 PyQt5 pandas
 
 to modify the GUI, install designer
 >> sudo apt install qttools5-dev-tools 
 cmd to launch the GUI designer is >> designer
+
+to load weather data, additionnal depencencies are required :
+>> pip3 install xarray cfgrib
+along with the eccodes system library (required by cfgrib)
+>> sudo apt install libeccodes0
 
 # ---------------------------------------------#
 # ---------------------------------------------#
