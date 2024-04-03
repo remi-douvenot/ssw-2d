@@ -22,6 +22,32 @@ import common
 import matplotlib.pyplot as plt
 from os.path import basename
 
+def normalize(ds: xr.Dataset) -> xr.Dataset:
+    """
+    Normalize the variable names among all datasets
+    """
+    # variables mappings old=new
+    vm = dict(
+        pres="isobaricInhPa",
+    )
+    # coordinates mappings old=new
+    cm = dict(
+        heightAboveGround="heights" #FIXME : heightAboveGround is NOT height above the sea!
+    )
+    coords = list(ds.coords)
+    variables = list(ds.keys())
+
+    for c in coords:
+        if c in cm.keys():
+            # Rename coordinates
+            ds = ds.rename({c:cm[c]})
+            #ds = ds.assign_coords({cm[c]:ds[c]})
+    for v in variables:
+        if v in vm.keys():
+            # Rename variables
+            ds = ds.rename({v:vm[v]})
+    return ds
+
 
 def load(path: str, P: Tuple[float], Q: Tuple[float], N: int) -> xr.Dataset:
     """
@@ -57,7 +83,7 @@ def load(path: str, P: Tuple[float], Q: Tuple[float], N: int) -> xr.Dataset:
             method="linear",
         )
         # Add the distances array to the new coordinate
-        ds = ds.assign_coords({"d": ld})
+        ds = ds.assign_coords(dict(d=ld))
 
         ds["d"] = ds.d.assign_attrs({"long_name": "Distance from P", "units": "m"})
 
@@ -75,19 +101,19 @@ def height_to_hPa(height, P0=101325, T=288.15):  # bug here
 
 
 def add_n(ds: xr.Dataset):
-    def n(x: xr.Dataset):
+    def N(x: xr.Dataset):
         """
         Given the dataset, returns the set of operations required to compute a new variable
         """
-        # Computes the refraction index based on atmospherical data
+        # Computes the refractive index based on atmospherical data
         # Formulas and constants taken from ITU-R P.453-14
         a = 6.1121
         b = 18.678
         c = 257.14
         d = 234.5
 
-        P = x.isobaricInhPa * 100
-        t = x.t - 273.15
+        P = x.isobaricInhPa * 100 # Convert hPa to Pa
+        t = x.t - 273.15 # Convert K to °C
 
         EF = 1 + 1e-4 * np.floor(7.2 + P * (0.0320 + 5.9 * 1e-6 * t * t))
         es = EF * a * np.exp((b - t / d) / (t + c))
@@ -95,30 +121,67 @@ def add_n(ds: xr.Dataset):
         e = x.r * es / 100
 
         N = 77.6 * P / x.t - 5.6 * e / x.t + 3.75e5 * e / (x.t * x.t)
-        return 1 + N * 1e-6
+        return N
 
-    print("[*] Adding refraction index...")
-    # Create a new variable 'n' using function n(ds)
-    ds = ds.assign(n=n)
-    ds["n"] = ds.n.assign_attrs({"long_name": "Refraction index"}) # add metadata
+    print("[*] Adding refractive indexes...")
+    # Create a new varaible N with function N(ds)
+    ds = ds.assign(N=N)
+    ds["N"] = ds.N.assign_attrs({"long_name": "Refractivity"}) # add metadata
+    # Create a new variable 'n' using conversion between N and n
+    ds = ds.assign(n=lambda ds: 1 + ds.N * 1e-6)
+    ds["n"] = ds.n.assign_attrs({"long_name": "Refractive index"}) # add metadata
     return ds
 
+def add_M(ds: xr.Dataset) -> xr.Dataset:
+    Re = 6.371e6 # earth radius (meters)
+    def M(ds:xr.Dataset):
+        return ds.heights/Re * 1e6 + ds.N
+    ds = ds.assign(M=M)
+    ds["M"] = ds.M.assign_attrs({"long_name": "Corefractivity index"})
+    return ds
+
+def add_grad_M(ds: xr.Dataset) -> xr.Dataset:
+    ds = ds.assign(grad_M=lambda x: x.M.differentiate("heights"))
+    ds["grad_n"] = ds.grad_n.assign_attrs(
+        {"long_name": "Co-refractive index gradient", "units": "m⁻¹"}
+    )
+    return ds
 
 def add_grad_n(ds: xr.Dataset):
     """
     Compute de gradient of the refraction index along the vertical
     """
-    print("[*] Computing gradient of n...")
+    print("[*] Computing gradients of refractive indexes...")
     # Create a new variable grad_n using function "DataArray.differentiate"
-    ds = ds.assign(grad_n=lambda x: x.n.differentiate("isobaricInhPa"))
+    ds = ds.assign(grad_n=lambda x: x.n.differentiate("heights"))
     # Add metadata for plotting
     ds["grad_n"] = ds.grad_n.assign_attrs(
         {"long_name": "Refraction index gradient", "units": "m⁻¹"}
     )
+    # Differentiate N along height
+    ds = ds.assign(grad_N=lambda ds: ds.N.differentiate("heights"))
+    ds = ds.assign(grad_N=lambda ds: ds.grad_N * 1000)
+    ds["grad_N"] = ds.grad_n.assign_attrs(
+        {"long_name": "Refractivity gradient", "units": "km⁻¹"}
+    )
     return ds
 
+def add_heights(ds: xr.Dataset, hmax=3000):
+    """
+    Replace the isobaricInhPa coordinate with heights if necessary
+    """
+    print("[*] Adding heights...")
+    coords = list(ds.coords)
+    heights = np.arange(0, hmax, hmax / len(ds.isobaricInhPa), dtype=float)
+    # Create the corresponding pressure array
+    pressures = height_to_hPa(heights, 1e5)
+    if 'isobaricInhPa' in coords and not 'heights' in coords:
+        ds = ds.interp(coords=dict(isobaricInhPa=("heights", pressures)), method="slinear")
+        # Assign the new coordinate to the generated heights
+        ds = ds.assign_coords({"heights": heights})
+    return ds
 
-def interpolate_vertical(ds: xr.Dataset, N, hmax=4000):
+def interpolate_vertical(ds: xr.Dataset, N, hmax=2500):
     """
     Interpolate the dataset in between pressure levels and
     convert the pressure levels to meters
@@ -126,15 +189,20 @@ def interpolate_vertical(ds: xr.Dataset, N, hmax=4000):
     print("[*] Interpolating heights...")
     # Create an array of N heights in meters 
     heights = np.arange(0, hmax, hmax / N, dtype=float)
-    # Create the corresponding pressure array
-    pressures = height_to_hPa(heights, 1e5)
-    # 'linear', 'nearest', 'zero', 'slinear', 'quadratic', 'cubic', 'polynomial'
-    # Interpolate and replace the isobaricInhPa coord by height
-    ds = ds.interp(coords=dict(isobaricInhPa=("height", pressures)), method="slinear")
-    # Assign the new coordinate to the generated heights
-    ds = ds.assign_coords({"height": heights})
-    # Edit the existing dataset metadata in place
-    ds["height"] = ds.height.assign_attrs({"long_name": "Height", "units": "m"})
+    coords = list(ds.coords)
+    if 'heights' in coords:
+        ds = ds.interp(heights=heights)
+        return ds
+    elif 'isobaricInhPa' in coords:
+        # Create the corresponding pressure array
+        pressures = height_to_hPa(heights, 1e5)
+        # 'linear', 'nearest', 'zero', 'slinear', 'quadratic', 'cubic', 'polynomial'
+        # Interpolate and replace the isobaricInhPa coord by height
+        ds = ds.interp(coords=dict(isobaricInhPa=("heights", pressures)), method="slinear")
+        # Assign the new coordinate to the generated heights
+        ds = ds.assign_coords({"heights": heights})
+        # Edit the existing dataset metadata in place
+        ds["heights"] = ds.heights.assign_attrs({"long_name": "Height", "units": "m"})
     return ds
 
 if __name__ == "__main__":
