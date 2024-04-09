@@ -46,7 +46,7 @@ def download_dataset(d: datetime, save_dir='./') -> str:
                     'product_type': 'reanalysis',
                     'format': 'grib',
                     'variable': [
-                        'relative_humidity', 'temperature', # parameters to download
+                        'relative_humidity', 'temperature', 'geopotential' # parameters to download
                     ],
                     'pressure_level': [ # pressure levels to download
                         '125', '150', '175',
