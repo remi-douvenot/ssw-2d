@@ -450,7 +450,7 @@
          <rect>
           <x>9</x>
           <y>20</y>
-          <width>259</width>
+          <width>269</width>
           <height>31</height>
          </rect>
         </property>
@@ -607,6 +607,11 @@
            <item>
             <property name="text">
              <string>Trilinear</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>File</string>
             </property>
            </item>
            <item>
@@ -1637,7 +1642,7 @@
         <rect>
          <x>410</x>
          <y>10</y>
-         <width>173</width>
+         <width>177</width>
          <height>91</height>
         </rect>
        </property>
@@ -1878,7 +1883,7 @@
         <rect>
          <x>210</x>
          <y>10</y>
-         <width>186</width>
+         <width>188</width>
          <height>92</height>
         </rect>
        </property>
