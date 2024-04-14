@@ -62,7 +62,7 @@ def get_ign_height_profile(P: Tuple[float], Q: Tuple[float], N: int) -> xr.Datas
         # Convert JSON response to dict()
         d = response.json()
         # Initialize data holders
-        h = np.zeros(n, dtype=float)
+        h = np.zeros(N, dtype=float)
         heights = []
         # Store the heights of the profile in the array
         for i in range(len(d["elevations"])):
