@@ -112,15 +112,18 @@ def add_n(ds: xr.Dataset):
         c = 257.14
         d = 234.5
 
-        P = x.isobaricInhPa * 100 # Convert hPa to Pa
-        t = x.t - 273.15 # Convert K to °C
+        # Rename and convert dataset variables
+        P_hPa = x.isobaricInhPa
+        T_degK = x.t
+        T_degC = x.t - 273.15 # Convert K to °C
+        H_percent = x.r # relative humidity in %
 
-        EF = 1 + 1e-4 * np.floor(7.2 + P * (0.0320 + 5.9 * 1e-6 * t * t))
-        es = EF * a * np.exp((b - t / d) / (t + c))
+        EF_water = 1 + 1e-4 * np.floor(7.2 + P_hPa * (0.0320 + 5.9 * 1e-6 * T_degC * T_degC))
+        es = EF_water * a * np.exp(((b - T_degC / d) * T_degC )/ (T_degC + c))
 
-        e = x.r * es / 100
+        e = H_percent * es / 100
 
-        N = 77.6 * P / x.t - 5.6 * e / x.t + 3.75e5 * e / (x.t * x.t)
+        N = 77.6 * P_hPa / T_degK - 5.6 * e / T_degK + 3.75e5 * e / (T_degK * T_degK)
         return N
 
     print("[*] Adding refractive indexes...")
