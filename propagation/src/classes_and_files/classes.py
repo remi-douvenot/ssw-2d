@@ -54,6 +54,10 @@ class Config:
         self.Cn2 = 0
         self.L0 = 0
         self.py_or_cy = 'None'  # ='Py' for Python code, and = 'Cy' for Cython code
+        self.case_index = None
+        self.case_model = 'ERA5'
+        self.data_path = './'
 # ---------- END --------- #
 # --- Defining classes --- #
 # ------------------------ #
+config = Config()

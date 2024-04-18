@@ -375,6 +375,9 @@ class Plots(object):
                 zb = self.zbDoubleSpinBox.value()  # zb in m
             zt = self.ztDoubleSpinBox.value()  # zb in m
             n_refractivity = trilinear_duct(n_z, z_step, c0, zb, c2, zt)
+        elif atm_type == 'File':
+            print("WARNING : Implement file case in GUI/src/plots.py:379")
+            return 
         else:
             raise ValueError(['Wrong atmospheric type!'])
 
