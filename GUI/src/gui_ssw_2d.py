@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'src_ui/gui_ssw_2d.ui'
+# Form implementation generated from reading ui file '../src_ui/gui_ssw_2d.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.6
 #
@@ -319,6 +319,7 @@ class Ui_MainWindow(object):
         self.formLayout_13.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.reliefTypeLabel)
         self.reliefTypeComboBox = QtWidgets.QComboBox(self.layoutWidget_5)
         self.reliefTypeComboBox.setObjectName("reliefTypeComboBox")
+        self.reliefTypeComboBox.addItem("")
         self.reliefTypeComboBox.addItem("")
         self.reliefTypeComboBox.addItem("")
         self.reliefTypeComboBox.addItem("")
@@ -756,7 +757,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         self.polarisationComboBox.setCurrentIndex(0)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(3)
         self.groundTypeComboBox.setCurrentIndex(0)
         self.sourceTypeComboBox.setCurrentIndex(0)
         self.atmTypeComboBox.setCurrentIndex(0)
@@ -830,6 +831,7 @@ class Ui_MainWindow(object):
         self.reliefTypeComboBox.setItemText(0, _translate("MainWindow", "Plane"))
         self.reliefTypeComboBox.setItemText(1, _translate("MainWindow", "Triangle"))
         self.reliefTypeComboBox.setItemText(2, _translate("MainWindow", "Superposed"))
+        self.reliefTypeComboBox.setItemText(3, _translate("MainWindow", "IGN"))
         self.randomLabel.setText(_translate("MainWindow", "Max relief"))
         self.maxReliefDoubleSpinBox.setSuffix(_translate("MainWindow", " m"))
         self.iterationsScalesLabel.setText(_translate("MainWindow", "Iterations (scales)"))

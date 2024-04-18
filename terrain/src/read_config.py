@@ -41,30 +41,30 @@ def read_config(file_configuration):
     # ----------------------------- #
     # --- Reading configuration --- #
     # ----------------------------- #
-    f_config = open(file_configuration, newline='')
-    file_tmp = csv.reader(f_config)
-    for row in file_tmp:
-        if row[0] == 'N_x':
-            Config.N_x = int(row[1])
-        elif row[0] == 'x_step':
-            Config.x_step = float(row[1])
-        elif row[0] == 'z_max_relief':
-            Config.z_max_relief = float(row[1])
-        elif row[0] == 'type':
-            Config.type = row[1]
-        elif row[0] == 'iterations':
-            Config.iterations = int(row[1])
-        elif row[0] == 'width':  # width of the triangle relief
-            Config.width = float(row[1])
-        elif row[0] == 'center':  # center of the triangle relief
-            Config.center = float(row[1])
-        elif row[0] == 'Property':
-            pass  # first line
-        else:
-            raise ValueError(['Input file of the configuration is not valid. Input "' + row[0] + '" not valid'])
+    config = Config()
+    with open(file_configuration, newline='') as f_config:
+        file_tmp = csv.reader(f_config)
+        for row in file_tmp:
+            if row[0] == 'N_x':
+                config.N_x = int(row[1])
+            elif row[0] == 'x_step':
+                config.x_step = float(row[1])
+            elif row[0] == 'z_max_relief':
+                config.z_max_relief = float(row[1])
+            elif row[0] == 'type':
+                config.type = row[1]
+            elif row[0] == 'iterations':
+                config.iterations = int(row[1])
+            elif row[0] == 'width':  # width of the triangle relief
+                config.width = float(row[1])
+            elif row[0] == 'center':  # center of the triangle relief
+                config.center = float(row[1])
+            elif row[0] == 'Property':
+                pass  # first line
+            else:
+                raise ValueError(['Input file of the configuration is not valid. Input "' + row[0] + '" not valid'])
 
     # ------------ END ------------ #
     # --- Reading configuration --- #
     # ----------------------------- #
-
-    return Config
+    return config

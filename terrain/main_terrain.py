@@ -89,7 +89,9 @@ elif config.type == 'Triangle':
     x_tri = [0, triangle_start, triangle_top, triangle_end, config.N_x]
     z_tri = [0, 0, config.z_max_relief, 0, 0]
     z_relief = np.interp(np.arange(0, config.N_x+1), x_tri, z_tri)
-
+# IGN
+elif config.type == 'IGN':
+    1 # Ignore terrain generation, since it is done before simulation
 # other terrains are not coded (yet?)
 else:
     z_relief = np.zeros(config.N_x+1)
@@ -99,8 +101,9 @@ else:
 # --- Saving the results --- #
 # -------------------------- #
 
-# saving the terrain
-np.savetxt('./outputs/z_relief.csv', z_relief, delimiter=',')
+if config.type != 'IGN':
+    # saving the terrain
+    np.savetxt('./outputs/z_relief.csv', z_relief, delimiter=',')
 
 # ---------- END ----------- #
 # --- Saving the results --- #
