@@ -125,7 +125,10 @@ def ssw_2d(u_0, config, n_refraction, ii_vect_relief):
 
         # --- refractivity applied twice 1/2 --- #
         # if config.py_or_cy == 'Python':
-        u_x = apply_refractive_index(u_x, n_refraction, config)
+        if len(n_refraction.shape) == 2:
+            u_x_dx = apply_refractive_index(u_x_dx, n_refraction[ii_x-1, :], config)
+        else:
+            u_x_dx = apply_refractive_index(u_x_dx, n_refraction, config)
         # else:  # config.py_or_cy == 'Cython':
         #     u_x = np.array(apply_refractive_index_cy(u_x, n_refraction, config.freq, config.x_step))
 
@@ -205,7 +208,10 @@ def ssw_2d(u_0, config, n_refraction, ii_vect_relief):
 
         # --- refractivity applied twice 2/2 --- #
         # if config.py_or_cy == 'Python':
-        u_x_dx = apply_refractive_index(u_x_dx, n_refraction, config)
+        if len(n_refraction.shape) == 2:
+            u_x_dx = apply_refractive_index(u_x_dx, n_refraction[ii_x-1, :], config)
+        else:
+            u_x_dx = apply_refractive_index(u_x_dx, n_refraction, config)
         # else:  # config.py_or_cy == 'Cython':
         #     u_x_dx = apply_refractive_index_cy(u_x_dx, n_refraction, config.freq, config.x_step)
         if config.turbulence == 'Y':
