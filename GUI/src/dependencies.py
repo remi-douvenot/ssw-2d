@@ -10,9 +10,14 @@
 
 import scipy.constants as cst
 import numpy as np
-from src.update_files import update_file
 import pandas as pd
 
+from PyQt5.QtWidgets import QDialog
+from PyQt5.QtCore import QDateTime, Qt
+from PyQt5.Qt import QRegularExpression, QRegularExpressionValidator
+
+from src.update_files import update_file
+from src.points_dialog import PointsDialog
 
 class Dependencies(object):
 
@@ -202,49 +207,49 @@ class Dependencies(object):
             self.zbDoubleSpinBox.setEnabled(False)
             self.c2DoubleSpinBox.setEnabled(False)
             self.ztDoubleSpinBox.setEnabled(False)
-            self.atmFileTextEdit.setEnabled(False)
+            self.atmosphereDateTimeEdit.setEnabled(False)
         elif atm_type == 'Linear':  # enable c0 only
             self.c0DoubleSpinBox.setEnabled(True)
             self.deltaDoubleSpinBox.setEnabled(False)
             self.zbDoubleSpinBox.setEnabled(False)
             self.c2DoubleSpinBox.setEnabled(False)
             self.ztDoubleSpinBox.setEnabled(False)
-            self.atmFileTextEdit.setEnabled(False)
+            self.atmosphereDateTimeEdit.setEnabled(False)
         elif atm_type == 'Evaporation':  # enable c0 and delta
             self.c0DoubleSpinBox.setEnabled(True)
             self.deltaDoubleSpinBox.setEnabled(True)
             self.zbDoubleSpinBox.setEnabled(False)
             self.c2DoubleSpinBox.setEnabled(False)
             self.ztDoubleSpinBox.setEnabled(False)
-            self.atmFileTextEdit.setEnabled(False)
+            self.atmosphereDateTimeEdit.setEnabled(False)
         elif atm_type == 'Bilinear':  # enable c0, c2 and zt
             self.c0DoubleSpinBox.setEnabled(True)
             self.deltaDoubleSpinBox.setEnabled(False)
             self.zbDoubleSpinBox.setEnabled(False)
             self.c2DoubleSpinBox.setEnabled(True)
             self.ztDoubleSpinBox.setEnabled(True)
-            self.atmFileTextEdit.setEnabled(False)
+            self.atmosphereDateTimeEdit.setEnabled(False)
         elif atm_type == 'Trilinear':  # enable c0, zb, c2 and zt
             self.c0DoubleSpinBox.setEnabled(True)
             self.deltaDoubleSpinBox.setEnabled(False)
             self.zbDoubleSpinBox.setEnabled(True)
             self.c2DoubleSpinBox.setEnabled(True)
             self.ztDoubleSpinBox.setEnabled(True)
-            self.atmFileTextEdit.setEnabled(False)
+            self.atmosphereDateTimeEdit.setEnabled(False)
         elif atm_type == 'Double duct':  # enable c0, delta, zb, c2 and zt
             self.c0DoubleSpinBox.setEnabled(True)
             self.deltaDoubleSpinBox.setEnabled(True)
             self.zbDoubleSpinBox.setEnabled(True)
             self.c2DoubleSpinBox.setEnabled(True)
             self.ztDoubleSpinBox.setEnabled(True)
-            self.atmFileTextEdit.setEnabled(False)
-        elif atm_type == 'File':  # enable file name only
+            self.atmosphereDateTimeEdit.setEnabled(False)
+        elif atm_type == 'ERA5':  # enable file name only
             self.c0DoubleSpinBox.setEnabled(False)
             self.deltaDoubleSpinBox.setEnabled(False)
             self.zbDoubleSpinBox.setEnabled(False)
             self.c2DoubleSpinBox.setEnabled(False)
             self.ztDoubleSpinBox.setEnabled(False)
-            self.atmFileTextEdit.setEnabled(True)
+            self.atmosphereDateTimeEdit.setEnabled(True)
         # write the ground type value in files
         update_file('atmosphere', atm_type, 'propa')
         self.plot_environment_in()
@@ -477,6 +482,19 @@ class Dependencies(object):
         # --- refresh plots --- #
         self.plot_field_in()
 
+    def open_points_dialog(self):
+        dialog = PointsDialog(self)
+        dialog.exec() # dialog sets it's parent P and Q members
+
+    def datetime_changed(self, datetime:QDateTime):
+        # Prevent user from setting minutes and seconds
+        currentTime = datetime.time() # get time
+        currentTime.setHMS(currentTime.hour(), 0, 0) # set minutes and hours to 0
+        datetime.setTime(currentTime) # set the upsated time
+        self.atmosphereDateTimeEdit.setDateTime(datetime) # set datetime in the UI
+        if currentTime != datetime.time():
+            update_file('atmosphere_datetime', datetime.toString(Qt.ISODate), 'propa')
+
     # --- Initialise all the values --- #
     def initialise(self):
         file_propa = '../propagation/inputs/configuration.csv'
@@ -484,113 +502,119 @@ class Dependencies(object):
         file_relief = '../terrain/inputs/conf_terrain.csv'
 
         # --- Initialise main config --- #
-        file_to_read = open(file_propa)
-        # reading the csv file as a dataframe
-        dataframe = pd.read_csv(file_to_read)
-        # create a Series with it
-        serie = pd.Series(data=dataframe.iloc[:, 1].values, index=dataframe.iloc[:, 0].values)
-        # method
-        self.methodComboBox.setCurrentText(serie.loc['method'])
-        # language
-        self.languageComboBox.setCurrentText(serie.loc['py_or_cy'])
-        # N_x
-        self.nXSpinBox.setProperty("value", serie.loc['N_x'])
-        # N_z
-        self.nZSpinBox.setProperty("value", serie.loc['N_z'])
-        # x_step
-        self.deltaXMDoubleSpinBox.setProperty("value", serie.loc['x_step'])
-        # z_step
-        self.deltaZMDoubleSpinBox.setProperty("value", serie.loc['z_step'])
-        # x_max
-        x_max = float(serie.loc['x_step']) * float(serie.loc['N_x']) * 1e-3  # in km
-        self.xMaxKmDoubleSpinBox.setProperty("value", str(x_max))
-        # z_max
-        z_max = float(serie.loc['z_step']) * int(serie.loc['N_z'])
-        self.zMaxMDoubleSpinBox.setProperty("value", z_max)
-        # frequency
-        self.frequencyMHzDoubleSpinBox.setProperty("value", serie.loc['frequency'])
-        # lambda
-        lambda0 = cst.c/float(serie.loc['frequency'])*1e-6  # freq in MHz
-        self.lambdaMDoubleSpinBox.setProperty("value", lambda0)
-        # ground
-        self.polarisationComboBox.setCurrentText(serie.loc['polarisation'])
-        # Max compression error
-        self.maxCompressionDoubleSpinBox.setProperty("value", serie.loc['Max compression error'])
-        # wavelet level
-        self.wvlMaxLevelSpinBox.setProperty("value", serie.loc['wavelet level'])
-        # wavelet family
-        self.wvlFamilyComboBox.setCurrentText(serie.loc['wavelet family'])
-        # apodisation window
-        self.apodisationComboBox.setProperty("value", serie.loc['apodisation window'])
-        # apodisation % in z
-        self.sizeApoSpinBox.setProperty("value",  float(serie.loc['apodisation size'])*100)  # from value to %
-        # image layer % in z
-        self.sizeImageSpinBox.setProperty("value", float(serie.loc['image size'])*100)  # from value to %
-        self.image_clicked()  # initialise nb points in image layer
-        # ground
-        self.groundTypeComboBox.setCurrentText(serie.loc['ground'])
-        self.ground_type_changed()
-        # epsr
-        self.epsrDoubleSpinBox.setProperty("value", serie.loc['epsr'])
-        # sigma
-        self.sigmaDoubleSpinBox.setProperty("value", serie.loc['sigma'])
-        # atmosphere type
-        self.atmTypeComboBox.setCurrentText(serie.loc['atmosphere'])
-        # c0
-        self.c0DoubleSpinBox.setProperty("value", serie.loc['c0'])
-        # delta
-        self.deltaDoubleSpinBox.setProperty("value", serie.loc['delta'])
-        # zb
-        self.zbDoubleSpinBox.setProperty("value", serie.loc['zb'])
-        # c2
-        self.c2DoubleSpinBox.setProperty("value", serie.loc['c2'])
-        # zt
-        self.ztDoubleSpinBox.setProperty("value", serie.loc['zt'])
-        # dynamic
-        self.dynamicSpinBox.setProperty("value", serie.loc['dynamic'])
-        # turbulence
-        self.turbuComboBox.setCurrentText(serie.loc['turbulence'])
-        #Cn2
-        self.Cn2DoubleSpinBox.setProperty("value", serie.loc['Cn2'])
-        #L0
-        self.L0DoubleSpinBox.setProperty("value", serie.loc['L0'])
+        with open(file_propa) as file_to_read:
+            # reading the csv file as a dataframe
+            dataframe = pd.read_csv(file_to_read)
+            # create a Series with it
+            serie = pd.Series(data=dataframe.iloc[:, 1].values, index=dataframe.iloc[:, 0].values)
+            # method
+            self.methodComboBox.setCurrentText(serie.loc['method'])
+            # language
+            self.languageComboBox.setCurrentText(serie.loc['py_or_cy'])
+            # N_x
+            self.nXSpinBox.setProperty("value", serie.loc['N_x'])
+            # N_z
+            self.nZSpinBox.setProperty("value", serie.loc['N_z'])
+            # x_step
+            self.deltaXMDoubleSpinBox.setProperty("value", serie.loc['x_step'])
+            # z_step
+            self.deltaZMDoubleSpinBox.setProperty("value", serie.loc['z_step'])
+            # x_max
+            x_max = float(serie.loc['x_step']) * float(serie.loc['N_x']) * 1e-3  # in km
+            self.xMaxKmDoubleSpinBox.setProperty("value", str(x_max))
+            # z_max
+            z_max = float(serie.loc['z_step']) * int(serie.loc['N_z'])
+            self.zMaxMDoubleSpinBox.setProperty("value", z_max)
+            # frequency
+            self.frequencyMHzDoubleSpinBox.setProperty("value", serie.loc['frequency'])
+            # lambda
+            lambda0 = cst.c/float(serie.loc['frequency'])*1e-6  # freq in MHz
+            self.lambdaMDoubleSpinBox.setProperty("value", lambda0)
+            # ground
+            self.polarisationComboBox.setCurrentText(serie.loc['polarisation'])
+            # Max compression error
+            self.maxCompressionDoubleSpinBox.setProperty("value", serie.loc['Max compression error'])
+            # wavelet level
+            self.wvlMaxLevelSpinBox.setProperty("value", serie.loc['wavelet level'])
+            # wavelet family
+            self.wvlFamilyComboBox.setCurrentText(serie.loc['wavelet family'])
+            # apodisation window
+            self.apodisationComboBox.setProperty("value", serie.loc['apodisation window'])
+            # apodisation % in z
+            self.sizeApoSpinBox.setProperty("value",  float(serie.loc['apodisation size'])*100)  # from value to %
+            # image layer % in z
+            self.sizeImageSpinBox.setProperty("value", float(serie.loc['image size'])*100)  # from value to %
+            self.image_clicked()  # initialise nb points in image layer
+            # ground
+            self.groundTypeComboBox.setCurrentText(serie.loc['ground'])
+            self.ground_type_changed()
+            # epsr
+            self.epsrDoubleSpinBox.setProperty("value", serie.loc['epsr'])
+            # sigma
+            self.sigmaDoubleSpinBox.setProperty("value", serie.loc['sigma'])
+            # atmosphere type
+            self.atmTypeComboBox.setCurrentText(serie.loc['atmosphere'])
+            # c0
+            self.c0DoubleSpinBox.setProperty("value", serie.loc['c0'])
+            # delta
+            self.deltaDoubleSpinBox.setProperty("value", serie.loc['delta'])
+            # zb
+            self.zbDoubleSpinBox.setProperty("value", serie.loc['zb'])
+            # c2
+            self.c2DoubleSpinBox.setProperty("value", serie.loc['c2'])
+            # zt
+            self.ztDoubleSpinBox.setProperty("value", serie.loc['zt'])
+            # dynamic
+            self.dynamicSpinBox.setProperty("value", serie.loc['dynamic'])
+            # turbulence
+            self.turbuComboBox.setCurrentText(serie.loc['turbulence'])
+            #Cn2
+            self.Cn2DoubleSpinBox.setProperty("value", serie.loc['Cn2'])
+            #L0
+            self.L0DoubleSpinBox.setProperty("value", serie.loc['L0'])
+            # Store P and Q as attributes - duplicated code
+            self.P = tuple([float(l) for l in serie.loc['P'].split(';')])
+            self.Q = tuple([float(l) for l in serie.loc['Q'].split(';')])
+            # Load date into the UI
+            datetime = QDateTime.fromString(serie.loc['atmosphere_datetime'], Qt.ISODate)
+            self.atmosphereDateTimeEdit.setDateTime(datetime)
 
         # --- Initialise source --- #
-        file_to_read = open(file_source)
-        # reading the csv file as a dataframe
-        dataframe = pd.read_csv(file_to_read)
-        # create a Series with it
-        serie = pd.Series(data=dataframe.iloc[:, 1].values, index=dataframe.iloc[:, 0].values)
-        # type
-        self.sourceTypeComboBox.setCurrentText(serie.loc['type'])
-        # x_s
-        x_s = serie.loc['x_s']  # then remove the "-"
-        self.x_sDoubleSpinBox.setProperty("value", x_s[1:])
-        # z_s
-        self.z_sDoubleSpinBox.setProperty("value", float(serie.loc['z_s']))
-        # W0 (width of the belt for CSP source)
-        w0_lambda = float(serie.loc['W0']) / lambda0
-        # print('W0_lambda', w0_lambda)
-        self.widthDoubleSpinBox.setProperty("value", w0_lambda)
-        # @todo P_Tx
-        # self.nZSpinBox.setProperty("value", serie.loc['N_z'])
-        # @todo G_Tx
-        # self.nZSpinBox.setProperty("value", serie.loc['N_z'])
+        with open(file_source) as file_to_read:
+            # reading the csv file as a dataframe
+            dataframe = pd.read_csv(file_to_read)
+            # create a Series with it
+            serie = pd.Series(data=dataframe.iloc[:, 1].values, index=dataframe.iloc[:, 0].values)
+            # type
+            self.sourceTypeComboBox.setCurrentText(serie.loc['type'])
+            # x_s
+            x_s = serie.loc['x_s']  # then remove the "-"
+            self.x_sDoubleSpinBox.setProperty("value", x_s[1:])
+            # z_s
+            self.z_sDoubleSpinBox.setProperty("value", float(serie.loc['z_s']))
+            # W0 (width of the belt for CSP source)
+            w0_lambda = float(serie.loc['W0']) / lambda0
+            # print('W0_lambda', w0_lambda)
+            self.widthDoubleSpinBox.setProperty("value", w0_lambda)
+            # @todo P_Tx
+            # self.nZSpinBox.setProperty("value", serie.loc['N_z'])
+            # @todo G_Tx
+            # self.nZSpinBox.setProperty("value", serie.loc['N_z'])
 
         # --- Initialise relief --- #
-        file_to_read = open(file_relief)
-        # reading the csv file as a dataframe
-        dataframe = pd.read_csv(file_to_read)
-        # create a Series with it
-        serie = pd.Series(data=dataframe.iloc[:, 1].values, index=dataframe.iloc[:, 0].values)
-        # print(serie)
-        # type
-        self.reliefTypeComboBox.setCurrentText(serie.loc['type'])
-        # max relief
-        self.maxReliefDoubleSpinBox.setProperty("value", float(serie.loc['z_max_relief']))
-        # number of iterations
-        self.nIterationsSpinBox.setProperty("value", int(serie.loc['iterations']))
-        # width of the relief
-        self.widthReliefDoubleSpinBox.setProperty("value", float(serie.loc['width']))
-        # center of the relief
-        self.centerReliefDoubleSpinBox.setProperty("value", float(serie.loc['center']))
+        with open(file_relief) as file_to_read:
+            # reading the csv file as a dataframe
+            dataframe = pd.read_csv(file_to_read)
+            # create a Series with it
+            serie = pd.Series(data=dataframe.iloc[:, 1].values, index=dataframe.iloc[:, 0].values)
+            # print(serie)
+            # type
+            self.reliefTypeComboBox.setCurrentText(serie.loc['type'])
+            # max relief
+            self.maxReliefDoubleSpinBox.setProperty("value", float(serie.loc['z_max_relief']))
+            # number of iterations
+            self.nIterationsSpinBox.setProperty("value", int(serie.loc['iterations']))
+            # width of the relief
+            self.widthReliefDoubleSpinBox.setProperty("value", float(serie.loc['width']))
+            # center of the relief
+            self.centerReliefDoubleSpinBox.setProperty("value", float(serie.loc['center']))
