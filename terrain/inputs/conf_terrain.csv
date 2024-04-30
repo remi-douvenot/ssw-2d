@@ -1,8 +1,10 @@
 Property,Value,Unit
-N_x,100,
-x_step,100.0,m
-type,Plane,
+N_x,1000,
+x_step,371.08,m
+type,Bing,
 z_max_relief,300.0,m
 iterations,7,for superposed terrain
 width,2000.0,pts
 center,6000.0,pts
+P,43.173414;2.738417,lattitude;longitude
+Q,45.638015;5.882924,lattitude;longitude

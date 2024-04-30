@@ -32,6 +32,8 @@ class Config:
         self.z_max_relief = 0.0
         self.center = 0.0
         self.width = 0.0
+        self.P = None
+        self.Q = None
 # ---------- END --------- #
 # --- Defining classes --- #
 # ------------------------ #
@@ -59,10 +61,18 @@ def read_config(file_configuration):
                 config.width = float(row[1])
             elif row[0] == 'center':  # center of the triangle relief
                 config.center = float(row[1])
+            elif row[0] == 'P':
+                # Convert "43.76654;65.875675" to (43.76654, 65.875675) tuple of floats
+                config.P = tuple([float(l) for l in row[1].split(';')])
+            elif row[0] == 'Q':
+                # Same
+                config.Q = tuple([float(l) for l in row[1].split(';')])
             elif row[0] == 'Property':
                 pass  # first line
             else:
                 raise ValueError(['Input file of the configuration is not valid. Input "' + row[0] + '" not valid'])
+    if config.type in ('Bing', 'IGN') and (config.P == None or config.Q == None):
+        raise ValueError('P and Q must be set when Bing or IGN terrain type is selected.')
 
     # ------------ END ------------ #
     # --- Reading configuration --- #
