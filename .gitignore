@@ -74,3 +74,4 @@ propagation/src/propa_cython/wavelet_propag_one_step.html
 *.html
 propagation/src/propa_cython/wavelet_propag_one_step.c
 *.so
+.env
