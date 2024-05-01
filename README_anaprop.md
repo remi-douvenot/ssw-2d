@@ -1,4 +1,10 @@
-# Projet 2A Anaprop
+# Anaprop second year project
+
+## Context
+
+In a second year project at ENAC, we had to integrate real atmosphere and terrain slices into SSW-2D to replay cases that were supposed to be anomalous propagation.
+
+You will find below some explanations of what was done, and how to use the modifications we've made in SSW-2D.
 
 ## Dependencies
 
@@ -66,7 +72,7 @@ When SSW downloads datasets from the internet, it stores those in a separate fol
 export SSW_DATA_PATH=/path/to/big/storage
 ```
 
-Atmospherical datasets will be downloaded here, terrain datasets are smaller and can be stored in the cache.
+Atmospherical datasets will be downloaded here, terrain datasets are smaller and will be stored in the cache.
 
 ### Bing maps API key
 
@@ -124,7 +130,7 @@ For each point, a comma-separated latitude and longitude is expected as shown be
 
 Note that when P and Q are set, they will also be used to compute the atmosphere slice.
 
-When relief is ran, a terrain profile is downloaded from Bing or IGN using the two points and the sampling N_x.
+When relief is ran, a terrain profile is downloaded from Bing or IGN using the two points and the sampling ```N_x```.
 
 ### Atmosphere tab
 
@@ -136,6 +142,12 @@ When the simulation is ran, an atmospherical dataset will be downloaded if it is
 
 Note that downloading datasets can take a long time, mostly because the data has to be extracted from super large datasets.
 
-When a request is made, it is queued (can take a long time), ```cdsapi``` then checks if the file can be downloaded every second.
+When a download request is made, it is queued (can take a long time), ```cdsapi``` then checks if the file can be downloaded every second.
 
 Each file is about 2.4MB.
+
+Then, when the simulation is ran, the same P and Q points than in the relief tab are used to extract a slice of the 3D dataset.
+
+## Limitations
+
+ERA5 atmosphere is only implemented for Python SSF and SSW methods, trying other methods may throw an error or give incorrect results.
