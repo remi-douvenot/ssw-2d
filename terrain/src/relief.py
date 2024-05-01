@@ -190,7 +190,12 @@ def get_ign_height_profile(P: Tuple[float], Q: Tuple[float], N: int) -> xr.Datas
         heights = []
         # Store the heights of the profile in the array
         for i in range(len(d["elevations"])):
-            h[i] = float(d["elevations"][i]["z"])
+            h_i = float(d["elevations"][i]["z"])
+            # IGN sometimes returns negative heights, we set those to 0
+            if h_i > 0:
+                h[i] = h_i
+            else:
+                h[i] = 0.0
 
         # Get the azimuth at P and the distance bewteen P and Q in meters 
         azi, distances = common.geodesic_line_distance(P, Q, N)
