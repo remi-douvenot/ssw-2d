@@ -485,6 +485,12 @@ class Dependencies(object):
     def open_points_dialog(self):
         dialog = PointsDialog(self)
         dialog.exec() # dialog sets it's parent P and Q members
+        # Save P and Q into the configuration files
+        to_str = lambda l: ';'.join([str(e) for e in l])
+        update_file('P', to_str(self.P), 'propa')
+        update_file('Q', to_str(self.Q), 'propa')
+        update_file('P', to_str(self.P), 'terrain')
+        update_file('Q', to_str(self.Q), 'terrain')
 
     def datetime_changed(self, datetime:QDateTime):
         # Prevent user from setting minutes and seconds
@@ -492,8 +498,7 @@ class Dependencies(object):
         currentTime.setHMS(currentTime.hour(), 0, 0) # set minutes and hours to 0
         datetime.setTime(currentTime) # set the upsated time
         self.atmosphereDateTimeEdit.setDateTime(datetime) # set datetime in the UI
-        if currentTime != datetime.time():
-            update_file('atmosphere_datetime', datetime.toString(Qt.ISODate), 'propa')
+        update_file('atmosphere_datetime', datetime.toString(Qt.ISODate)[:-1], 'propa') # Remove the Z at the end of the string ([:-1])
 
     # --- Initialise all the values --- #
     def initialise(self):
