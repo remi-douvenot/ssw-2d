@@ -16,10 +16,12 @@
 ##
 
 # where config class is defined
-from src.classes_and_files.classes import *
 import csv
 import numpy as np
 import scipy.constants as cst
+import datetime
+
+from src.classes_and_files.classes import *
 
 
 def read_config(file_configuration):
@@ -73,8 +75,6 @@ def read_config(file_configuration):
                 config.c2 = float(row[1])  # gradient in a trilinear duct
             elif row[0] == 'zt':
                 config.zt = float(row[1])  # thickness of a trilinear duct
-            elif row[0] == 'atm filename':
-                config.atm_filename = row[1]  # file for a hand-generated atmospheric profile
             elif row[0] == 'turbulence':
                 config.turbulence = row[1]
             elif row[0] == 'Cn2':
@@ -87,12 +87,14 @@ def read_config(file_configuration):
                 pass  # first line
             elif row[0] == 'dynamic':  # only used for HMI plots
                 pass  # first line
-            elif row[0] == 'case_index':
-                config.case_index = int(row[1])
-            elif row[0] == 'case_model':
-                config.case_model = row[1]
-            elif row[0] == 'data_path':
-                config.data_path = row[1]
+            elif row[0] == 'atmosphere_datetime': # datetime at which the atmospherical data should be taken (UTC)
+                config.atmosphere_datetime = datetime.datetime.fromisoformat(row[1])
+            elif row[0] == 'P':
+                # Convert "43.76654;65.875675" to (43.76654, 65.875675) tuple of floats
+                config.P = tuple([float(l) for l in row[1].split(';')])
+            elif row[0] == 'Q':
+                # Same
+                config.Q = tuple([float(l) for l in row[1].split(';')])
             else:
                 raise ValueError(['Input file of the configuration is not valid. Input "' + row[0] + '" not valid'])
     # check for some values
@@ -122,6 +124,10 @@ def read_config(file_configuration):
 
     # epsr_effective is used
     config.epsr += -1j * sigma / (2*cst.pi*config.freq*cst.epsilon_0)
+
+    # Check for required value for real atmospheres
+    if config.atmosphere == 'era5' and (config.P == None or config.Q == None or config.atmosphere_datetime == None):
+        raise ValueError(f'When using {config.atmosphere} atmosphere, P, Q and atmosphere_datetime should be set')
 
     return config
 
@@ -208,6 +214,12 @@ def read_relief(config, file_relief_config, file_relief):
                 config.center = float(row[1])  #
             elif row[0] == 'width':
                 config.width = float(row[1])  #
+            elif row[0] == 'P':
+                # Convert "43.76654;65.875675" to (43.76654, 65.875675) tuple of floats
+                config.P = tuple([float(l) for l in row[1].split(';')])
+            elif row[0] == 'Q':
+                # Same
+                config.Q = tuple([float(l) for l in row[1].split(';')])
             elif row[0] == 'Property':
                 pass  # first line
             else:

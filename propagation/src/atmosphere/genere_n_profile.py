@@ -17,7 +17,7 @@ import numpy as np
 import scipy.constants as cst
 import matplotlib.pyplot as plt
 
-import src.atmosphere.anaprop.cases as cases
+from src.atmosphere.real_atmosphere import get_corefractive_index
 
 def generate_n_profile(config):
     # choice of the atmospheric profile type
@@ -33,10 +33,10 @@ def generate_n_profile(config):
         n_refractive_index = trilinear_profile(config.N_z, config.z_step, config.c0, config.zb, config.c2, config.zt)
     elif config.atmosphere == 'Double duct':  # log then trilinear
         n_refractive_index = double_duct(config.N_z, config.z_step, config.c0, config.delta, config.zb, config.c2, config.zt)
-    elif config.atmosphere == 'File':  # complex profile from file
-        n_refractive_index = read_file_profile(config.N_x, config.N_z, config.z_step, config.case_index, config.case_model)
+    elif config.atmosphere == 'ERA5':  # Profile from file
+        n_refractive_index = get_corefractive_index(config) # too many arguments, pass the configuration object directly
     else:
-        raise ValueError(['Wrong atmospheric type!'])
+        raise ValueError(f'Atmospheric type {config.atmosphere} is not valid')
 
     return n_refractive_index
 
@@ -133,14 +133,6 @@ def trilinear_profile(n_z, z_step, c0, zb, c2, zt):
 def double_duct(n_z, z_step, c0, delta, zb, c2, zt):
     raise ValueError(['double duct not yet coded'])
     n_refractive_index = 1
-    return n_refractive_index
-
-
-# read profile from a grib file
-def read_file_profile(N_x, N_z, Z_step, case_index:int, case_model:str):
-    c = cases.load('./src/atmosphere/anaprop/cases.csv') # read all anaprop metadata from the csv file
-    n_refractive_index = cases.get_corefractive_index(c[case_index], N_x, N_z, Z_step, '/media/storca/COMMUN/stage_ssw')
-    print("n refractive index shape : ", n_refractive_index.shape)
     return n_refractive_index
 
 #--- kolmogorov turbulence ---#
