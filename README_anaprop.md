@@ -43,7 +43,7 @@ Once you have it, set it as an environment variable, in the same shell you'll be
 
 Our project accesses the Copernicus ERA dataset, in order for you to access it, create an account [here](https://cds.climate.copernicus.eu/user/register), then set up your api key as explained [here](https://cds.climate.copernicus.eu/api-how-to).
 
-In a nutshell, for linux users, complete the following file in ```$HOME/.cdsapirc``` of the user that will run SSW with the contents below :
+In a nutshell, for linux users, create the following file in ```$HOME/.cdsapirc``` of the user that will run SSW with the contents below :
 
 ```
 url: https://cds.climate.copernicus.eu/api/v2
