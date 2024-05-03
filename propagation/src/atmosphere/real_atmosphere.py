@@ -132,7 +132,7 @@ def add_n(ds: xr.Dataset):
         return N
 
     print("[*] Adding refractive indexes...")
-    # Create a new varaible N with function N(ds)
+    # Create a new variable N with function N(ds)
     ds = ds.assign(N=N)
     ds["N"] = ds.N.assign_attrs({"long_name": "Refractivity"}) # add metadata
     # Create a new variable 'n' using conversion between N and n
