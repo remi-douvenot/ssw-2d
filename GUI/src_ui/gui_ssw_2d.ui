@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>SSW-2D</string>
   </property>
   <property name="windowOpacity">
    <double>1.000000000000000</double>
@@ -238,7 +238,7 @@
        </size>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="tab_3">
        <attribute name="title">
@@ -450,7 +450,7 @@
          <rect>
           <x>9</x>
           <y>20</y>
-          <width>259</width>
+          <width>269</width>
           <height>31</height>
          </rect>
         </property>
@@ -607,6 +607,11 @@
            <item>
             <property name="text">
              <string>Trilinear</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>ERA5</string>
             </property>
            </item>
            <item>
@@ -793,32 +798,6 @@
          <double>-99.000000000000000</double>
         </property>
        </widget>
-       <widget class="QTextEdit" name="atmFileTextEdit">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="geometry">
-         <rect>
-          <x>90</x>
-          <y>190</y>
-          <width>171</width>
-          <height>31</height>
-         </rect>
-        </property>
-       </widget>
-       <widget class="QLabel" name="atmFileLabel">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>190</y>
-          <width>71</width>
-          <height>26</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>file name</string>
-        </property>
-       </widget>
        <widget class="QLabel" name="turbuLabel">
         <property name="geometry">
          <rect>
@@ -928,6 +907,32 @@
          <string>L0 (m)</string>
         </property>
        </widget>
+       <widget class="QDateTimeEdit" name="atmosphereDateTimeEdit">
+        <property name="geometry">
+         <rect>
+          <x>130</x>
+          <y>190</y>
+          <width>141</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="timeSpec">
+         <enum>Qt::UTC</enum>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_3">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>190</y>
+          <width>121</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Atmosphere date</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="tab_6">
        <attribute name="title">
@@ -973,6 +978,16 @@
              <string>Superposed</string>
             </property>
            </item>
+           <item>
+            <property name="text">
+             <string>IGN</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Bing</string>
+            </property>
+           </item>
           </widget>
          </item>
         </layout>
@@ -981,9 +996,9 @@
         <property name="geometry">
          <rect>
           <x>10</x>
-          <y>50</y>
+          <y>40</y>
           <width>261</width>
-          <height>161</height>
+          <height>181</height>
          </rect>
         </property>
         <layout class="QFormLayout" name="formLayout_14">
@@ -1100,6 +1115,20 @@
            </property>
            <property name="value">
             <double>100.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1">
+          <widget class="QPushButton" name="setPointsButton">
+           <property name="text">
+            <string>Set points</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>Points</string>
            </property>
           </widget>
          </item>
@@ -1637,7 +1666,7 @@
         <rect>
          <x>410</x>
          <y>10</y>
-         <width>173</width>
+         <width>177</width>
          <height>91</height>
         </rect>
        </property>
@@ -1878,7 +1907,7 @@
         <rect>
          <x>210</x>
          <y>10</y>
-         <width>186</width>
+         <width>188</width>
          <height>92</height>
         </rect>
        </property>

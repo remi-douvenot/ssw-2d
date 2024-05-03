@@ -24,7 +24,7 @@
 # @param[in] u_0 Initial field. Complex array of size (N_z)
 # @param[in] config Class that contains the configuration. See class list for details
 # @param[in] config_source Class that contains the source configuration. See class list for details
-# @param[in] n_refraction Vector containing the modified refractive index n. Real array of size (N_z)
+# @param[in] n_refraction Matrix containing the modified refractive index n. Real matrix of size (N_z, N_x)
 # @param[in] z_relief Vector containing the relief indices at each distance step. Real array of size (N_z)
 # @param[out] U_tot Wavelet coefficients of the 3D field. Complex array of size (N_x, N_z)
 # @warning Put lengths = multiple of 2^l
@@ -90,7 +90,10 @@ def ssf_2d(u_0, config, n_refraction, ii_vect_relief):
         # ------------------- #
 
         # --- refractivity applied twice 1/2 --- #
-        u_x = apply_refractive_index(u_x, n_refraction, config)
+        if len(n_refraction.shape) == 2: # If we have a matrix instead of a vector
+            u_x = apply_refractive_index(u_x, n_refraction[ii_x-1, :], config)
+        else:
+            u_x = apply_refractive_index(u_x, n_refraction, config)
         # -------------------------------------- #
 
         # ------------------------------ #
@@ -136,7 +139,11 @@ def ssf_2d(u_0, config, n_refraction, ii_vect_relief):
         # ------------------------------ #
 
         # --- refractivity applied twice 2/2 --- #
-        u_x_dx = apply_refractive_index(u_x_dx, n_refraction, config)
+        if len(n_refraction.shape) == 2 : # if we have a matrix instead of a vector
+            u_x = apply_refractive_index(u_x, n_refraction[ii_x-1, :], config)
+        else:
+            u_x = apply_refractive_index(u_x, n_refraction, config)
+        
         if config.turbulence == 'Y':
             phi_turbulent = genere_phi_turbulent(config)
             u_x_dx = apply_phi_turbulent(u_x_dx, phi_turbulent, config)

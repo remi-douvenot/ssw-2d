@@ -13,7 +13,7 @@ import numpy as np
 import pywt
 import warnings
 import matplotlib.pyplot as plt
-
+import os
 
 class Plots(object):
 
@@ -206,7 +206,7 @@ class Plots(object):
         limits = [x_step * 1e-3, x_max * 1e-3, 0, z_max]  # x in km, z in m
         im = ax.imshow(data_db, cmap='jet', aspect='auto', vmax=v_max, vmin=v_min, origin='lower',
                        interpolation='none', extent=limits)
-        self.cb = plt.colorbar(im, ax=self.ax_field)
+        self.cb = plt.colorbar(im, ax=ax_field)
         self.cb.set_label(output_type, labelpad=-20, y=-0.05, rotation=0, fontsize=12)
 
         ax.set_xlabel('Distance (km)', fontsize=12)
@@ -266,7 +266,7 @@ class Plots(object):
 
     # --- plot the environment (relief and atmosphere) in the GUI --- #
     def plot_environment_in(self):
-        ax = self.ax_environment  # defined in the main
+        ax = self.ax_environment
         self.plot_environment(ax)
         self.canvas_environment.draw()
 
@@ -375,11 +375,27 @@ class Plots(object):
                 zb = self.zbDoubleSpinBox.value()  # zb in m
             zt = self.ztDoubleSpinBox.value()  # zb in m
             n_refractivity = trilinear_duct(n_z, z_step, c0, zb, c2, zt)
+        elif atm_type == 'ERA5':
+            # Too much code would be duplicated here, so if there is no file, plot homogenous atmosphere
+            f_path = '../propagation/inputs/refractivity_gradient.npy'
+            if os.path.isfile(f_path):
+                n_refractivity = np.load(f_path) # load refractivity from previous simulation
+                if len(n_refractivity) != len(z_relief)-1:
+                    os.remove(f_path)
+                    n_refractivity = np.zeros(n_z)+m_0
+                    atm_type = "Homogeneous"
+            else:
+                n_refractivity = np.zeros(n_z)+m_0 # plot homogenous atmosphere
+                atm_type = "Homogeneous"
         else:
             raise ValueError(['Wrong atmospheric type!'])
 
         # plot relief
         ax.clear()
+        # ERA5 atmosphere adds a colorbar to the figure's axes, we have to remove it at each re-run
+        if len(self.figure_environment.axes) > 1:
+            # It is the second member of figure.axes
+            self.figure_environment.delaxes(self.figure_environment.axes[1])
         # ax = self.figure2.Axes
         if ground_type != 'None':
             ax.plot(x_vect, z_relief, color='k', linewidth=2, label='relief')
@@ -394,9 +410,18 @@ class Plots(object):
         # refractivity rescaled for visualisation (with respect to x_max)
         n_refractivity_plot = (n_refractivity-n_refractivity[0]) * x_max * 2e-4
         # plotted at 3 positions along propagation
-        ax.plot(x_max/4+n_refractivity_plot, z_vect + z_relief_1, color='b', label='refraction')
-        ax.plot(x_max/2+n_refractivity_plot, z_vect+z_relief_2, color='b', label=None)
-        ax.plot(3*x_max/4+n_refractivity_plot, z_vect+z_relief_3, color='b', label=None)
+        if atm_type != 'ERA5':
+            ax.plot(x_max/4+n_refractivity_plot, z_vect + z_relief_1, color='b', label='refraction')
+            ax.plot(x_max/2+n_refractivity_plot, z_vect+z_relief_2, color='b', label=None)
+            ax.plot(3*x_max/4+n_refractivity_plot, z_vect+z_relief_3, color='b', label=None)
+        else:
+            x = np.arange(0, x_max*1000, x_step) # x_max in kilometers
+            z = np.arange(0, z_max, z_step)
+            print(f"M shape : {n_refractivity.shape} ; N_x={n_x} N_z={n_z}")
+            if n_refractivity.shape == (n_x, n_z):
+                # transpose to obtain the correct dimension
+                plot = ax.pcolormesh(x, z, n_refractivity.T[:n_z,:n_x])
+                self.environment_colorbar = self.figure_environment.colorbar(plot, ax=ax, label="m gradient [m⁻¹]")
         ax.legend()
 
         # plot atmosphere on relief
@@ -405,6 +430,9 @@ class Plots(object):
         ax.set_ylabel('Altitude (m)', fontsize=12)
         ax.set_xlabel('Distance (km)', fontsize=12)
         ax.grid('on')
+
+        #self.canvas_environment.draw()
+        self.canvas_environment.flush_events()
 
 #
 # @package: eliminate_top_field

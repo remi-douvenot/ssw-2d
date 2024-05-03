@@ -8,62 +8,65 @@
 # You should have received a copy of the GNU General Public License along with Foobar. If not, see
 # <https://www.gnu.org/licenses/>.
 
+##
+# @package anaprop/common.py
+# @author Remi Douvenot - storca -
+# @brief Geodesic computations and cache system for files processed by the anaprop module
+# @warning
+##
+
+import numpy as np
+from geographiclib.geodesic import Geodesic
+from typing import Tuple
 import os
 from os.path import isfile, join
 from platformdirs import user_cache_dir
 import hashlib
 import xarray as xr
 
-# ------------------------ #
-# --- Defining classes --- #
-# ------------------------ #
-class Config:
-    def __init__(self):
-        self.N_x = 0
-        self.N_y = 0
-        self.N_z = 0
-        self.x_step = 0
-        self.y_step = 0
-        self.z_step = 0
-        self.x_s = 0 # distance of the source (negative value)
-        self.freq = 0
-        self.max_compression_err = 0 # Max compression error
-        self.V_s = 0 # compression threshold on signal
-        self.V_p = 0 # compression threshold on propagator
-        self.wv_family = 'None'
-        # wavelet level
-        self.wv_L = 0
-        # type of apodisation window
-        self.apo_window = 'None'
-        # percentage of apodisation of the domain along y
-        self.apo_y = 0
-        # percentage of apodisation of the domain along z
-        self.apo_z = 0
-        # percentage of image layer of the domain along z (if any ground)
-        self.image_layer = 0
-        # number of point sin the image layer (multiple of 2^L)
-        self.N_im = 0
-        # ground type ('None', 'PEC', or 'dielectric')
-        self.ground = 'None'
-        # ground relative permittivity (for dielectric ground only)
-        self.epsr = 0
-        # ground conductivity (for dielectric ground only)
-        self.sigma = 0
-        self.atmosphere = 'None'  # atmospheric profile type
-        self.c0 = 0  # standard atm gradient
-        self.delta = 0  # evaporation duct height
-        self.zb = 0  # base height of a trilinear duct
-        self.c2 = 0  # gradient in a trilinear duct
-        self.zt = 0  # thickness of a trilinear duct
-        self.atm_filename = 'None'  # file for a hand-generated atmospheric profile
-        self.turbulence = 'N'
-        self.Cn2 = 0
-        self.L0 = 0
-        self.py_or_cy = 'None'  # ='Py' for Python code, and = 'Cy' for Cython code
-        self.case_index = None
-        self.atmosphere_datetime = None
-        self.P = None
-        self.Q = None
+def geodesic_line_coords(P: Tuple[float], Q: Tuple[float], N: int) -> np.array:
+    """
+    Returns the coordinates of the geodesic line formed of N points between points P and Q.
+    P : (lat, long)
+    Q : (lat, long)
+    N : number of points
+
+    returns : np.array formed of the N (lat, long) points
+    """
+    # Get geodesic parameters from the two points
+    p = Geodesic.WGS84.Inverse(P[0], P[1], Q[0], Q[1])
+    # Distance between the two points (m)
+    D = p["s12"]
+    # Azimuth of the line at point P
+    azi = p["azi1"]
+    # Get the coordinates of N points along the geodesic line
+    points = [(P[0], P[1])]
+    # Create line with starting point P and the previously computed azimuth
+    l = Geodesic.WGS84.Line(P[0], P[1], azi)
+    for i in range(1, N - 1):
+        # Compute the lat, lon position of the ith point
+        o = l.Position(i * D / (N - 1))
+        points.append((o["lat2"], o["lon2"]))
+    points.append((Q[0], Q[1]))  # add the last point
+    return np.array(points)
+
+
+def geodesic_line_distance(P: Tuple[float], Q: Tuple[float], N: int):
+    """
+    Returns the angle and distances of the geodesic line formed of N points between points P and Q.
+    P : (lat, long)
+    Q : (lat, long)
+    N : number of points
+
+    returns : azimuth as seen from P, np.array formed of the N (distance from P) points
+    """
+    # Get geodesic parameters from the two points
+    p = Geodesic.WGS84.Inverse(P[0], P[1], Q[0], Q[1])
+    # Distance between the two points (m)
+    D = p["s12"]
+    # Azimuth of the line at point P
+    azi = p["azi1"]
+    return azi, np.linspace(0, D, N)
 
 
 class Cache:
@@ -170,8 +173,3 @@ class Cache:
             for i in range(len(keys) - self.cache_size):
                 fp = os.path.join(self.path, cache_files[keys[i]])
                 os.remove(fp)
-
-# ---------- END --------- #
-# --- Defining classes --- #
-# ------------------------ #
-config = Config() # instanciate config object
