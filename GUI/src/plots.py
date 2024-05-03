@@ -415,13 +415,19 @@ class Plots(object):
             ax.plot(x_max/2+n_refractivity_plot, z_vect+z_relief_2, color='b', label=None)
             ax.plot(3*x_max/4+n_refractivity_plot, z_vect+z_relief_3, color='b', label=None)
         else:
-            x = np.arange(0, x_max*1000, x_step) # x_max in kilometers
-            z = np.arange(0, z_max, z_step)
-            print(f"M shape : {n_refractivity.shape} ; N_x={n_x} N_z={n_z}")
+            # Since we plot a colormesh, x and z have to be 1 greater than n_refractivity
+            x = np.linspace(0, x_max, n_x+1) # plot is in km so x has to be in km
+            z = np.linspace(0, z_max, n_z+1)
+            # print(f"M shape : {n_refractivity.shape} ; N_x={n_x} N_z={n_z} ; #x={len(x)}, #z={len(z)}")
             if n_refractivity.shape == (n_x, n_z):
-                # transpose to obtain the correct dimension
-                plot = ax.pcolormesh(x, z, n_refractivity.T[:n_z,:n_x])
-                self.environment_colorbar = self.figure_environment.colorbar(plot, ax=ax, label="m gradient [m⁻¹]")
+                # transpose to obtain the correct dimension, convert m⁻¹ to km⁻¹
+                C = n_refractivity.T*1000
+                # Center color scale on 0
+                vmin = -np.max(np.abs(C))
+                vmax = np.max(np.abs(C))
+                # Plot colormesh with a diverging cmap
+                plot = ax.pcolormesh(x, z, C, vmin=vmin, vmax=vmax, cmap='PuOr_r')
+                self.environment_colorbar = self.figure_environment.colorbar(plot, ax=ax, label="m gradient [km⁻¹]")
         ax.legend()
 
         # plot atmosphere on relief

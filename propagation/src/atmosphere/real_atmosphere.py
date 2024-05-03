@@ -57,8 +57,8 @@ def load(path: str, P: Tuple[float], Q: Tuple[float], N: int) -> xr.Dataset:
     Loads a given dataset, interpolates it on a line of N values between points P and Q and returns a smaller dataset.
 
     path : path to a grib/netcdf dataset
-    P : latitude, longitude of the first point
-    Q : latitude, longitude of the second point
+    P : latitude, longitude tuple of the first point
+    Q : latitude, longitude tuple of the second point
     N : number of points to interpolate
     ds : xarray dataset
     """
@@ -89,6 +89,7 @@ def load(path: str, P: Tuple[float], Q: Tuple[float], N: int) -> xr.Dataset:
         # Add the distances array to the new coordinate
         ds = ds.assign_coords(dict(d=ld))
 
+        # Add metadata
         ds["d"] = ds.d.assign_attrs({"long_name": "Distance from P", "units": "m"})
 
         # Cache dataset
@@ -96,7 +97,7 @@ def load(path: str, P: Tuple[float], Q: Tuple[float], N: int) -> xr.Dataset:
     return ds
 
 
-def height_to_hPa(height, P0=101325, T=288.15):  # bug here
+def height_to_hPa(height, P0=101325, T=288.15):
     M = 29e-3  # molar mass of air kg/mol
     g = 9.80665  # standard gravity (m/s^2)
     k = 1.38e-23  # boltzman constant
@@ -122,7 +123,7 @@ def add_n(ds: xr.Dataset):
         T_degC = x.t - 273.15 # Convert K to °C
         H_percent = x.r # relative humidity in %
 
-        EF_water = 1 + 1e-4 * np.floor(7.2 + P_hPa * (0.0320 + 5.9 * 1e-6 * T_degC * T_degC))
+        EF_water = 1 + 1e-4 * (7.2 + P_hPa * (0.0320 + 5.9 * 1e-6 * T_degC * T_degC))
         es = EF_water * a * np.exp(((b - T_degC / d) * T_degC )/ (T_degC + c))
 
         e = H_percent * es / 100
@@ -169,7 +170,7 @@ def add_grad_n(ds: xr.Dataset):
     # Differentiate N along height
     ds = ds.assign(grad_N=lambda ds: ds.N.differentiate("heights"))
     ds = ds.assign(grad_N=lambda ds: ds.grad_N * 1000)
-    ds["grad_N"] = ds.grad_n.assign_attrs(
+    ds["grad_N"] = ds.grad_N.assign_attrs(
         {"long_name": "Refractivity gradient", "units": "km⁻¹"}
     )
     return ds
@@ -261,9 +262,9 @@ def get_corefractive_index(config) -> np.ndarray:
     # Interpolate all the dataset in between pressure levels, and convert pressure levels to meters
     a = interpolate_vertical(a, c.N_z, hmax)
     # Save the gradient into a file to display it in the UI
-    np.save('./inputs/refractivity_gradient.npy', np.array(a.grad_m.sel(time=time).T)) # save to show it in the UI later
+    np.save('./inputs/refractivity_gradient.npy', a.grad_m.sel(time=time).to_numpy().T) # save to show it in the UI later
     # transpose the array, shape of (N_x, N_z) instead of (N_z, N_x)
-    return np.array(a.m.sel(time=time)).T
+    return a.m.sel(time=time).to_numpy().T
 
 
 if __name__ == "__main__":
