@@ -23,6 +23,7 @@ from os.path import basename
 
 from src.classes_and_files.classes import Cache
 import src.classes_and_files.geodesic as geo
+import src.atmosphere.geopotential as geopot
 import src.atmosphere.cds as cds
 
 def normalize(ds: xr.Dataset) -> xr.Dataset:
@@ -52,18 +53,18 @@ def normalize(ds: xr.Dataset) -> xr.Dataset:
     return ds
 
 
-def load(path: str, P: Tuple[float], Q: Tuple[float], N: int) -> xr.Dataset:
+def load(path: str, P: Tuple[float], Q: Tuple[float], N_x: int, N_z:int, z_max=3000.0) -> xr.Dataset:
     """
     Loads a given dataset, interpolates it on a line of N values between points P and Q and returns a smaller dataset.
 
-    path : path to a grib/netcdf dataset
-    P : latitude, longitude tuple of the first point
-    Q : latitude, longitude tuple of the second point
-    N : number of points to interpolate
+    P : latitude, longitude of the first point
+    Q : latitude, longitude of the second point
+    N_x : number of logitudinal points to interpolate
+    N_z : number of vertical points to interpolate
     ds : xarray dataset
     """
     # Check for cached datasets
-    cache_string = f"atmosphere,{P},{Q},{N},{basename(path)}"
+    cache_string = f"atmosphere,{P},{Q},{N_x},{N_z},{z_max},{basename(path)}"
     c = Cache(cache_string)
     ds = None
     if c.has():
@@ -76,9 +77,9 @@ def load(path: str, P: Tuple[float], Q: Tuple[float], N: int) -> xr.Dataset:
 
         print("[*] Interpolating positions...")
         # (P, Q) line (lat, lon) coordinates
-        lc = geo.geodesic_line_coords(P, Q, N)
+        lc = geo.geodesic_line_coords(P, Q, N_x)
         # (P, Q) line; azi : angle from P, ld = distances from P
-        azi, ld = geo.geodesic_line_distance(P, Q, N)
+        azi, ld = geo.geodesic_line_distance(P, Q, N_x)
 
         # Warning : brain juice below
         # Interpolate on the (P,Q) segment, using (lat, lon) couples by creating a new coordinate d which is the distance from P on the axis (P,Q)
@@ -89,8 +90,11 @@ def load(path: str, P: Tuple[float], Q: Tuple[float], N: int) -> xr.Dataset:
         # Add the distances array to the new coordinate
         ds = ds.assign_coords(dict(d=ld))
 
-        # Add metadata
         ds["d"] = ds.d.assign_attrs({"long_name": "Distance from P", "units": "m"})
+
+        # Regrid dataset, replace isobaric surfaces with heights
+        print("[*] Regriding dataset... ")
+        ds = geopot.regrid_dataset(ds, N_z, z_max)
 
         # Cache dataset
         c.store(ds)
@@ -146,7 +150,9 @@ def add_M(ds: xr.Dataset) -> xr.Dataset:
     def M(ds:xr.Dataset):
         return ds.heights/Re * 1e6 + ds.N
     ds = ds.assign(M=M)
+    ds = ds.assign(m = lambda ds: ds.n + ds.heights/Re)
     ds["M"] = ds.M.assign_attrs({"long_name": "Corefractivity index"})
+    ds["m"] = ds.m.assign_attrs({"long_name": "Corefraction index"})
     return ds
 
 def add_grad_m(ds: xr.Dataset) -> xr.Dataset:
@@ -247,20 +253,15 @@ def get_corefractive_index(config) -> np.ndarray:
     # Create time string used to select data
     time = c.atmosphere_datetime.strftime("%Y-%m-%dT%H:00:00.%f")
     # Load initial atmosphere dataset
-    a = load(path, c.P, c.Q, c.N_x)
+    a = load(path, c.P, c.Q, c.N_x, c.N_z, hmax)
     # Normalize vars and coords names
     a = normalize(a)
     # Compute the refraction index
     a = add_n(a)
-    a = add_heights(a, hmax)
     a = add_M(a)
-    # Add m
-    a = a.assign(m = lambda ds: ds.n + ds.heights/6.371e6)
     # Compute the gradient of the refraction index
     a = add_grad_n(a)
     a = add_grad_m(a)
-    # Interpolate all the dataset in between pressure levels, and convert pressure levels to meters
-    a = interpolate_vertical(a, c.N_z, hmax)
     # Save the gradient into a file to display it in the UI
     np.save('./inputs/refractivity_gradient.npy', a.grad_m.sel(time=time).to_numpy().T) # save to show it in the UI later
     # transpose the array, shape of (N_x, N_z) instead of (N_z, N_x)
