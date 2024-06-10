@@ -153,7 +153,7 @@ def read_source(config, file_source_config, file_e_init):
             # geometry must match with the source generation
             elif row[0] == 'frequency':
                 freq = float(row[1]) * 1e6  # freq in MHz
-                if freq - config.freq > 2*2.22e-16:
+                if np.abs(freq - config.freq) > 2*2.22e-16:
                     raise ValueError(['frequency ', freq, ' MHz value does not match with source generation',
                                     config.freq, ' MHz'])
             # x_s is the source position in the x direction (must be <0)
