@@ -184,7 +184,6 @@ def get_ign_height_profile(P: Tuple[float], Q: Tuple[float], N: int) -> xr.Datas
     if response.status_code == 200:
         # Convert JSON response to dict()
         d = response.json()
-        print(d)
         # Initialize data holders
         h = np.zeros(N, dtype=float)
         heights = []
