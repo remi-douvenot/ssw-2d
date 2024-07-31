@@ -329,7 +329,7 @@ class Window(QMainWindow, Ui_MainWindow, Dependencies, Plots):
             elif row[0] == 'z_step':
                 z_step = np.float64(row[1])
             elif row[0] == 'N_z':
-                N_z = np.int64(row[1])
+                N_z = int(row[1])
                 if N_z != 2000 and method == 'SSF':
                     error_message = "z_step value does NOT match with the source generation. Requirement : N_z = 2000"
                     self.informationTextBrowser.setPlainText(error_message)

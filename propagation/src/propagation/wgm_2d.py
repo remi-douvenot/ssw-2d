@@ -1,8 +1,8 @@
 import pywt
 import numpy as np
 import scipy.constants as cst
-from propagation.src.propagation.wgm_one_step import wgm_one_step, galerkin_matrices
-from propagation.src.propagation.apodisation import apply_apodisation, apodisation_window
+from src.propagation.wgm_one_step import wgm_one_step, galerkin_matrices
+from src.propagation.apodisation import apply_apodisation, apodisation_window
 from src.wavelets.wavelet_operations import sparsify
 
 

@@ -609,7 +609,7 @@ class Dependencies(object):
             x_s = serie.loc['x_s']  # then remove the "-"
             self.x_sDoubleSpinBox.setProperty("value", x_s[1:])
             # z_s
-            self.z_sDoubleSpinBox.setProperty("value", np.float(serie.loc['z_s']))
+            self.z_sDoubleSpinBox.setProperty("value", np.float64(serie.loc['z_s']))
             # W0 (width of the belt for CSP source)
             w0_lambda = np.float64(serie.loc['W0']) / lambda0
             # print('W0_lambda', w0_lambda)

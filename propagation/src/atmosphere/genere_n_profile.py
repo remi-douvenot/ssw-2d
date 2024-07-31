@@ -159,7 +159,7 @@ def turbulent(n_z, z_step, x_step, Los, Cn2_exponent,f):
     a = np.random.normal(0,np.sqrt((2/z_step)*np.sin(np.pi/n_z))*np.sqrt(S_Phi2D),n_z) #DSSF
     b = np.random.normal(0,np.sqrt((2/z_step)*np.sin(np.pi/n_z))*np.sqrt(S_Phi2D),n_z) #DSSF
     gauss = (a + 1j*b)
-    print('energy gauss', np.sum(np.abs(gauss)**2))
+    # print('energy gauss', np.sum(np.abs(gauss)**2))
     #fft shift to remove symmetry
     #G = gauss #DSSF
     G = np.fft.fftshift(gauss) #SSF
@@ -167,5 +167,5 @@ def turbulent(n_z, z_step, x_step, Los, Cn2_exponent,f):
     Phi=n_z*(np.fft.ifft(G).real)
     #Phi=(G*np.exp(2*np.pi*1j*q_z/n_z)).real
     #take the real part
-    print('energy phi',np.sum(np.abs(Phi)**2)/n_z)
+    # print('energy phi',np.sum(np.abs(Phi)**2)/n_z)
     return Phi

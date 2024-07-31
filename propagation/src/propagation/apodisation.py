@@ -17,7 +17,7 @@
 
 import numpy as np
 import time
-from propagation.src.wavelets.wavelet_operations import q_max_calculation
+from src.wavelets.wavelet_operations import q_max_calculation
 
 
 def apply_apodisation(u_x, apo_window_z, config):
