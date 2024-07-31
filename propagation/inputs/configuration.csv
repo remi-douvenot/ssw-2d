@@ -1,10 +1,10 @@
 Property,Value,Unit
 method,SSF,
-N_x,1000,Unnamed: 2
-N_z,1148,
-x_step,10.0,m
-z_step,0.34843205574912894,m
-frequency,1000.0,MHz
+N_x,2400,Unnamed: 2
+N_z,4000,
+x_step,12.5,m
+z_step,0.2,m
+frequency,2000.0,MHz
 polarisation,TE,
 Max compression error,-20.0,dB
 wavelet level,2,
@@ -27,7 +27,7 @@ c2,-0.8,M-unit/m
 zt,200.0,m
 atm filename,toto.atm,
 dynamic,80,dB
-py_or_cy,Cython,'Python' or 'Cython'
+py_or_cy,Python,'Python' or 'Cython'
 atmosphere_datetime,2017-11-15T14:00:00,%Y-%m-%dT%H:00:00 (UTC)
 P,43.554465;2.289742,latitude;longitude
 Q,43.302212;-2.914873,latitude;longitude

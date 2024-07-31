@@ -145,6 +145,7 @@ class Plots(object):
         # --- from wavelets to E-field --- #
         # loop on each distance step
         for ii_x in np.arange(0, n_x):  # first field is not saved
+            # print(ii_x)
             # from coo matrix to array on each level
             for ii_lvl in np.arange(0, wv_l + 1):
                 wv_ii_x[ii_lvl] = wv_total[ii_x][ii_lvl].todense()

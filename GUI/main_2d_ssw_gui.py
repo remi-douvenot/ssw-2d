@@ -330,10 +330,6 @@ class Window(QMainWindow, Ui_MainWindow, Dependencies, Plots):
                 z_step = np.float64(row[1])
             elif row[0] == 'N_z':
                 N_z = int(row[1])
-                if N_z != 2000 and method == 'SSF':
-                    error_message = "z_step value does NOT match with the source generation. Requirement : N_z = 2000"
-                    self.informationTextBrowser.setPlainText(error_message)
-                    raise ValueError('z_step value does NOT match with the source generation')
             elif row[0] == 'z_s':
                 z_s = np.float64(row[1])
                 file_relief_config = '../terrain/outputs/z_relief.csv'
