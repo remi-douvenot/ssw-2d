@@ -60,7 +60,8 @@ def complex_source_point(config_source):
     x_s = config_source.x_s
     z_s = config_source.z_s
     # with of the csp
-    w0 = config_source.W0
+    lambda0 = 2*np.pi/k0
+    w0 = config_source.W0 * lambda0
     # imaginary position of the source along x
     xw0 = k0*(w0**2)/2.0
     # ------------------------- #

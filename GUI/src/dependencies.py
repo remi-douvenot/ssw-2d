@@ -204,7 +204,7 @@ class Dependencies(object):
 
     # --- size apodisation (in %) --- #
     def size_apo_clicked(self):
-        apo_size = np.float64(self.sizeApoSpinBox.value()) / 100                                             #change
+        apo_size = float(self.sizeApoSpinBox.value()) / 100                                             #change
         # write the apodisation size
         update_file('apodisation size', apo_size, 'propa')
 
@@ -399,9 +399,9 @@ class Dependencies(object):
         # --- update width --- #
         width = self.widthDoubleSpinBox.value()
         lambda0 = self.lambdaMDoubleSpinBox.value()
-        width_in_m = width * lambda0
+        width_in_lambda = width
         # write the z_s value in files
-        update_file('W0', width_in_m, 'source')
+        update_file('W0', width_in_lambda, 'source')
         self.run_source.setStyleSheet('QPushButton {background-color: red;}')
 
     # --- dynamic --- #
@@ -472,7 +472,7 @@ class Dependencies(object):
         x_step = self.deltaXMDoubleSpinBox.value()
         # @TODO Center and width defined in meters in the csv file
         # --- update relief center expressed in number of points (not in m) --- #
-        relief_center = np.float64(self.centerReliefDoubleSpinBox.value())                                            #change
+        relief_center = float(self.centerReliefDoubleSpinBox.value())                                            #change
         # write the center relief value in terrain file
         update_file('center', relief_center, 'terrain')
 
@@ -481,7 +481,7 @@ class Dependencies(object):
         # --- read Delta_x --- #
         x_step = self.deltaXMDoubleSpinBox.value()
         # --- update relief width expressed in number of points (not in m) --- #
-        relief_width = np.float64(self.widthReliefDoubleSpinBox.value())                                             #change
+        relief_width = float(self.widthReliefDoubleSpinBox.value())                                             #change
         # write the max_relief value in terrain file
         update_file('width', relief_width, 'terrain')
         update_file('x_step', x_step, 'terrain')
@@ -536,15 +536,15 @@ class Dependencies(object):
             # z_step
             self.deltaZMDoubleSpinBox.setProperty("value", serie.loc['z_step'])
             # x_max
-            x_max = np.float64(serie.loc['x_step']) * float(serie.loc['N_x']) * 1e-3  # in km
+            x_max = float(serie.loc['x_step']) * float(serie.loc['N_x']) * 1e-3  # in km
             self.xMaxKmDoubleSpinBox.setProperty("value", str(x_max))
             # z_max
-            z_max = np.float64(serie.loc['z_step']) * int(serie.loc['N_z'])
+            z_max = float(serie.loc['z_step']) * int(serie.loc['N_z'])
             self.zMaxMDoubleSpinBox.setProperty("value", z_max)
             # frequency
             self.frequencyMHzDoubleSpinBox.setProperty("value", serie.loc['frequency'])
             # lambda
-            lambda0 = cst.c/np.float64(serie.loc['frequency'])*1e-6  # freq in MHz
+            lambda0 = cst.c/float(serie.loc['frequency'])*1e-6  # freq in MHz
             self.lambdaMDoubleSpinBox.setProperty("value", lambda0)
             # ground
             self.polarisationComboBox.setCurrentText(serie.loc['polarisation'])
@@ -591,8 +591,8 @@ class Dependencies(object):
             #L0
             self.L0DoubleSpinBox.setProperty("value", serie.loc['L0'])
             # Store P and Q as attributes - duplicated code
-            self.P = tuple([np.float64(l) for l in serie.loc['P'].split(';')])
-            self.Q = tuple([np.float64(l) for l in serie.loc['Q'].split(';')])
+            self.P = tuple([float(l) for l in serie.loc['P'].split(';')])
+            self.Q = tuple([float(l) for l in serie.loc['Q'].split(';')])
             # Load date into the UI
             datetime = QDateTime.fromString(serie.loc['atmosphere_datetime'], Qt.ISODate)
             self.atmosphereDateTimeEdit.setDateTime(datetime)
@@ -609,10 +609,10 @@ class Dependencies(object):
             x_s = serie.loc['x_s']  # then remove the "-"
             self.x_sDoubleSpinBox.setProperty("value", x_s[1:])
             # z_s
-            self.z_sDoubleSpinBox.setProperty("value", np.float64(serie.loc['z_s']))
+            self.z_sDoubleSpinBox.setProperty("value", float(serie.loc['z_s']))
             # W0 (width of the belt for CSP source)
-            w0_lambda = np.float64(serie.loc['W0']) / lambda0
-            # print('W0_lambda', w0_lambda)
+            w0_lambda = float(serie.loc['W0'])
+            print('W0_lambda', w0_lambda)
             self.widthDoubleSpinBox.setProperty("value", w0_lambda)
             # @todo P_Tx
             # self.nZSpinBox.setProperty("value", serie.loc['N_z'])

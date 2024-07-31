@@ -115,8 +115,8 @@ for row in source_tmp:
         ConfigSource.P_Tx = np.float64(row[1])
     elif row[0] == 'G_Tx':  # antenna max gain (dBi)
         ConfigSource.G_Tx = np.float64(row[1])
-    elif row[0] == 'W0':  # waist of the CSP
-        ConfigSource.W0 = np.float64(row[1])
+    elif row[0] == 'W0':  # waist of the CSP  given in wavelengths
+        ConfigSource.W0 = np.float64(row[1])  #
     elif row[0] == 'z_s':  # position along z
         ConfigSource.z_s = np.float64(row[1])
     elif row[0] == 'Property':  # first line

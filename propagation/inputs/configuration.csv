@@ -1,5 +1,5 @@
 Property,Value,Unit
-method,SSF,
+method,WWP,
 N_x,2400,Unnamed: 2
 N_z,4000,
 x_step,12.5,m
@@ -9,11 +9,11 @@ polarisation,TE,
 Max compression error,-20.0,dB
 wavelet level,2,
 wavelet family,sym6,
-wvl propagator,DSSF,
+wvl propagator,WGM,
 apodisation window,Hanning,
 apodisation size,0.2,% of N_z
 image size,0.2,% of N_z
-ground,PEC,
+ground,No Ground,
 epsr,15.0,
 sigma,0.5,S/m
 atmosphere,Trilinear,

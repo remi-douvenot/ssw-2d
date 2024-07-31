@@ -238,7 +238,7 @@
        </size>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_3">
        <attribute name="title">
@@ -267,14 +267,14 @@
             <bool>false</bool>
            </property>
            <property name="currentText">
-            <string>None</string>
+            <string>No Ground</string>
            </property>
            <property name="currentIndex">
             <number>0</number>
            </property>
            <item>
             <property name="text">
-             <string>None</string>
+             <string>No Ground</string>
             </property>
            </item>
            <item>
@@ -549,6 +549,15 @@
            </property>
            <property name="keyboardTracking">
             <bool>false</bool>
+           </property>
+           <property name="decimals">
+            <number>3</number>
+           </property>
+           <property name="stepType">
+            <enum>QAbstractSpinBox::DefaultStepType</enum>
+           </property>
+           <property name="value">
+            <double>0.000000000000000</double>
            </property>
           </widget>
          </item>
@@ -1710,6 +1719,20 @@
           </property>
          </widget>
         </item>
+        <item row="2" column="1">
+         <widget class="QComboBox" name="wvlPropagatorComboBox">
+          <item>
+           <property name="text">
+            <string>DSSF</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>WGM</string>
+           </property>
+          </item>
+         </widget>
+        </item>
        </layout>
       </widget>
       <widget class="QWidget" name="layoutWidget">
@@ -1998,6 +2021,19 @@
         </item>
        </layout>
       </widget>
+      <widget class="QLabel" name="apodisationLabel_2">
+       <property name="geometry">
+        <rect>
+         <x>410</x>
+         <y>70</y>
+         <width>68</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Propagator</string>
+       </property>
+      </widget>
      </widget>
     </item>
     <item row="4" column="1">
@@ -2174,6 +2210,11 @@
        <item>
         <property name="text">
          <string>SSF</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>WGM</string>
         </property>
        </item>
       </widget>

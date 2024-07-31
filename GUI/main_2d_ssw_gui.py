@@ -309,11 +309,6 @@ class Window(QMainWindow, Ui_MainWindow, Dependencies, Plots):
                 error_message = "WGM only available for No Ground"
                 self.informationTextBrowser.setPlainText(error_message)
                 raise ValueError('WGM only available for No Ground')
-        Width = self.widthDoubleSpinBox.value()
-        if Width == 0:
-            error_message = "Please Enter a Value For lambda Source"
-            self.informationTextBrowser.setPlainText(error_message)
-            raise ValueError('lambda Source = 0m!!')
         freq = self.frequencyMHzDoubleSpinBox.value()
         apod = self.sizeApoSpinBox.value()
         file_source_output_config = '../source/outputs/configuration.csv'

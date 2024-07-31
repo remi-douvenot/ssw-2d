@@ -2,7 +2,7 @@ Property,Value,Unit
 N_x,2400,
 x_step,12.5,m
 type,Triangle,
-z_max_relief,100.0,m
+z_max_relief,200.0,m
 iterations,7,for superposed terrain
 width,2000.0,pts
 center,6000.0,pts

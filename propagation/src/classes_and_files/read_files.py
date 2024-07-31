@@ -109,7 +109,7 @@ def read_config(file_configuration):
 
     if ((config.method != 'SSW') & (config.method != 'WWP') & (config.method != 'WWP-H') & (config.method != 'SSF') &
             (config.method != 'WGM')):
-        raise ValueError(['Method must be chosen among: SSW or WWP or WWP-H or SSF'])
+        raise ValueError(['Method -- ', config.method, ' -- must be chosen among: SSW or WWP or WWP-H or SSF or WGM'])
     # ------------ END ------------ #
     # --- Reading configuration --- #
     # ----------------------------- #
