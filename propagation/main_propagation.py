@@ -73,7 +73,10 @@
 #
 # @warning: only atmosphere is accounted with WWP. No ground or relief.
 ##
+# Since we import cython below, we need to add support to the python interpreter
 
+import pyximport
+pyximport.install()
 
 import numpy as np
 import time
@@ -84,12 +87,14 @@ from src.propagation.ssf_2d import ssf_2d
 from src.propagation.wwp_2d import wwp_2d
 from src.propagation.wwp_h_2d import wwp_h_2d
 from src.propagation.wgm_2d import wgm_2d
+# from src.propa_cython.wwp_2d_cy import wwp_2d_cy # dynamically imported
 import shutil  # to make file copies
 # where config is defined
 from src.classes_and_files.read_files import read_config, read_source, read_relief
 from src.atmosphere.genere_n_profile import generate_n_profile
 import pywt
 import matplotlib.pyplot as plt
+import importlib
 
 # -------------------------------------------------- #
 # --- Declare the files where inputs are written --- #
@@ -163,13 +168,18 @@ config.V_s, config.V_p = compute_thresholds(config.N_x, config.max_compression_e
 # ---------------------- #
 # --- 2D Propagation --- #
 # ---------------------- #
-t_propa_s = time.time()
+t_propa_s = time.process_time()
 # SSW
 if config.method == 'SSW':
     u_final, wv_total = ssw_2d(u_0, config, n_refraction, ii_vect_relief)
 # WWP  <-- if WW-H is chosen without ground then WWP is launched
 elif (config.method == 'WWP') or ((config.method == 'WWP-H') and (config.ground == 'No Ground')):
-    u_final, wv_total = wwp_2d(u_0, config, n_refraction, ii_vect_relief)
+    if config.py_or_cy == 'Python':
+        u_final, wv_total = wwp_2d(u_0, config, n_refraction)
+    else:  # config.py_or_cy == 'Cython'
+        # Dynamically import Cython
+        wwp_2d_cy = importlib.import_module('src.propa_cython.wwp_2d_cy')
+        u_final, wv_total = wwp_2d_cy.wwp_2d_cy(u_0, config, n_refraction)
 # WWP-H
 elif config.method == 'WWP-H':
     u_final, wv_total = wwp_h_2d(u_0, config, n_refraction, ii_vect_relief)
@@ -182,7 +192,7 @@ elif config.method == 'WGM':
 else:
     raise ValueError('Unknown propagation method.')
 
-t_propa_f = time.time()
+t_propa_f = time.process_time()
 print('Total '+config.method+' (ms)', np.round((t_propa_f-t_propa_s)*1e3))
 
 # --- de-normalise in infinity norm --- #

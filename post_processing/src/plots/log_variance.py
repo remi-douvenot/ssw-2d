@@ -43,7 +43,7 @@ def log_variance(config, E_turbulent,E_reference):
     n_x = config.N_x
     sigma2 = np.zeros(n_x)
     n_z = config.N_z
-    n_apo_z = np.int64(config.apo_z * n_z)                                                                         #change
+    n_apo_z = int(config.apo_z * n_z)
     print(n_apo_z)
     # --- compute vertical log-variance at each range step --#
     Np2dB = 8.686

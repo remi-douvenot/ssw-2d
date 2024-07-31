@@ -71,7 +71,7 @@ from src.wavelets.wavelet_operations import sparsify  # for sparsify
 # @profile
 
 
-def wwp_2d(u_0, config, n_refraction, ii_vect_relief):
+def wwp_2d(u_0, config, n_refraction):
 
     # Simulation parameters
     n_x = config.N_x
@@ -89,7 +89,7 @@ def wwp_2d(u_0, config, n_refraction, ii_vect_relief):
     np.save('./outputs/dictionary', np.array(dictionary, dtype=object), allow_pickle=True)
     # --- Sizes of the apodisation and image layers --- #
     if config.ground == 'PEC' or config.ground == 'Dielectric':
-        n_im = np.int64(np.round(config.N_z * config.image_layer))                                                    #change
+        n_im = int(np.round(config.N_z * config.image_layer))
         remain_im = n_im % 2**config.wv_L
         if remain_im != 0:
             n_im += 2**config.wv_L - remain_im
@@ -98,7 +98,7 @@ def wwp_2d(u_0, config, n_refraction, ii_vect_relief):
         n_im = 0
     config.N_im = n_im
 
-    n_apo_z = np.int64(config.apo_z * config.N_z)                                                                     #change
+    n_apo_z = int(config.apo_z * config.N_z)
     remain_apo = n_apo_z % 2 ** config.wv_L
     if remain_apo != 0:
         n_apo_z += 2 ** config.wv_L - remain_apo

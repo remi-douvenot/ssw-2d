@@ -53,29 +53,41 @@
 # !/usr/bin/env python
 import matplotlib.pyplot as plt
 import numpy as np
+import scipy.constants as cst
+import pandas as pd
 import sys
 import os
 from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow, QMessageBox, QGraphicsScene, QGraphicsView, \
     QGridLayout, QVBoxLayout, QGraphicsPixmapItem
 from PyQt5.QtGui import QPixmap
+from PyQt5.Qt import QProcess, QDialog
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 # Local Module Imports
 import src.plots
 from src.gui_ssw_2d import Ui_MainWindow
-import pandas as pd
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from src.dependencies import Dependencies
 from src.plots import Plots
-import scipy.constants as cst
 import csv
 
 class Window(QMainWindow, Ui_MainWindow, Dependencies, Plots):
 
     def __init__(self, parent=None):
-        super().__init__(parent)
-        self.setupUi(self)
-        self.initialise()
+        # Since Window in derived from 4 different classes, we need to call each individual constructor
+        # Plots class does not have a ctor/init function
+        # Note : constructor/initialization calls have 'static' syntax here, but they do the same thing
+        QMainWindow.__init__(self, parent)
+        Ui_MainWindow.setupUi(self, self)
+        Dependencies.initialise(self)
+        self.environment_colorbar = None
 
         # @TODO: make expandable and manipulable figures (cf. example Alex)
+
+        # -------------------------- #
+        # -------- Processes ------- #
+        # -------------------------- #
+        self.sim_process = QProcess(self)
+        self.terrain_process = QProcess(self)
+        self.source_process = QProcess(self)
 
         # -------------------------- #
         # --- Link GUI and plots --- #
@@ -129,7 +141,7 @@ class Window(QMainWindow, Ui_MainWindow, Dependencies, Plots):
         self.figure_environment = plt.figure(figsize=(8.2, 2.5), tight_layout=True)
         self.canvas_environment = FigureCanvas(self.figure_environment)
         self.scene.addWidget(self.canvas_environment)
-        self.ax_environment = self.figure_environment.add_subplot(1, 1, 1)
+        self.ax_environment = self.figure_environment.add_subplot(1, 1, 1) # 1 row, 1 column, 1st figure
         # set the enabled / disabled buttons in the atmosphere tab
         self.atm_type_changed()
 
@@ -180,6 +192,7 @@ class Window(QMainWindow, Ui_MainWindow, Dependencies, Plots):
         self.pushButtonFinal.clicked.connect(self.plot_final_out)
         self.pushButtonEnvironment.clicked.connect(self.plot_environment_out)
         self.pushButtonRefractivity.clicked.connect(self.plot_refractivity_out)
+        self.setPointsButton.clicked.connect(self.open_points_dialog)
 
         # -------- END --------- #
         # --- Action buttons --- #
@@ -237,6 +250,7 @@ class Window(QMainWindow, Ui_MainWindow, Dependencies, Plots):
         self.zbDoubleSpinBox.valueChanged.connect(self.zb_clicked)
         self.c2DoubleSpinBox.valueChanged.connect(self.c2_clicked)
         self.ztDoubleSpinBox.valueChanged.connect(self.zt_clicked)
+        self.atmosphereDateTimeEdit.dateTimeChanged.connect(self.datetime_changed)
 
         # --- turbulence --- #
         self.turbuComboBox.currentTextChanged.connect(self.turbulence_yes_no)
@@ -261,9 +275,7 @@ class Window(QMainWindow, Ui_MainWindow, Dependencies, Plots):
         # ---------------------------- #
 
     def ssw(self):
-
-        # TODO replace os.system by subprocess. See https://docs.python.org/3/library/subprocess.html
-        # definition of the messages wrt. chosen method
+        # Get the resolution method from the UI
         method = self.methodComboBox.currentText()
         start_message = "Field calculation using "+method+" -- in progress"
         end_message = "Field calculation using "+method+" -- Successfully finished"
@@ -357,30 +369,64 @@ class Window(QMainWindow, Ui_MainWindow, Dependencies, Plots):
             #self.informationTextBrowser.setPlainText("ERROR: Ground type must be No Ground if turbulence is True")
             #raise (ValueError(['Ground type must be No Ground if turbulence is True']))
         # main program: SSW propagation
-        # change directory and launch propagation (depends on the OS)
-        if sys.platform == "linux" or sys.platform == "linux2" or sys.platform == "darwin":
-            cmd = 'cd ../propagation && python3 ./main_propagation.py'
-        else:
-            cmd = 'cd ../propagation && python ./main_propagation.py'
-        os.system(cmd)
+
+        # Check if a process is already running, kill it otherwise
+        if self.sim_process.state() == QProcess.Running:
+            self.sim_process.kill()
+
+        # Create a new process
+        self.sim_process = QProcess(self)
+        # When the process has exited, run self.simulation_finished()
+        self.sim_process.finished.connect(self.simulation_finished)
+        # When process stdout has messages or errors, print them in the console
+        self.sim_process.readyReadStandardOutput.connect(lambda: self.log_stdout(self.sim_process))
+        self.sim_process.readyReadStandardError.connect(lambda: self.log_stderr(self.sim_process))
+        # Set our process executable, sys.executable gives a /path/to/python or C:\path\to\python.exe
+        self.sim_process.setProgram(sys.executable) # platform-independent
+        # Set the directory in which the command will be launched
+        self.sim_process.setWorkingDirectory('../propagation')
+        # Give 1 argument to the programm (script name), has to be a List[str]
+        self.sim_process.setArguments(['main_propagation.py'])
+        # Start the process
+        self.sim_process.start()
+
+    def log_stdout(self, process):
+        # QProcess.readAllStandardOutput() returns a QByteArray
+        # QByteArray.data() returns python bytes
+        # bytes.decode() returns a str
+        self.informationTextBrowser.append(process.readAllStandardOutput().data().decode())
+
+    def log_stderr(self, process):
+        # QProcess.readAllStandardError() returns a QByteArray
+        # QByteArray.data() returns python bytes
+        # bytes.decode() returns a str
+        self.informationTextBrowser.append(process.readAllStandardError().data().decode())
+
+    def simulation_finished(self, exitcode, exit_status):
         # plot on the GUI
         self.plot_field_in()
-        # end message
-        self.informationTextBrowser.setPlainText(end_message)
+        # set button color
         self.run_simulation.setStyleSheet('QPushButton {background-color: green;}')
 
     def source(self):
-
         # start message
         self.informationTextBrowser.setPlainText("Source calculation -- in progress")
         self.informationTextBrowser.repaint()
-        # change directory and launch source (depends on the OS)
-        if sys.platform == "linux" or sys.platform == "linux2" or sys.platform == "darwin":
-            cmd = 'cd ../source && python3 ./main_source.py'
-        else:
-            cmd = 'cd ../source && python ./main_source.py'
-        # launch source calculation
-        os.system(cmd)
+
+        # See self.ssw() for explanations on the code below
+        if self.source_process.state() == QProcess.Running:
+            self.source_process.kill()
+
+        self.source_process = QProcess(self)
+        self.source_process.finished.connect(self.source_finished)
+        self.source_process.readyReadStandardOutput.connect(lambda: self.log_stdout(self.source_process))
+        self.source_process.readyReadStandardError.connect(lambda: self.log_stderr(self.source_process))
+        self.source_process.setProgram(sys.executable) # sys.executable gives a path to the python interpreter (platform-independant)
+        self.source_process.setWorkingDirectory('../source')
+        self.source_process.setArguments(['main_source.py'])
+        self.source_process.start()
+
+    def source_finished(self, exitcode, exit_status):
         # update plot
         self.plot_source_in()
 
@@ -390,22 +436,27 @@ class Window(QMainWindow, Ui_MainWindow, Dependencies, Plots):
         self.run_simulation.setStyleSheet('QPushButton {background-color: green;}')
 
     def relief(self):
+        # See self.ssw() for explanations on the code below
+        if self.terrain_process.state() == QProcess.Running:
+            self.terrain_process.kill()
 
-        # change directory and launch terrain (depends on the OS)
-        if sys.platform == "linux" or sys.platform == "linux2" or sys.platform == "darwin":
-            cmd = 'cd ../terrain && python3 ./main_terrain.py'
-        else:
-            cmd = 'cd ../terrain && python ./main_terrain.py'
-        # launch terrain generation
-        os.system(cmd)
+        self.terrain_process = QProcess(self)
+        self.terrain_process.finished.connect(self.terrain_finished)
+        self.terrain_process.readyReadStandardOutput.connect(lambda: self.log_stdout(self.terrain_process))
+        self.terrain_process.readyReadStandardError.connect(lambda: self.log_stderr(self.terrain_process))
+        self.terrain_process.setProgram(sys.executable) # sys.executable gives a path to the python interpreter (platform-independant)
+        self.terrain_process.setWorkingDirectory('../terrain')
+        self.terrain_process.setArguments(['main_terrain.py'])
+        self.terrain_process.start()
 
+    def terrain_finished(self, exitcode, exit_status):
         # plot on the GUI
         self.plot_environment_in()
         # and update source plot
         self.plot_source_in()
 
         # end message
-        self.informationTextBrowser.setPlainText("Terrain generation -- finished")
+        self.informationTextBrowser.append("Terrain generation -- finished")
         self.run_relief.setStyleSheet('QPushButton {background-color: lightgray;}')
 
     def about(self):

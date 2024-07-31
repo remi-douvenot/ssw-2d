@@ -17,6 +17,7 @@ import numpy as np
 import scipy.constants as cst
 import matplotlib.pyplot as plt
 
+from src.atmosphere.real_atmosphere import get_corefractive_index
 
 def generate_n_profile(config):
     # choice of the atmospheric profile type
@@ -32,10 +33,10 @@ def generate_n_profile(config):
         n_refractive_index = trilinear_profile(config.N_z, config.z_step, config.c0, config.zb, config.c2, config.zt)
     elif config.atmosphere == 'Double duct':  # log then trilinear
         n_refractive_index = double_duct(config.N_z, config.z_step, config.c0, config.delta, config.zb, config.c2, config.zt)
-    elif config.atmosphere == 'file':  # complex profile from file
-        n_refractive_index = read_file_profile(config.N_z, config.z_step, config.atm_filename)
+    elif config.atmosphere == 'ERA5':  # Profile from file
+        n_refractive_index = get_corefractive_index(config) # too many arguments, pass the configuration object directly
     else:
-        raise ValueError(['Wrong atmospheric type!'])
+        raise ValueError(f'Atmospheric type {config.atmosphere} is not valid')
 
     return n_refractive_index
 
@@ -131,13 +132,6 @@ def trilinear_profile(n_z, z_step, c0, zb, c2, zt):
 # double duct
 def double_duct(n_z, z_step, c0, delta, zb, c2, zt):
     raise ValueError(['double duct not yet coded'])
-    n_refractive_index = 1
-    return n_refractive_index
-
-
-# read profile from a text file
-def read_file_profile(n_z, z_step, atm_filename):
-    raise ValueError(['read_file_profile not yet coded'])
     n_refractive_index = 1
     return n_refractive_index
 

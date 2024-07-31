@@ -55,17 +55,16 @@
 import numpy as np
 import scipy.constants as cst
 import matplotlib.pyplot as plt
-# import sys
-from src.terrain_gen import superposed
-from src.read_config import read_config
 import shutil  # to make file copies
 
+from src.terrain_gen import superposed
+from src.read_config import read_config
+import src.relief as rel
 
 # contains the source type
 file_terrain = './inputs/conf_terrain.csv'
 # read the inputs
 config = read_config(file_terrain)
-print(config.width)
 # no relief = Plane relief
 if config.type == 'Plane':
     # no relief
@@ -89,8 +88,18 @@ elif config.type == 'Triangle':
     x_tri = [0, triangle_start, triangle_top, triangle_end, config.N_x]
     z_tri = [0, 0, config.z_max_relief, 0, 0]
     z_relief = np.interp(np.arange(0, config.N_x+1), x_tri, z_tri)
-
-# other terrains are not coded (yet?)
+# IGN
+elif config.type == 'IGN':
+    # Retrieve the height dataset from IGN
+    ds = rel.get_ign_height_profile(config.P, config.Q, config.N_x+1)
+    # Convert it to a np.array
+    z_relief = np.array(ds.height)
+# Bing
+elif config.type == 'Bing':
+    # Retrieve the height dataset from Bing
+    ds = rel.get_bing_height_profile(config.P, config.Q, config.N_x+1)
+    # Convert it to a np.array
+    z_relief = np.array(ds.height)
 else:
     z_relief = np.zeros(config.N_x+1)
     raise (ValueError(['terrain type not coded']))

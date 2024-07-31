@@ -27,3 +27,6 @@ zt,200.0,m
 atm filename,toto.atm,
 dynamic,80,dB
 py_or_cy,Python,'Python' or 'Cython'
+atmosphere_datetime,2017-11-15T14:00:00,%Y-%m-%dT%H:00:00 (UTC)
+P,43.554465;2.289742,latitude;longitude
+Q,43.302212;-2.914873,latitude;longitude

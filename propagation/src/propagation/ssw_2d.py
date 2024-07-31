@@ -46,6 +46,7 @@ from src.DSSF.dmft import dmft_parameters, u2w, w2u, surface_wave_propagation
 from src.propagation.refraction import apply_refractive_index
 from src.propagation.image_field import compute_image_field, compute_image_field_tm_pec
 from src.wavelets.wavelet_operations import sparsify, q_max_calculation
+# from src.propa_cython.refraction_cy import apply_refractive_index_cy # import not used
 
 
 def ssw_2d(u_0, config, n_refraction, ii_vect_relief):
@@ -55,7 +56,7 @@ def ssw_2d(u_0, config, n_refraction, ii_vect_relief):
 
     # --- Creation of the apodisation window --- # @todo Code other apodisation windows
     # along z
-    n_apo_z = np.int64(config.apo_z * config.N_z)                                                                     #change
+    n_apo_z = int(config.apo_z * config.N_z)
     apo_window_z = apodisation_window(config.apo_window, n_apo_z)
     # ------------------------------------------ #
 
@@ -81,16 +82,15 @@ def ssw_2d(u_0, config, n_refraction, ii_vect_relief):
         for ii_lvl in range(0, config.wv_L + 1):
             n_propa_lib[ii_lvl + 1] += n_propa_lib[ii_lvl]  # add previous level
             for ii_q in range(0, q_list[ii_lvl]):
-                toto = dictionary[ii_lvl][ii_q]
-                tata = pywt.coeffs_to_array(toto)[0]
-                n_propa_lib[ii_lvl + 1] += len(tata)  # add the size of each propagator
-                dictionary2 = np.append(dictionary2, tata)
+                propagator_list = dictionary[ii_lvl][ii_q]
+                propagator_vect = pywt.coeffs_to_array(propagator_list)[0]
+                n_propa_lib[ii_lvl + 1] += len(propagator_vect)  # add the size of each propagator
+                dictionary2 = np.append(dictionary2, propagator_vect)
         dictionary = dictionary2
-
 
     # --- Sizes of the apodisation and image layers --- #
     if config.ground == 'PEC' or config.ground == 'Dielectric':
-        n_im = np.int64(np.round(config.N_z * config.image_layer))                                                    #change
+        n_im = int(np.round(config.N_z * config.image_layer))
         remain_im = n_im % 2**config.wv_L
         if remain_im != 0:
             n_im += 2**config.wv_L - remain_im
@@ -122,7 +122,14 @@ def ssw_2d(u_0, config, n_refraction, ii_vect_relief):
         # ------------------- #
 
         # --- refractivity applied twice 1/2 --- #
-        u_x = apply_refractive_index(u_x, n_refraction, config)
+        # if config.py_or_cy == 'Python':
+        if len(n_refraction.shape) == 2:
+            u_x_dx = apply_refractive_index(u_x_dx, n_refraction[ii_x-1, :], config)
+        else:
+            u_x_dx = apply_refractive_index(u_x_dx, n_refraction, config)
+        # else:  # config.py_or_cy == 'Cython':
+        #     u_x = np.array(apply_refractive_index_cy(u_x, n_refraction, config.freq, config.x_step))
+
         # -------------------------------------- #
 
         # ------------------------------ #
@@ -198,7 +205,13 @@ def ssw_2d(u_0, config, n_refraction, ii_vect_relief):
         # ------------------------------ #
 
         # --- refractivity applied twice 2/2 --- #
-        u_x_dx = apply_refractive_index(u_x_dx, n_refraction, config)
+        # if config.py_or_cy == 'Python':
+        if len(n_refraction.shape) == 2:
+            u_x_dx = apply_refractive_index(u_x_dx, n_refraction[ii_x-1, :], config)
+        else:
+            u_x_dx = apply_refractive_index(u_x_dx, n_refraction, config)
+        # else:  # config.py_or_cy == 'Cython':
+        #     u_x_dx = apply_refractive_index_cy(u_x_dx, n_refraction, config.freq, config.x_step)
         if config.turbulence == 'Y':
             phi_turbulent = genere_phi_turbulent(config)
             u_x_dx = apply_phi_turbulent(u_x_dx, phi_turbulent, config)
