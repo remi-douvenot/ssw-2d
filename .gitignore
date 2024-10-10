@@ -51,3 +51,6 @@ GUI/src/__pycache__/plots.cpython-38.pyc
 *.pyc
 *.pyc
 *.npy
+post_processing/outputs/E_reference.npy
+*.npy
+*.npy

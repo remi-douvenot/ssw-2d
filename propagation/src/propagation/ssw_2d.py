@@ -36,6 +36,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+
 import time
 import scipy.constants as cst
 from src.propagators.dictionary_generation import dictionary_generation
@@ -67,7 +68,6 @@ from src.wavelets.wavelet_operations import sparsify
 
 
 def ssw_2d(u_0, config, n_refraction, ii_vect_relief):
-
     # Simulation parameters
     n_x = config.N_x
 
@@ -112,10 +112,20 @@ def ssw_2d(u_0, config, n_refraction, ii_vect_relief):
     wv_total = [[]] * n_x
     # LES atmosphere
     if config.turbulence == 'Y':
-        phi_LES_list= np.load('./src/atmosphere/phi_list_bomex_100_100_120.npy')
+        rng = np.random.default_rng()
+        #phi_LES_list= rng.permutation(np.load('./src/atmosphere/phi_total_list_bomex_1000_1000_600_corr.npy'))
+        phi_total_LES_list = np.load('./src/atmosphere/phi_tot_list_arm_640_640_440_23h30_00h_dt120.npy')
+        phi_turbu_LES_list = (np.load('./src/atmosphere/phi_list_arm_640_640_440_23h30_00h_dt120.npy'))
+        phi_LES_list = rng.permutation(phi_total_LES_list - phi_turbu_LES_list)
+        #phi_LES_list = rng.permutation(phi_turbu_LES_list)
+        #phi_LES_list = phi_turbu_LES_list
+        #phi_LES_list = rng.permutation(phi_total_LES_list)
+        Cn2_z_profile = np.load('./src/atmosphere/Cn2_y_dxyz25.npy')
+        phi_list = []
     # ----------------------- #
 
     # Loop over the x_axis
+
     for ii_x in np.arange(1, n_x+1):
         if ii_x % 100 == 0:
             print('Iteration', ii_x, '/', n_x, '. Distance =', ii_x*config.x_step)
@@ -205,17 +215,45 @@ def ssw_2d(u_0, config, n_refraction, ii_vect_relief):
         u_x_dx = apply_refractive_index(u_x_dx, n_refraction, config)
         if config.turbulence == 'Y':
             ##-- MPS --##
-            #phi_turbulent = genere_phi_turbulent(config)
-            #u_x_dx = apply_phi_turbulent(u_x_dx,phi_turbulent,config)
+            z= np.linspace(0,3000,config.N_z)
+            z_LES = np.linspace(0,3000,np.size(Cn2_z_profile))
+            # # # # plt.plot(Cn2_z_profile,z_LES)
+            # # # # plt.xscale('log')
+            # # # # plt.show()
+            phi_turbulent = genere_phi_turbulent(config)
+            #phi_turbulent*=np.interp(z,z_LES,np.sqrt(Cn2_z_profile))
+            #phi_list.append(phi_turbulent)
+            #plt.plot(phi_turbulent, z,'k')
+            # plt.xlabel('$\Phi$ (rad)')
+            # plt.ylabel('$z$ (m)')
+            # plt.grid()
+            # plt.xlim(-0.08,0.08)
+            #plt.show()
+            u_x_dx = apply_phi_turbulent(u_x_dx,phi_turbulent,config)
+
             ##-- LES --##
             #print(phi_LES_list[ii_x - 1],np.size(phi_LES_list[ii_x - 1]))
+            #
+            #i_screen = np.random.randint(0,np.size(phi_LES_list,0))
 
-            i_screen = np.random.randint(0,np.size(phi_LES_list,0))
             #print(i_screen)
-            phi_turbulent = genere_phi_turbulent_LES(config,phi_LES_list[i_screen])
+            phi_turbulent = genere_phi_turbulent_LES(config,phi_LES_list[ii_x-1])
+
+            # phi_list.append(phi_turbulent)
+            #
+            z= np.linspace(0,config.N_z*config.z_step,config.N_z)
+            #if ii_x -1  == 244 :
+            #plt.plot(phi_turbulent, z,'k')
+            #plt.xlabel('$\Phi_\mathrm{tot}$ (rad)')
+            #plt.xlabel('$M$ M-units')
+            #plt.ylabel('$z$ (m)')
+            #plt.ylim(1500,1700)
+            #plt.xlim(0,0.16)
+            #plt.grid()
+            #plt.show()
 
             u_x_dx = apply_phi_turbulent(u_x_dx, phi_turbulent, config)
-        # -------------------------------------- #
+        # # -------------------------------------- #
 
         # store the wavelet parameters (in coo format)
         wv_total[ii_x-1] = sparsify(wavelets_x_dx)
@@ -223,7 +261,20 @@ def ssw_2d(u_0, config, n_refraction, ii_vect_relief):
         # spectrum_w_0_tot[ii_x - 1] = spectrum_w_0_tot
         # update u_x
         u_x = u_x_dx
-
+    # z = np.linspace(0, 3000, config.N_z)
+    # z_LES = np.linspace(0, 3000, np.size(Cn2_z_profile))
+    # # phi_turbulent*=np.interp(z,z_LES,np.sqrt(Cn2_z_profile))
+    # std_phi = np.std(phi_list,axis=0)
+    # mean_phi = np.mean(phi_list,axis=0)
+    # plt.plot(mean_phi, z, 'k',label = '$<\Phi>$')
+    # plt.plot(mean_phi+std_phi, z, 'r--')
+    # plt.plot(mean_phi-std_phi, z, 'r--')
+    # plt.legend()
+    # plt.xlabel('$\Phi$ (rad)')
+    # plt.ylabel('$z$ (m)')
+    # plt.title('LES-Kolmogorov')
+    # plt.grid()
+    # plt.show()
     return u_x_dx, wv_total
 
 
@@ -240,6 +291,9 @@ def apply_phi_turbulent(u_x, phi_turbulent,config):
     #plt.plot(phi_turbulent,z)
     #plt.show()
     return u_x
+
+
+
 
 ##
 # @brief function that shifts a field (upwards or downwards)

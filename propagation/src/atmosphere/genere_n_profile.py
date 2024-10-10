@@ -16,7 +16,29 @@
 import numpy as np
 import scipy.constants as cst
 import matplotlib.pyplot as plt
+import scipy.signal
 
+def lissage(signal_brut,L):
+    res = np.copy(signal_brut) # duplication des valeurs
+    for i in range (1,len(signal_brut)-1): # toutes les valeurs sauf la première et la dernière
+        L_g = min(i,L) # nombre de valeurs disponibles à gauche
+        L_d = min(len(signal_brut)-i-1,L) # nombre de valeurs disponibles à droite
+        Li=min(L_g,L_d)
+        res[i]=np.sum(signal_brut[i-Li:i+Li+1])/(2*Li+1)
+    return res
+
+def low_pass_filter(input_array, factor):
+    # Créer un noyau passe-bas
+    kernel_size = factor * 2 + 1
+    kernel = np.ones(kernel_size) / kernel_size
+
+    # Appliquer la convolution avec le noyau
+    filtered_array = np.convolve(input_array, kernel, mode='same')
+
+    # Sous-échantillonner en prenant un point sur 'factor' points
+    filtered_array = filtered_array[::factor]
+
+    return filtered_array
 
 def generate_n_profile(config):
     # choice of the atmospheric profile type
@@ -42,48 +64,39 @@ def generate_n_profile(config):
 def genere_phi_turbulent(config):
     if config.turbulence == 'Y':
         ##-- MPS --##
-        #z = np.linspace(500, config.N_z * config.z_step + 500, config.N_z)
-        phi_turbulent = turbulent(config.N_z, config.z_step, config.x_step,config.L0, config.Cn2,config.freq)
-        #plt.plot(phi_turbulent,z)
-        #plt.show()
+        z = np.linspace(0, config.N_z * config.z_step, config.N_z)
+        Cn2_z_profile = np.load('./src/atmosphere/Cn2_y_dxyz5.npy')
+        z_LES = np.linspace(0, 3000, np.size(Cn2_z_profile))
+        k0 = 2 * np.pi * config.freq / cst.c
+        phi_turbulent = turbulent(config.N_z, config.z_step, config.x_step,config.L0,0,config.freq) #0 for Cn2 exponent if the Cn2 profile is applied after generation (LES Kolmo or BK-Model). If so, the profile is applied in the ssw2d function
+        phi_turbulent*=np.interp(z,z_LES,np.sqrt(Cn2_z_profile))
     return phi_turbulent
 
 def genere_phi_turbulent_LES(config,phi_LES):
     if config.turbulence == 'Y':
         ##-- LES --##
+        #phi_LES = scipy.signal.decimate(phi_LES,2)
+        #phi_LES = low_pass_filter(phi_LES,2)
+        z_max = config.N_z*config.z_step
         k0 = 2 * np.pi * config.freq / cst.c
         N_z_LES = np.size(phi_LES)
-        z_LES = np.linspace(50,2950,N_z_LES)
-        Delta_LES = 3000/N_z_LES
-        print(N_z_LES)
-        z = np.linspace(0, config.N_z * config.z_step-50, config.N_z)
-        phi_LES_tronc = phi_LES
-        #print(phi_LES_tronc)
-        z_LES_tronc = np.linspace(25,3000,np.size(phi_LES_tronc))
-        phi_subgrid = k0*turbulent_subgrid(config.N_z, config.z_step, N_z_LES, Delta_LES, config.x_step, config.Cn2)
-        phi_resolved = k0*np.interp(z, z_LES, phi_LES_tronc)  # interpolation between the LES grid and propagation grid
-
+        z_LES = np.linspace(0,3000,N_z_LES) #3000 if BOMEX, 4400 if ARM
+        Delta_LES = config.N_z*config.z_step/N_z_LES
+        #inhomo_vector = np.zeros(config.N_z)
+        #inhomo_vector[:int(2000//config.z_step)] = np.ones(np.size(inhomo_vector[:int(2000//config.z_step)]))
+        z = np.linspace(0, config.N_z * config.z_step, config.N_z)
+        phi_LES_tronc = phi_LES[:int((config.N_z*config.z_step)*N_z_LES/3000)] #3000 if BOMEX, 4400 if ARM
+        z_LES_tronc = np.linspace(0,config.N_z*config.z_step,np.size(phi_LES_tronc))
+        Cn2_profile = np.interp(z,z_LES_tronc,np.load('./src/atmosphere/Cn2_x_dxyz5.npy')[:int((config.N_z*config.z_step)*N_z_LES/3000)]) #choose the needed Cn2 profile; 3000 if BOMEX, 4400 if ARM
+        #Cn2_profile = np.interp(z, z_LES_tronc, np.load('./src/atmosphere/Cn2_x_arm_22h_1h_dxyz10.npy')[:int((config.N_z * config.z_step) * N_z_LES / 4395)])
+        phi_resolved = k0*np.interp(z, z_LES_tronc, phi_LES_tronc)  # interpolation between the LES grid and propagation grid
+        phi_subgrid = k0 * np.sqrt(Cn2_profile)* turbulent_subgrid(config.N_z, config.z_step, N_z_LES, Delta_LES, config.x_step, 0) #LES-Kolmogorov
+        #phi_subgrid = k0 *  turbulent_subgrid(config.N_z, config.z_step, N_z_LES, Delta_LES, config.x_step, config.Cn2) #Homogeneous extension
+        #phi_subgrid = phi_subgrid * inhomo_vector
         phi_turbulent = phi_subgrid + phi_resolved
         #phi_turbulent = phi_resolved
-        # plt.plot(phi_turbulent,z)
-        # plt.grid()
-        # plt.show()
-        # plt.plot(phi_resolved,z)
-        # plt.grid()
-        # plt.show()
-        # plt.plot(phi_subgrid,z)
-        # plt.show()
-        # k_z_kolmo = np.linspace(0, 2*np.pi/config.z_step, num=config.N_z)
-        # k_z = np.linspace(0,2*np.pi/config.z_step,num=config.N_z)
-        # k_z_Delta = np.linspace(0,2*np.pi/Delta_LES,num=N_z_LES)
-        # plt.plot(k_z_Delta,np.abs(np.fft.fft(phi_LES)),label='LES')
-        # plt.plot(k_z, np.abs(np.fft.fft(phi_turbulent)),label='extended_LES')
-        # plt.plot(k_z_kolmo, np.abs(np.fft.fft(phi_subgrid)), label='Subgrid')
-        # plt.xscale('log')
-        # plt.yscale('log')
-        # plt.legend()
-        # plt.show()
-        #print(np.size(phi_turbulent))
+
+
     return phi_turbulent
 
 # standard atmosphere
@@ -190,13 +203,15 @@ def read_file_profile(n_z, z_step, atm_filename):
 def turbulent(n_z, z_step, x_step, Los, Cn2_exponent,f):
     k0 = 2*np.pi*f / cst.c
     Kos = 2*np.pi/Los
+    z = np.linspace(0,n_z*z_step,n_z)
     # Compute spectral discretization
     #q_z = np.linspace(0,n_z-1, num=n_z, endpoint = True)
     q_z = np.linspace(-n_z/2, n_z/2 - 1, num=n_z, endpoint=True)
     k_z = (2/z_step) * np.sin(np.pi*q_z/(n_z)) #version DSSF
     #k_z = (1*np.pi)/(n_z*z_step)*q_z #version SSF
     # Define Von Karman Kolmogorov (VKK) spectrum
-    S_Phi2D = (2*np.pi)* k0**2*x_step*0.055*10**(Cn2_exponent)*(k_z**2+Kos**2)**(-4/3) #normalization of VKK spectrum by S*n_z
+    S_Phi2D = (2*np.pi)* k0**2*x_step*0.055*10**Cn2_exponent*(k_z**2+Kos**2)**(-4/3) #normalization of VKK spectrum by S*n_z
+
     # Generate random gaussian white noise filtred by a VKK spectrum
 
     #a = np.random.normal(0,np.sqrt((2*np.pi)/(n_z*z_step))*np.sqrt(S_Phi2D),n_z) #SSF
@@ -206,45 +221,35 @@ def turbulent(n_z, z_step, x_step, Los, Cn2_exponent,f):
     b = np.random.normal(0,np.sqrt((2/z_step)*np.sin(np.pi/n_z))*np.sqrt(S_Phi2D),n_z) #DSSF
     gauss = (a + 1j*b)
     print('energy gauss', np.sum(np.abs(gauss)**2))
-    #fft shift to remove symmetry
-    #G = gauss #DSSF
-    G = np.fft.fftshift(gauss) #SSF
+    G = np.fft.fftshift(gauss) #DSSF
     # --- turbulent phase screen --- #
     Phi=n_z*(np.fft.ifft(G).real)
-    #Phi=(G*np.exp(2*np.pi*1j*q_z/n_z)).real
-    #take the real part
     print('energy phi',np.sum(np.abs(Phi)**2)/n_z)
-    plt.plot(Phi,np.linspace(0,n_z*z_step,n_z))
-    #plt.show()
-    plt.plot(k_z, np.abs(np.fft.fft(Phi)))
-    plt.xscale('log')
-    plt.yscale('log')
-    #plt.show()
     return Phi
 
 def turbulent_subgrid(n_z, z_step, n_z_LES, Delta_LES, x_step, Cn2_exponent):
+    ### Enable to introduce
     # Compute spectral discretization
-    #q_z = np.concatenate((np.linspace(-n_z/2,-n_z*z_step//Delta_LES-1, num=int(n_z/2), endpoint = True), np.linspace(n_z*z_step//Delta_LES,n_z/2-1, num=int(n_z//2), endpoint = True)))
-    #q_z = np.linspace(-n_z/2, n_z/2 - 1, num=n_z, endpoint=True)
-    q_z_neg = np.linspace(-n_z/2, -int(n_z*z_step//(2*Delta_LES)), num=int(n_z/2 - n_z_LES/2), endpoint=True)
-    q_z_pos = np.linspace(int(n_z * z_step // (2 * Delta_LES)), n_z /2 -1, num=int(n_z/2 - n_z_LES/2), endpoint=True)
-    #q_z = np.linspace(int(n_z*z_step//Delta_LES), n_z - 1, num=n_z-int(n_z*z_step//Delta_LES), endpoint=True)
-    #k_z = (2/z_step) * np.sin(np.pi*q_z/(n_z)) #version DSSF
+    tronc_factor = n_z*z_step/(n_z_LES*Delta_LES)
+    print('z_max',n_z * z_step)
+    print('z_les',n_z_LES*Delta_LES)
+    print('tronc factor =',tronc_factor)
+    q_z_neg = np.linspace(-n_z/2, -int(n_z*z_step//(2*Delta_LES)), num=int(n_z/2 - tronc_factor*n_z_LES/2), endpoint=True) #negative part of the spectrum
+    q_z_pos = np.linspace(int(n_z * z_step // (2 * Delta_LES)), n_z /2 -1, num=int(n_z/2 - tronc_factor*n_z_LES/2), endpoint=True) #positive part of the spectrum
+
     k_z_neg = (2*np.pi)/(n_z*z_step)*q_z_neg
     k_z_pos = (2*np.pi) / (n_z * z_step) * q_z_pos
     # Define Von Karman Kolmogorov (VKK) spectrum
-    print(int(n_z*z_step//Delta_LES))
-    n_delta = int(n_z*z_step//Delta_LES)
+    print(int(n_z*z_step//Delta_LES*tronc_factor))
+    n_delta = int(n_z*z_step//Delta_LES*tronc_factor)
 
-    zeros = np.zeros(int(n_z*z_step//Delta_LES))
-    print(np.size(zeros))
-    print(np.size(k_z_neg))
-    print(np.size(k_z_pos))
-    S_Phi2D = np.concatenate(((2*np.pi)* x_step*0.055*0.23*10**(Cn2_exponent)*(k_z_neg**2)**(-4/3),zeros,(2*np.pi)* x_step*0.055*0.23*10**(Cn2_exponent)*(k_z_pos**2)**(-4/3))) #normalization of VKK spectrum by S*n_z
+    zeros = np.zeros(int(n_z*z_step//Delta_LES)) #Lowest part of the spectrum: do not need to be generated (already by LES)
+    print('zeros =',np.size(zeros))
+    print('kz neg = ',np.size(k_z_neg))
+    print('kz neg = ',np.size(k_z_pos))
+    S_Phi2D = np.concatenate(((2*np.pi)* x_step*0.055*0.13*10**(Cn2_exponent)*(k_z_neg**2)**(-4/3),zeros,(2*np.pi)* x_step*0.055*10**(Cn2_exponent)*(k_z_pos**2)**(-4/3))) #Concatenation => complete spectrum; 0.13 for Cn2 = 0.13x10^-12
+    print(np.size(S_Phi2D),n_z)
     # Generate random gaussian white noise filtred by a VKK spectrum
-    print(np.shape(S_Phi2D))
-    #a = np.random.normal(0,np.sqrt((2*np.pi)/(n_z*z_step))*np.sqrt(S_Phi2D),n_z) #SSF
-    #b = np.random.normal(0,np.sqrt((2*np.pi)/(n_z*z_step))*np.sqrt(S_Phi2D),n_z) #SSF
 
     a = np.random.normal(0,np.sqrt((2/z_step)*np.sin(np.pi/n_z))*np.sqrt(S_Phi2D),n_z) #DSSF
     b = np.random.normal(0,np.sqrt((2/z_step)*np.sin(np.pi/n_z))*np.sqrt(S_Phi2D),n_z) #DSSF
@@ -256,12 +261,6 @@ def turbulent_subgrid(n_z, z_step, n_z_LES, Delta_LES, x_step, Cn2_exponent):
 
     # --- turbulent phase screen --- #
     Phi=n_z*(np.fft.ifft(G).real)
-    #Phi=(G*np.exp(2*np.pi*1j*q_z/n_z)).real
-    #take the real part
     print('energy phi',np.sum(np.abs(Phi)**2)/n_z)
-    #plt.plot(np.linspace(0,np.pi/z_step,n_z), S_Phi2D)
-    #plt.xscale('log')
-    #plt.yscale('log')
-    #plt.show()
 
     return Phi
