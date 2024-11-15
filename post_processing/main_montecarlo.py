@@ -115,7 +115,7 @@ if config.turbulence == 'Y':
 
         # --- Image layer --- #
         ground_type = config.ground
-        if ground_type == 'None':  # No ground, no image layer
+        if ground_type == 'NoGround':  # No ground, no image layer
             n_im = 0
         else:  # ground, therefore an image layer different from 0
             image_layer = config.image_layer  # image_layer in % of the total size n_z
@@ -202,7 +202,7 @@ else : #save non turbulent field
 
     # --- Image layer --- #
     ground_type = config.ground
-    if ground_type == 'None':  # No ground, no image layer
+    if ground_type == 'NoGround':  # No ground, no image layer
         n_im = 0
     else:  # ground, therefore an image layer different from 0
         image_layer = config.image_layer  # image_layer in % of the total size n_z

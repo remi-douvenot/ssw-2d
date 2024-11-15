@@ -278,7 +278,7 @@ class Window(QMainWindow, Ui_MainWindow, Dependencies, Plots):
         error_message = "Field calculation using "+method+" -- Error. Do not consider the display"
         if method == 'WWP':
             groundType = self.groundTypeComboBox.currentText()
-            if groundType != 'None':
+            if groundType != 'NoGround':
                 error_message = "Error with WWP, ground not accounted. Do not consider the display"
                 raise ValueError('Error with WWP, ground not accounted. Do not consider the display')
 
@@ -297,8 +297,8 @@ class Window(QMainWindow, Ui_MainWindow, Dependencies, Plots):
             self.informationTextBrowser.setPlainText("ERROR: N_z must be multiple of 2^L (max wavelet level)")
             raise (ValueError(['N_z must be multiple of 2^L (max wavelet level)']))
         #if flag_error_turbu:
-            #self.informationTextBrowser.setPlainText("ERROR: Ground type must be None if turbulence is True")
-            #raise (ValueError(['Ground type must be None if turbulence is True']))
+            #self.informationTextBrowser.setPlainText("ERROR: Ground type must be NoGround if turbulence is True")
+            #raise (ValueError(['Ground type must be NoGround if turbulence is True']))
         # main program: SSW propagation
 
         # Check if a process is already running, kill it otherwise
@@ -416,7 +416,7 @@ def check_modulo(n_z, wv_l):
 """
 def check_turbu(turbu_type, ground_type):
     # --- Check the size of the vectors, multiple of 2^n --- #
-    if turbu_type == 'Y' and ground_type != 'None':
+    if turbu_type == 'Y' and ground_type != 'NoGround':
         flag_error = True
     else:
         flag_error = False

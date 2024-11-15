@@ -101,8 +101,8 @@ def read_config(file_configuration):
     if config.apo_z < 0 or config.image_layer < 0 or config.apo_z > 0.5 or config.image_layer > 0.5:
         raise ValueError(['Apodisation and image layer must be in [0,0.5] (percentage of the total field size'])
 
-    if (config.ground != 'None') & (config.ground != 'PEC') & (config.ground != 'Dielectric'):
-        raise ValueError(['Ground must be chosen among: None, PEC, or Dielectric'])
+    if (config.ground != 'NoGround') & (config.ground != 'PEC') & (config.ground != 'Dielectric'):
+        raise ValueError(['Ground must be chosen among: NoGround, PEC, or Dielectric'])
 
     if (config.method != 'SSW') & (config.method != 'WWP') & (config.method != 'WWP-H') & (config.method != 'SSF'):
         raise ValueError(['Method must be chosen among: SSW or WWP or WWP-H or SSF'])

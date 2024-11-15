@@ -102,7 +102,7 @@ def wwp_h_2d(u_0, config, n_refraction, ii_vect_relief):
         remain_im = n_im % 2**config.wv_L
         if remain_im != 0:
             n_im += 2**config.wv_L - remain_im
-    else:  # config.ground == 'None':
+    else:  # config.ground == 'NoGround':
         print('--- Main loop. No ground ---')
         n_im = 0
     config.N_im = n_im
@@ -204,12 +204,12 @@ def wwp_h_2d(u_0, config, n_refraction, ii_vect_relief):
             # config.N_im = n_im
             # w_x_dx = assemble_ssw_wwp(w_x, w_ssw_x_dx, w_wwp_x_dx, config)
 
-        elif config.ground == 'None':
+        elif config.ground == 'NoGround':
 
             raise ValueError(['If no ground, please use WWP instead of WWP-H'])
 
         else:
-            raise ValueError(['Ground condition should be dielectric, PEC, or None'])
+            raise ValueError(['Ground condition should be dielectric, PEC, or NoGround'])
         # ---------- END --------------- #
         # --- Free-space propagation --- #
         # ------------------------------ #

@@ -92,13 +92,13 @@ elif config.type == 'Triangle':
 elif config.type == 'IGN':
     # Retrieve the height dataset from IGN
     ds = rel.get_ign_height_profile(config.P, config.Q, config.N_x+1)
-    # Convert it to a np.array
+    #  Convert it to a np.array
     z_relief = np.array(ds.height)
 # Bing
 elif config.type == 'Bing':
     # Retrieve the height dataset from Bing
     ds = rel.get_bing_height_profile(config.P, config.Q, config.N_x+1)
-    # Convert it to a np.array
+    #  Convert it to a np.array
     z_relief = np.array(ds.height)
 else:
     z_relief = np.zeros(config.N_x+1)

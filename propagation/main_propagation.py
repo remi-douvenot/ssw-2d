@@ -62,7 +62,7 @@
 # -- wavelet family:    wavelet family
 # -- apodisation % in z: part of the window dedicated to apodisation along the vertical (portion of 1)
 # -- image layer % in z: part of the window dedicated to image layer (if there is a ground) (portion of 1)
-# -- ground:        ground type: PEC, dielectric or None
+# -- ground:        ground type: PEC, dielectric or NoGround
 # -- epsr           ground relative permittivity (if ground = dielectric)
 # -- sigma          ground conductivity in S (if ground = dielectric)
 # Initial field is read in ../source/outputs directory (output of main_source.py function)
@@ -172,7 +172,7 @@ t_propa_s = time.process_time()
 if config.method == 'SSW':
     u_final, wv_total = ssw_2d(u_0, config, n_refraction, ii_vect_relief)
 # WWP  <-- if WW-H is chosen without ground then WWP is launched
-elif (config.method == 'WWP') or ((config.method == 'WWP-H') and (config.ground == 'None')):
+elif (config.method == 'WWP') or ((config.method == 'WWP-H') and (config.ground == 'NoGround')):
     if config.py_or_cy == 'Python':
         u_final, wv_total = wwp_2d(u_0, config, n_refraction)
     else:  # config.py_or_cy == 'Cython'

@@ -96,7 +96,7 @@ def ssw_2d(u_0, config, n_refraction, ii_vect_relief):
         remain_im = n_im % 2**config.wv_L
         if remain_im != 0:
             n_im += 2**config.wv_L - remain_im
-    else:  # config.ground == 'None':
+    else:  # config.ground == 'NoGround':
         print('--- Main loop. No ground ---')
         n_im = 0
     config.N_im = n_im
@@ -194,14 +194,14 @@ def ssw_2d(u_0, config, n_refraction, ii_vect_relief):
                 # u_x_dx[0:diff_relief[ii_x - 1]] = 0.0
 
                 # end of the loop
-        elif config.ground == 'None':
+        elif config.ground == 'NoGround':
             # print('No ground')
 
             # Propagate using SSW
             u_x_dx, wavelets_x_dx = ssw_2d_one_step(u_x, dictionary, n_propa_lib, config)
 
         else:
-            raise ValueError(['Ground condition should be dielectric, PEC, or None'])
+            raise ValueError(['Ground condition should be dielectric, PEC, or NoGround'])
         # ---------- END --------------- #
         # --- Free-space propagation --- #
         # ------------------------------ #

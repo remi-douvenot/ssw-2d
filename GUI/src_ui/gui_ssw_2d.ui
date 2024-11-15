@@ -238,7 +238,7 @@
        </size>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_3">
        <attribute name="title">
@@ -267,14 +267,14 @@
             <bool>false</bool>
            </property>
            <property name="currentText">
-            <string>None</string>
+            <string>NoGround</string>
            </property>
            <property name="currentIndex">
             <number>0</number>
            </property>
            <item>
             <property name="text">
-             <string>None</string>
+             <string>NoGround</string>
             </property>
            </item>
            <item>
